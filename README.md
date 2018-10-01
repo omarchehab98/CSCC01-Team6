@@ -4,5 +4,6 @@
 
 ### Documents
 
-Team Agreement
+* Team Agreement
+* Team Introduction
 
