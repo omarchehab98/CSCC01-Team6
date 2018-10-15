@@ -8,3 +8,10 @@
 * Team Introduction
 * Team Logo
 
+### Product Backlog
+
+Contains folders containg each version of the following:
+
+* Personas
+* User Stories
+
