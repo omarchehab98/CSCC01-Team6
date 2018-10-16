@@ -1,4 +1,4 @@
-package hello;
+package team6;
 
 import java.util.Arrays;
 
