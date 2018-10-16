@@ -21,4 +21,4 @@ services:
     volumes:
       - ".:/app"
     working_dir: /app
-    command: bash -c "mvn package && java -jar target/team6-0.1.0.jar"
+    command: bash -c "mvn compile && mvn exec:java -Dexec.mainClass="team6.Application""
