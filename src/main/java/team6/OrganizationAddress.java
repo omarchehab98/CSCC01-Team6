@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class OrganizationAddress {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTP)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private Long organization_id;
 	private String country;
@@ -17,33 +17,33 @@ public class OrganizationAddress {
 	private String locality;
 	private String postal_code;
 	private String thoroughfare;
-	private int premise;
+	private String premise;
 
 	protected OrganizationAddress() {}
 
 	public OrganizationAddress(Long organization_id, String country,
 	         String administrative_area, String locality, String postal_code,
-					 int thoroughfare, string premise) {
+			 String thoroughfare, String premise) {
 
 		this.organization_id = organization_id;
 		this.country = country;
 		this.administrative_area = administrative_area;
 		this.locality = locality;
 		this.postal_code = postal_code;
-		this.throroughfare = thoroughfare;
+		this.thoroughfare = thoroughfare;
 		this.premise = premise;
 	
 	}
 
-	@Overide
+	@Override
 	public String toString() {
 
 		return String.format("OrganizationAddress [id=%d, organization_id=%d " +
-		                     "country='%s', administrative_area='%s', " + 
-												 "locality='%s', postal_code='%s', thoroughfare='%s'," +
-												 " premise=%d]", id, organization_id, country, 
-												 administrative_area, locality, postal_code, 
-												 thoroughfare, premise);
+							"country='%s', administrative_area='%s', " + 
+							"locality='%s', postal_code='%s', thoroughfare='%s'," +
+							" premise=%s]", id, organization_id, country, 
+							administrative_area, locality, postal_code, 
+							thoroughfare, premise);
 
 	}
 

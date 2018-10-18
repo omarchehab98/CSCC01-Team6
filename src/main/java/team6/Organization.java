@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Organization {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTP)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
 
@@ -21,7 +21,7 @@ public class Organization {
 	
 	}
 
-	@Overide
+	@Override
 	public String toString() {
 	
 		return String.format("Organization [id=%d, name='%s']", id, name);
