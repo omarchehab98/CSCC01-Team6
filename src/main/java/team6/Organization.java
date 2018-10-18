@@ -3,7 +3,7 @@ package team6;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persitence.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Organization {
