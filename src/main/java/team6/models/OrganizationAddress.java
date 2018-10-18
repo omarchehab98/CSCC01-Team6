@@ -1,4 +1,4 @@
-package team6;
+package team6.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
