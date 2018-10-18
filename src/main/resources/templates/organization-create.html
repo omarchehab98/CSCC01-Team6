@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create New Organization</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Create New Organization</h1>
+    <form action="#" th:action="@{/organizations/new}" method="post">
+	<p>Name: <input type="text" th:field="*{organization.name}" /></p>
+	<p>Country: <input type="text" th:field="*{address.country}" /></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+</body>
+</html>
