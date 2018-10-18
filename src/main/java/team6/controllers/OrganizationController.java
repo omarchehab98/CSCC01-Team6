@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
-import team6.models;
+import team6.models.Organization;
 
 @RestController
 public class OrganizationController {
@@ -14,9 +14,9 @@ public class OrganizationController {
         return "Greetings from Chedy!";
     }
 
-    @GetMapping("/organizations/new")
+    @GetMapping("/organizations")
     public String organizationForm(Model model) {
-        model.addAttribute("organization", new Organization());
+        model.addAttribute("organization", new Organization(null, null));
         return "organizations";
     }
     
