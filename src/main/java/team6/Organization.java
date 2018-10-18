@@ -3,13 +3,13 @@ package team6;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persitence.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Organization {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTP)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
 
@@ -21,7 +21,7 @@ public class Organization {
 	
 	}
 
-	@Overide
+	@Override
 	public String toString() {
 	
 		return String.format("Organization [id=%d, name='%s']", id, name);
