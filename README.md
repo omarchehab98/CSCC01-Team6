@@ -24,7 +24,7 @@ Contains folders containg each version of the following:
 #### Development
 
 ```sh
-mvn compile && mvn exec:java -Dexec.mainClass="team6.Application"
+mvn spring-boot:run
 # or, run using docker (optional)
 docker-compose up 
 ```
