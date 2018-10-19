@@ -27,7 +27,7 @@ public class OrganizationController {
         return "organization-read-list";
     }
 
-    @GetMapping("/organizations/new")
+    @GetMapping("/organizations/create")
     public String organizationForm(Model model) {
         model.addAttribute("organization", new Organization(null, null, null, null, null, null, null, null));
 	    return "organization-create";
