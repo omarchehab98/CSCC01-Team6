@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import team6.models.Organization;
-import team6.models.OrganizationAddress;
-
 @Controller
 public class OrganizationController {
     
@@ -17,8 +15,7 @@ public class OrganizationController {
 
     @GetMapping("/organizations/new")
     public String organizationForm(Model model) {
-        model.addAttribute("organization", new Organization(null, null));
-	model.addAttribute("address", new OrganizationAddress(null, null, null, null, null, null, null));
+        model.addAttribute("organization", new Organization(null, null, null, null, null, null, null, null));
 	return "organization-create";
     }
     

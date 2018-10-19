@@ -16,7 +16,7 @@ public class OrganizationTest {
     @Test
     public void organizationTest() throws Exception {
         String name = "Ontario Council of Agencies Serving Immigrants";
-        Organization organization = new Organization(null, name);
+        Organization organization = new Organization(null, name, null, null, null, null, null);
         assertThat(organization.getName(), equalTo(name));
     }
 }
