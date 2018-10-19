@@ -1,12 +1,20 @@
 package team6.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import team6.models.Organization;
+import team6.repositories.OrganizationRepository;
+
 @Controller
 public class OrganizationController {
+    @Autowired
+    private OrganizationRepository organizationRepository;
     
     @RequestMapping("/organizations")
     public String index() {
@@ -19,4 +27,9 @@ public class OrganizationController {
 	    return "organization-create";
     }
     
+    @PostMapping("/organizations")
+    public String create(@ModelAttribute Organization organization) {
+        organizationRepository.save(organization);
+        return "redirect:/organizations";
+    }
 }
