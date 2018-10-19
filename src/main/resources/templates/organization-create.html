@@ -1,21 +1,56 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create New Organization</title>
+    <title>Create Organization</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <h1>Create New Organization</h1>
-    <form action="#" th:action="@{/organizations/new}" th:object="${organization}" method="post">
-    	<p>Organization Name: <input type="text" th:field="*{name}" /></p>
-        <p>Country: <input type="text" th:field="*{country}" /></p>
-        <p>Province: <input type="text" th:field="*{administrativeArea}" /></p>
-        <p>City: <input type="text" th:field="*{locality}" /></p>
-        <p>Locality?: <input type="text" th:field="*{locality}" /></p>
-        <p>Postal Code: <input type="text" th:field="*{postalCode}" /></p>
-        <p>Street Address: <input type="text" th:field="*{thoroughfare}" /></p>
-        <p>Appartment: <input type="text" th:field="*{premise}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    <form action="#" th:action="@{/organizations}" th:object="${organization}" method="post">
+        <h1>Create Organization</h1>
+    	<label>
+            Organization Name*
+            <br />
+            <input type="text" th:field="*{name}" required />
+        </label>
+        <br />
+        <label>
+            Country*
+            <br />
+            <input type="text" th:field="*{country}" required />
+        </label>
+        <br />
+        <label>
+            Province
+            <br />
+            <input type="text" th:field="*{administrativeArea}" />
+        </label>
+        <br />
+        <label>
+            City
+            <br />
+            <input type="text" th:field="*{locality}" />
+        </label>
+        <br />
+        <label>
+            Postal Code
+            <br />
+            <input type="text" th:field="*{postalCode}" />
+        </label>
+        <br />
+        <label>
+            Street Address
+            <br />
+            <input type="text" th:field="*{thoroughfare}" />
+        </label>
+        <br />
+        <label>
+            Apartment
+            <br />
+            <input type="text" th:field="*{premise}" />
+        </label>
+        <br />
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
     </form>
 </body>
 </html>
