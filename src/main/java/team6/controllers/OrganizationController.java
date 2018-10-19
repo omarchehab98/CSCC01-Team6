@@ -1,5 +1,7 @@
 package team6.controllers;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,11 @@ public class OrganizationController {
     @Autowired
     private OrganizationRepository organizationRepository;
     
-    @RequestMapping("/organizations")
-    public String index() {
-        return "organization-read-list";
+    @GetMapping("/organizations")
+    public String index(Model model) {
+        Iterable <Organization> organizations =  organizationRepository.findAll();
+        model.addAttribute("organizations",organizations);
+        return "organizations-read-list";
     }
 
     @GetMapping("/organizations/create")
