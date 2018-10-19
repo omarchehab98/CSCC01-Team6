@@ -6,6 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+/**Contains the following attributes:
+ * id 		: Long
+ * name		: String
+ */
 public class Organization {
 
 	@Id
