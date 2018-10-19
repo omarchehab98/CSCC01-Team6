@@ -4,8 +4,8 @@ services:
   mysql:
     image: mysql:5.6
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=springboot
+      - MYSQL_ROOT_PASSWORD=Pass1234
+      - MYSQL_DATABASE=team6
   app:
     image: maven:3.5
     depends_on:
@@ -16,7 +16,7 @@ services:
       - DATABASE_HOST=mysql
       - DATABASE_USER=root
       - DATABASE_PASSWORD=Pass1234
-      - DATABASE_NAME=springboot  
+      - DATABASE_NAME=team6  
       - DATABASE_PORT=3306
     volumes:
       - ".:/app"
