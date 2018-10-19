@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import team6.models.DummyOrganizationAddress;
 import team6.models.Organization;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.OrganizationNotFoundException;
@@ -23,7 +24,7 @@ public class OrganizationController {
     
     @RequestMapping("/organizations")
     public String index() {
-        return "Greetings from Chedy!";
+        return "organization-read-list";
     }
 
     @GetMapping("/organizations/new")
