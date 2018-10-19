@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class OrganizationTest {
     @Test
     public void organizationTest() throws Exception {
         String name = "Ontario Council of Agencies Serving Immigrants";
-        Organization organization = new Organization(null, name, null, null, null, null, null);
+        Organization organization = new Organization();
+        organization.setName(name);
         assertThat(organization.getName(), equalTo(name));
     }
 
@@ -33,7 +35,8 @@ public class OrganizationTest {
     public void whenFindByName_thenReturnEmployee() {
         // given
         String name = "Ontario Council of Agencies Serving Immigrants";
-        Organization organization = new Organization(null, name);
+        Organization organization = new Organization();
+        organization.setName(name);
         entityManager.persist(organization);
         entityManager.flush();
     

@@ -7,7 +7,6 @@ import javax.persistence.Id;
 
 @Entity
 public class Organization {
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -18,7 +17,6 @@ public class Organization {
 	private String postalCode;
 	private String thoroughfare;
 	private String premise;
-
 
 	protected Organization() {}
 
@@ -31,7 +29,6 @@ public class Organization {
 		this.postalCode = postalCode;
 		this.thoroughfare = thoroughfare;
 		this.premise = premise;
-
 	}
 
 	/**
@@ -69,7 +66,7 @@ public class Organization {
 		this.country = country;
 	}
 
-		/**
+	/**
 	 * @return the country
 	 */
 	public String getCountry() {
@@ -83,7 +80,7 @@ public class Organization {
 		this.administrativeArea = administrativeArea;
 	}
 
-		/**
+	/**
 	 * @return the administrative area
 	 */
 	public String getAdministrativeArea() {
@@ -97,7 +94,7 @@ public class Organization {
 		this.locality = locality;
 	}
 
-		/**
+	/**
 	 * @return the locality
 	 */
 	public String getLocality() {
@@ -111,7 +108,7 @@ public class Organization {
 		this.postalCode = postalCode;
 	}
 
-		/**
+	/**
 	 * @return the postal code
 	 */
 	public String getPostalCode() {
@@ -125,7 +122,7 @@ public class Organization {
 		this.thoroughfare = thoroughfare;
 	}
 
-		/**
+	/**
 	 * @return the thoroughfare
 	 */
 	public String getThoroughfare() {
@@ -139,7 +136,7 @@ public class Organization {
 		this.premise = premise;
 	}
 
-		/**
+	/**
 	 * @return the premise
 	 */
 	public String getPremise() {
@@ -148,9 +145,6 @@ public class Organization {
 
 	@Override
 	public String toString() {
-
 		return String.format("Organization [id=%d, name='%s']", id, name);
-
 	}
-
 }

@@ -9,11 +9,12 @@
     <form action="#" th:action="@{/organizations/new}" th:object="${organization}" method="post">
     	<p>Organization Name: <input type="text" th:field="*{name}" /></p>
         <p>Country: <input type="text" th:field="*{country}" /></p>
-	<p>Province: <input type="text" th:field="*{administrativeArea}" /></p>
-	<p>City: <input type="text" th:field="*{locality}" /></p><p>Locality?: <input type="text" th:field="*{locality}" /></p>
-	<p>Postal Code: <input type="text" th:field="*{postalCode}" /></p>
-	<p>Street Address: <input type="text" th:field="*{thoroughfare}" /></p>
-	<p>Appartment: <input type="text" th:field="*{premise}" /></p>
+        <p>Province: <input type="text" th:field="*{administrativeArea}" /></p>
+        <p>City: <input type="text" th:field="*{locality}" /></p>
+        <p>Locality?: <input type="text" th:field="*{locality}" /></p>
+        <p>Postal Code: <input type="text" th:field="*{postalCode}" /></p>
+        <p>Street Address: <input type="text" th:field="*{thoroughfare}" /></p>
+        <p>Appartment: <input type="text" th:field="*{premise}" /></p>
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 </body>
