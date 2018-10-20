@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import team6.models.DummyOrganizationAddress;
 import team6.models.Organization;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.OrganizationNotFoundException;
@@ -35,6 +34,16 @@ public class OrganizationController {
     public String organizationForm(Model model) {
         model.addAttribute("organization", new Organization(null, null, null, null, null, null, null, null));
 	    return "organization-create";
+    }
+
+    @GetMapping("/organizations/{id}/update")
+    public String updateById(Model model, @PathVariable String id) {
+	try {
+            model.addAttribute("organization", organizationRepository.findById(Long.parseLong(id)));
+	    return "organization-update";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new OrganizationNotFoundException();
+        }
     }
     
     @PostMapping("/organizations")
