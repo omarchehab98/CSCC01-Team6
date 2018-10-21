@@ -3,12 +3,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Organization</title>
+  <title>Organizations</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body>
-  <h1>Organization</h1>
+  <h1>Organizations</h1>
 
   <table>
     <thead>
@@ -25,20 +25,19 @@
     </thead>
 
     <tbody>
-      <tr th:each="organization : ${organizations}">
+      <tr>
         <td>
           <a th:href="@{'/organizations/' + ${organization.id}}" th:text="${organization.id}">
-            gfxhfcfh
           </a>
         </td>
 
-        <td th:text="${organization.name}">Namey here</td>
-        <td th:text="${organization.country}">country here</td>
-        <td th:text="${organization.administrativeArea}">area-y here</td>
-        <td th:text="${organization.locality}">locality here</td>
-        <td th:text="${organization.postalCode}">postaly codey here</td>
-        <td th:text="${organization.thoroughfare}">thoroughfarey here</td>
-        <td th:text="${organization.premise}">premisey here</td>
+        <td th:text="${organization.name}">Name here</td>
+        <td th:text="${organization.country}">Country here</td>
+        <td th:text="${organization.administrativeArea}">Area here</td>
+        <td th:text="${organization.locality}">Locality here</td>
+        <td th:text="${organization.postalCode}">Postal code here</td>
+        <td th:text="${organization.thoroughfare}">Thoroughfare here</td>
+        <td th:text="${organization.premise}">Premise here</td>
       </tr>
     </tbody>
   </table>

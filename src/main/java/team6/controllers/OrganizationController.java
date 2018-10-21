@@ -1,6 +1,7 @@
 package team6.controllers;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import team6.models.DummyOrganizationAddress;
+//import team6.models.DummyOrganizationAddress;
 import team6.models.Organization;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.OrganizationNotFoundException;
@@ -23,6 +24,22 @@ import team6.throwables.OrganizationNotFoundException;
 public class OrganizationController {
     @Autowired
     private OrganizationRepository organizationRepository;
+    
+    @GetMapping("/organizations/{id}")
+    public String singleIndex(@PathVariable String id, Model model) {
+    	try {
+    		Optional<Organization> org = organizationRepository.findById(Long.parseLong(id));
+    		if (org.isPresent()) {
+    			Organization organization = org.get();
+	    		model.addAttribute("organization", organization);
+	    		return "organizatoin-read.html";
+    		} else {
+    			return "organization-four-o-four.html";
+    		}
+    	} catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+    		throw new OrganizationNotFoundException();
+    	}
+    }
     
     @GetMapping("/organizations")
     public String index(Model model) {
