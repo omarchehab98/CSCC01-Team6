@@ -24,7 +24,8 @@ import team6.throwables.OrganizationNotFoundException;
 public class OrganizationController {
     @Autowired
     private OrganizationRepository organizationRepository;
-    
+
+/*
     @GetMapping("/organizations/{id}")
     public String singleIndex(@PathVariable String id, Model model) {
     	try {
@@ -32,7 +33,7 @@ public class OrganizationController {
     		if (org.isPresent()) {
     			Organization organization = org.get();
 	    		model.addAttribute("organization", organization);
-	    		return "organizatoin-read.html";
+	    		return "organizatoin-read-single.html";
     		} else {
     			return "organization-four-o-four.html";
     		}
@@ -40,6 +41,7 @@ public class OrganizationController {
     		throw new OrganizationNotFoundException();
     	}
     }
+*/
     
     @GetMapping("/organizations")
     public String index(Model model) {
