@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <form action="#" th:action="@{/organizations/{id}/update}" th:object="${organization}" method="post">
+    <form action="#" th:action="@{'/organizations/' + ${organization.id}}" th:object="${organization}" method="post">
         <h1>Update Organization</h1>
     	<label>
             Organization Name*
