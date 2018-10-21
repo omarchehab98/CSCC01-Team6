@@ -35,7 +35,7 @@ public class OrganizationController {
     @GetMapping("/organizations/{id}/update")
     public String updateById(Model model, @PathVariable String id) {
 	try {
-            model.addAttribute("organization", organizationRepository.findById(Long.parseLong(id)));
+            model.addAttribute("organization", organizationRepository.findById(Long.parseLong(id)).get());
 	    return "organization-update";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new OrganizationNotFoundException();
