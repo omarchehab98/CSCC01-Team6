@@ -1,8 +1,6 @@
 package team6.controllers;
 
-import java.util.ArrayList;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -12,10 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
-//import team6.models.DummyOrganizationAddress;
 import team6.models.Organization;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.OrganizationNotFoundException;
