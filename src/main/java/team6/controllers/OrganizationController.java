@@ -1,5 +1,6 @@
 package team6.controllers;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,18 @@ import team6.throwables.OrganizationNotFoundException;
 public class OrganizationController {
     @Autowired
     private OrganizationRepository organizationRepository;
+
+    @GetMapping("/organizations/{id}")
+    public String singleIndex(@PathVariable String id, Model model) {
+        try {
+            Optional<Organization> org = organizationRepository.findById(Long.parseLong(id));
+            Organization organization = org.get();
+            model.addAttribute("organization", organization);
+            return "organizatoin-read-single.html";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new OrganizationNotFoundException();
+        }
+    }
     
     @GetMapping("/organizations")
     public String index(Model model) {
