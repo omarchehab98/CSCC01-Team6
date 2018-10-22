@@ -19,9 +19,9 @@ Contains folders containing each version of the following:
 
 Contains folders containing each version of the following:
 
-* Provisional Sprint Plan
+* Sprint Plan
 * Provisional Burndown Chart
-* Execution Sprint Plan
+* Sprint Execution
 * Execution Burndown Chart
 
 ### Development Environment
