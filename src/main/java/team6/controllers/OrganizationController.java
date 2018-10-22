@@ -26,7 +26,7 @@ public class OrganizationController {
             Optional<Organization> org = organizationRepository.findById(Long.parseLong(id));
             Organization organization = org.get();
             model.addAttribute("organization", organization);
-            return "organizatoin-read-single.html";
+            return "organization-read-single.html";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new OrganizationNotFoundException();
         }
@@ -62,8 +62,9 @@ public class OrganizationController {
     }
     
     @PostMapping("/organizations/{id}")
-    public String updatedOrganization(@ModelAttribute Organization organization) {
+    public String updatedOrganization(Model model, @ModelAttribute Organization organization, @PathVariable String id) {
     	organizationRepository.save(organization);
+    	model.addAttribute("organization", organization);
     	return "redirect:/organizations/{id}";
     }
 
