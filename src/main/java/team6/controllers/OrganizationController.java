@@ -60,6 +60,23 @@ public class OrganizationController {
         organizationRepository.save(organization);
         return "redirect:/organizations";
     }
+    
+    @PostMapping("/organizations/{id}")
+    public String updatedOrganization(@ModelAttribute Organization organization) {
+    	String id = organization.getId().toString();
+    	Optional<Organization> org = organizationRepository.findById(Long.parseLong(id));
+    	Organization baseorg = org.get();
+    	
+    	baseorg.setCountry(organization.getCountry());
+    	baseorg.setAdministrativeArea(organization.getAdministrativeArea());
+    	baseorg.setLocality(organization.getLocality());
+    	baseorg.setName(organization.getName());
+    	baseorg.setPostalCode(organization.getPostalCode());
+    	baseorg.setThoroughfare(organization.getThoroughfare());
+    	baseorg.setPremise(organization.getPremise());
+    	
+    	return "redirect:/organizations/{id}";
+    }
 
     @DeleteMapping("/organizations/{id}")
     public String deleteById(@PathVariable String id) {
