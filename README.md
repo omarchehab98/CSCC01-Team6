@@ -10,10 +10,19 @@
 
 ### Product Backlog
 
-Contains folders containg each version of the following:
+Contains folders containing each version of the following:
 
 * Personas
 * User Stories
+
+### Sprint Backlog
+
+Contains folders containing each version of the following:
+
+* Provisional Sprint Plan
+* Provisional Burndown Chart
+* Execution Sprint Plan
+* Execution Burndown Chart
 
 ### Development Environment
 
