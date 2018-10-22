@@ -1,12 +1,27 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Update Organization</title>
+    <title th:text="@{'Update • ' + ${organization.name} + ' • Organization'}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <div>
+        <a href="/">Home</a>
+
+        •
+
+        <a href="/organizations">Organizations</a>
+
+        •
+
+        <a
+            th:href="@{'/organizations/' + ${organization.id}}"
+            th:text="${organization.name}"
+        ></a>
+    </div>
+    
     <form action="#" th:action="@{'/organizations/' + ${organization.id}}" th:object="${organization}" method="post">
-        <h1>Update Organization</h1>
+        <h1 th:text="${organization.name}"></h1>
     	<label>
             Organization Name*
             <br />
@@ -50,7 +65,23 @@
         </label>
         <br />
         <input type="submit" value="Submit" />
+        
         <input type="reset" value="Reset" />
+
+        <button type="button" th:onclick="@{'deleteOrganization(' + ${organization.id} + ')'}">
+          Delete
+        </button>
+        <script type="text/javascript">
+          async function deleteOrganization(id) {
+            const yes = confirm("Are you sure you want to delete the organization? You cannot undo this action.");
+            if (yes) {
+              // Delete the organization
+              await fetch(`/organizations/${id}`, { method: "DELETE" });
+              // Navigate the user to /organizations
+              window.location = '/organizations';
+            }
+          }
+        </script>
     </form>
 </body>
 </html>
