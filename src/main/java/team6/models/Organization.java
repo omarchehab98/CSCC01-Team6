@@ -6,13 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-/**Contains the following attributes:
- * id 		: Long
- * name		: String
+/**
+ * Contains the following attributes: id : Long name : String
  */
 public class Organization {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private String country;
@@ -22,9 +21,11 @@ public class Organization {
 	private String thoroughfare;
 	private String premise;
 
-	protected Organization() {}
+	public Organization() {
+	}
 
-	public Organization(Long id, String name, String country, String administrativeArea, String locality, String postalCode, String thoroughfare, String premise) {
+	public Organization(Long id, String name, String country, String administrativeArea, String locality,
+			String postalCode, String thoroughfare, String premise) {
 		this.id = id;
 		this.name = name;
 		this.country = country;
@@ -55,7 +56,7 @@ public class Organization {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * @param name the name to set
 	 */

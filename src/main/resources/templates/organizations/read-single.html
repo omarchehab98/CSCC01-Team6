@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="@{${organization.name} + ' • Organization'}"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+      <a href="/">Home</a>
+
+      •
+
+      <a href="/organizations">Organizations</a>
+  </div>
+  
+  <h1 th:text="${organization.name}"></h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Province</th>
+        <th>City</th>
+        <th>Postal Code</th>
+        <th>Street Address</th>
+        <th>Apartment</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td th:text="${organization.id}"></td>
+        <td th:text="${organization.name}"></td>
+        <td th:text="${organization.country}"></td>
+        <td th:text="${organization.administrativeArea}"></td>
+        <td th:text="${organization.locality}"></td>
+        <td th:text="${organization.postalCode}"></td>
+        <td th:text="${organization.thoroughfare}"></td>
+        <td th:text="${organization.premise}"></td>
+        <td>
+          <a th:href="@{'/organizations/' + ${organization.id} + '/update'}">
+            Edit
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

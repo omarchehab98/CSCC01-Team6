@@ -1,6 +1,7 @@
 package team6.controllers;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -20,41 +21,32 @@ public class OrganizationController {
     @Autowired
     private OrganizationRepository organizationRepository;
 
+    @GetMapping("/organizations")
+    public String readAllView(Model model) {
+        Iterable<Organization> organizations = organizationRepository.findAll();
+        model.addAttribute("organizations", organizations);
+        return "organizations/read-list";
+    }
+
     @GetMapping("/organizations/{id}")
-    public String singleIndex(@PathVariable String id, Model model) {
+    public String readByIdView(@PathVariable String id, Model model) {
         try {
-            Optional<Organization> org = organizationRepository.findById(Long.parseLong(id));
-            Organization organization = org.get();
-            model.addAttribute("organization", organization);
-            return "organization-read-single.html";
+            Long orgId = Long.parseLong(id);
+            Optional<Organization> org = organizationRepository.findById(orgId);
+            model.addAttribute("organization", org.get());
+            return "organizations/read-single.html";
+
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new OrganizationNotFoundException();
         }
-    }
-    
-    @GetMapping("/organizations")
-    public String index(Model model) {
-        Iterable <Organization> organizations =  organizationRepository.findAll();
-        model.addAttribute("organizations",organizations);
-        return "organizations-read-list";
     }
 
     @GetMapping("/organizations/create")
-    public String organizationForm(Model model) {
-        model.addAttribute("organization", new Organization(null, null, null, null, null, null, null, null));
-	    return "organization-create";
+    public String createView(Model model) {
+        model.addAttribute("organization", new Organization());
+        return "organizations/create";
     }
 
-    @GetMapping("/organizations/{id}/update")
-    public String updateById(Model model, @PathVariable String id) {
-	try {
-            model.addAttribute("organization", organizationRepository.findById(Long.parseLong(id)).get());
-	    return "organization-update";
-        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
-            throw new OrganizationNotFoundException();
-        }
-    }
-    
     @PostMapping("/organizations")
     public String create(@ModelAttribute Organization organization) {
         organizationRepository.save(organization);
@@ -66,6 +58,18 @@ public class OrganizationController {
     	organizationRepository.save(organization);
     	model.addAttribute("organization", organization);
     	return "redirect:/organizations/{id}";
+    }
+
+    @GetMapping("/organizations/{id}/update")
+    public String updateByIdView(@PathVariable String id, Model model) {
+        try {
+            Long orgId = Long.parseLong(id);
+            Optional<Organization> org = organizationRepository.findById(orgId);
+            model.addAttribute("organization", org.get());
+            return "organizations/update";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new OrganizationNotFoundException();
+        }
     }
 
     @DeleteMapping("/organizations/{id}")

@@ -1,10 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Organization</title>
+    <title>Create • Organization</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <div>
+        <a href="/">Home</a>
+
+        •
+    
+        <a href="/organizations">Organizations</a>
+    </div>
+    
     <form action="#" th:action="@{/organizations}" th:object="${organization}" method="post">
         <h1>Create Organization</h1>
     	<label>
