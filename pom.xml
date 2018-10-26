@@ -35,6 +35,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <dependency> 
+            <groupId>com.opencsv</groupId> 
+            <artifactId>opencsv</artifactId> 
+            <version>4.1</version> 
+        </dependency> 
         <!-- tag::actuator[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
