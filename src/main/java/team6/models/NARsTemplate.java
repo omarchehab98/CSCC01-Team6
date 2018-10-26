@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class NARsTemplate implements TemplateInterface {
@@ -102,8 +104,19 @@ public class NARsTemplate implements TemplateInterface {
     private String settlementPlanInd;
     private String assessmentCompletedDt;
     private String assessmentUpdateReasonId;
+    @ManyToOne
+    @JoinColumn(name = "organizationId")
+    private Organization organization;
 
     public NARsTemplate() {
+    }
+    
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getProcessingDetails() {
@@ -840,5 +853,18 @@ public class NARsTemplate implements TemplateInterface {
 
     public void setAssessmentUpdateReasonId(String assessmentUpdateReasonId) {
         this.assessmentUpdateReasonId = assessmentUpdateReasonId;
+    }
+
+    public Organization getOrganization() {
+        return this.organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("NARsTemplate[id=%d, name='%s']%n", id, updateRecordId);
     }
 }
