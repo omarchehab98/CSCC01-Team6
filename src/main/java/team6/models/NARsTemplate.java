@@ -10,99 +10,191 @@ import javax.persistence.ManyToOne;
 @Entity
 public class NARsTemplate implements TemplateInterface {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    // Processing Details
     private String processingDetails;
+    // Update Record ID
     private String updateRecordId;
+    // Unique Identifier
     private String clientValidationTypeId;
+    // Unique Identifier Value
     private String clientValidationId;
+    // Date of Birth (YYYY-MM-DD)
     private String clientBirthDt;
+    // Postal Code where the service was received
     private String postalCd;
+    // Start Date of Assessment (YYYY-MM-DD)
     private String assessmentStartDt;
+    // Language of Service
     private String assessmentLanguageId;
+    // Official Language of Preference
     private String preferredOfficialLanguageId;
+    // Type of Institution/Organization Where Client Received Services
     private String institutionTypeId;
+    // Referred By
     private String assessmentReferralId;
+    // Increase knowledge of: Life in Canada
     private String knwlLifeNeedsInd;
+    // Increase knowledge of: Life in Canada Referrals
     private String knwlLifeReferralsInd;
+    // Increase knowledge of: Community and Government Services
     private String knwlCommGovSvcsNeedsInd;
+    // Increase knowledge of: Community and Government Services Referrals
     private String knwlCommGovSvcsReferralsInd;
+    // Increase knowledge of: Working in Canada
     private String knwlWorkingNeedsInd;
+    // Increase knowledge of: Working in Canada Referrals
     private String knwlWorkingReferralsInd;
+    // Increase knowledge of: Education in Canada
     private String knwlEducationNeedsInd;
+    // Increase knowledge of: Education in Canada Referrals
     private String knwlEducationNeedsReferralsInd;
+    // Increase the following: Social networks
     private String socialNetworksNeedsInd;
+    // Increase the following: Social networks Referrals
     private String socialNetworksReferralsInd;
+    // Increase the following: Professional networks
     private String professionalNetworksNeedsInd;
+    // Increase the following: Professional networks Referrals
     private String professionalNetworksReferralsInd;
+    // Increase the following: Access to local community services
     private String localCommunitySvcsNeedsInd;
+    // Increase the following: Access to local community services Referrals
     private String localCommunitySvcsReferralsInd;
+    // Increase the following: Level of community involvement
     private String communityInvolvementNeedsInd;
+    // Increase the following: Level of community involvement Referrals
     private String communityInvolvementReferralsInd;
+    // Improve Language Skills
     private String languageSkillsNeedsInd;
+    // Improve Language Skills Referrals
     private String languageSkillsReferralsInd;
+    // Improve Language Skills to
     private String languageSkillsNeedsReasonId;
+    // Improve Other Skills
     private String otherSkillsNeedsInd;
+    // Improve Other Skills Referrals
     private String otherSkillsReferralsInd;
+    // Improve Other Skills to
     private String otherSkillsNeedsReasonId;
+    // Find employment
     private String findEmploymentNeedsInd;
+    // Find employment Referrals
     private String findEmploymentReferralsInd;
+    // Find employment: TimeFrame
     private String findEmploymentPeriodId;
+    // Find employment: Minimum one year's work experience?
     private String canadianEmploymentExperienceId;
+    // Find employment: Intends to work in an occupation corresponding to which National Occupation Classification skill level?
     private String intendedWorkNocGroupId;
+    // Find employment: Intends to obtain credential recognition or obtain license to work in Canada?
     private String intentionCredentialsLicenceInd;
+    // Client intends to become a Canadian citizen?
     private String intentionCanadianCitizenInd;
+    // Support services may be required
     private String supportRequiredServicesRequired;
+    // Care for Newcomer Children
     private String childmindingRequiredInd;
+    // Transportation
     private String transportationRequiredInd;
+    // Provisions for Disabilities
     private String supportDisabilityRequiredInd;
+    // Translation
     private String translationRequiredInd;
+    // Interpretation
     private String interpretationRequiredInd;
+    // Crisis Counselling
     private String counsellingRequiredInd;
+    // Non-IRCC program services needed
     private String nonCicProgramNeedsServicesRequired;
+    // Food/Clothing/Other Material Needs
     private String foodClothMaterialNeedsInd;
+    // Food/Clothing/Other Material Needs Referrals
     private String foodClothMaterialRefsInd;
+    // Housing/Accommodation
     private String housingAccommodationNeedsInd;
+    // Housing/Accommodation Referrals
     private String housingAccommodationReferralsInd;
+    // Health/Mental Health/Well Being
     private String hlthMentalWellnessNeedsInd;
+    // Health/Mental Health/Well Being Referrals
     private String hlthMentalWellnessRefsInd;
+    // Financial
     private String financialNeedsInd;
+    // Financial Referrals
     private String financialReferralsInd;
+    // Family Support
     private String familySupportNeedsInd;
+    // Family Support Referrals
     private String familySupportReferralsInd;
+    // Language (Non-IRCC)
     private String languageNonCICNeedsInd;
+    // Language (Non-IRCC) Referrals
     private String languageNonCICReferralsInd;
+    // Education/Skills Development
     private String eduSkillsDevtNeedsInd;
+    // Education/Skills Development Referrals
     private String eduSkillsDevtReferralsInd;
+    // Employment-related
     private String employmentRelatedNeedsInd;
+    // Employment-related Referrals
     private String employmentRelatedReferralsInd;
+    // Legal Information and Services
     private String legalInfoServicesNeedsInd;
+    // Legal Information and Services Referrals
     private String legalInfoServicesReferralsInd;
+    // Community Services
     private String communityServicesNeedsInd;
+    // Community Services Referrals
     private String communityServicesReferralsInd;
+    // Support Services Received
     private String supportReceivedInd;
+    // Care for Newcomer Children
     private String childmindingInd;
+    // Child 1: Age
     private String childmindingNewcomerChildren1ChildmindingAgeId;
+    // Child 1: Type of Care
     private String childmindingNewcomerChildren1ChildmindingTypeId;
+    // Child 2: Age
     private String childmindingNewcomerChildren2ChildmindingAgeId;
+    // Child 2: Type of Care
     private String childmindingNewcomerChildren2ChildmindingTypeId;
+    // Child 3: Age
     private String childmindingNewcomerChildren3ChildmindingAgeId;
+    // Child 3: Type of Care
     private String childmindingNewcomerChildren3ChildmindingTypeId;
+    // Child 4: Age
     private String childmindingNewcomerChildren4ChildmindingAgeId;
+    // Child 4: Type of Care
     private String childmindingNewcomerChildren4ChildmindingTypeId;
+    // Child 5: Age
     private String childmindingNewcomerChildren5ChildmindingAgeId;
+    // Child 5: Type of Care
     private String childmindingNewcomerChildren5ChildmindingTypeId;
+    // Transportation
     private String transportationInd;
+    // Provisions for Disabilities
     private String supportDisabilityInd;
+    // Translation
     private String translationInd;
+    // Between
     private String translationLanguageFromId;
+    // And
     private String translationLanguageToId;
+    // Interpretation
     private String interpretationInd;
+    // Between
     private String interpretationLanguageFromId;
+    // And
     private String interpretationLanguageToId;
+    // Crisis Counselling
     private String counsellingInd;
+    // Settlement Plan completed and shared with client
     private String settlementPlanInd;
+    // End Date of Assessment (YYYY-MM-DD)
     private String assessmentCompletedDt;
+    // Reason for update
     private String assessmentUpdateReasonId;
     @ManyToOne
     @JoinColumn(name = "organizationId")
