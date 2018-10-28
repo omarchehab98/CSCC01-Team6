@@ -17,6 +17,10 @@
   <div>
       <a href="/templates/NARs">NARs</a>
   </div>
+
+  <div>
+    <p data-th-utext="${#strings.replace(#strings.escapeXml(file),'&#10;','&lt;br&gt;')}"></p>
+  </div>
 </body>
 
 </html>
