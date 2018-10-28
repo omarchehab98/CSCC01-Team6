@@ -31,19 +31,19 @@ import org.springframework.ui.ModelMap;
 @Controller
 public class TemplateController {
 
- 
-@PostMapping("/templates")
-public String uploadFile(Model model, MultipartFile file, @RequestParam String templateType) throws IOException {
-    //Converting the multipart file into a filestream, to be parseable
-    InputStream in = file.getInputStream();
-    BufferedReader fileRead = new BufferedReader(new InputStreamReader(in));
-    StringBuilder result = new StringBuilder();
-    String line;
-    while ((line = fileRead.readLine()) != null){
-        result.append(line);
+    @PostMapping("/templates")
+    public String uploadFile(Model model, MultipartFile file, @RequestParam String templateType) throws IOException {
+        //Converting the multipart file into a filestream, to be parseable
+        InputStream in = file.getInputStream();
+        BufferedReader fileRead = new BufferedReader(new InputStreamReader(in));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = fileRead.readLine()) != null){
+            result.append(line);
+            result.append("\n");
+        }
+        return "redirect:/organizations/read-single.html";
     }
-    return result.toString();
-}
 
 
 }
