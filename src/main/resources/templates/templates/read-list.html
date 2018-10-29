@@ -17,19 +17,18 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Date of Birth</th>
-        <th>Preferred Language</th>
-        <th>Postal Code</th>
+        <th>Assessment Start Date</th>
+        <th>Assessment Language</th>
+        <th>Assessment Referral</th>
+	<th>Assessment End Date</th>
       </tr>
     </thead>
     <tbody>
-
       <tr th:each="template : ${templates}">
-        <td th:text="${template.clientValidationTypeId}"></td>
-        <td th:text="${template.clientBirthDt}"></td>
-        <td th:text="${template.preferredOfficialLanguageId}"></td>
-        <td th:text="${template.postalCd}"></td>
+        <td th:text="${template.assessmentStartDt}"></td>
+        <td th:text="${template.assessmentLanguageId}"></td>
+        <td th:text="${template.assessmentReferralId}"></td>
+        <td th:text="${template.assessmentCompletedDt}"></td>
       </tr>
     </tbody>
   </table>
