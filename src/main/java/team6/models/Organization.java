@@ -1,9 +1,13 @@
 package team6.models;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;;
 
 @Entity
 /**
@@ -20,6 +24,8 @@ public class Organization {
 	private String postalCode;
 	private String thoroughfare;
 	private String premise;
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+    private Set<NARsTemplate> nARsTemplates;
 
 	public Organization() {
 	}
@@ -148,8 +154,22 @@ public class Organization {
 		return premise;
 	}
 
+	public Set<NARsTemplate> getNARsTemplates() {
+		return this.nARsTemplates;
+	}
+
+	public void setNARsTemplates(Set<NARsTemplate> nARsTemplates) {
+		this.nARsTemplates = nARsTemplates;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Organization [id=%d, name='%s']", id, name);
+		String result = String.format("Organization [id=%d, name='%s']%n", id, name);
+		if (nARsTemplates != null) {
+			for (NARsTemplate nARsTemplate : nARsTemplates) {
+                result += nARsTemplate.toString();
+			}
+		}
+		return result;
 	}
 }
