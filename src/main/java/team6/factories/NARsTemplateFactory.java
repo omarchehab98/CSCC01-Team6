@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import team6.models.TemplateInterface;
 import team6.models.NARsTemplate;
-import team6.models.Organization;
 
 public class NARsTemplateFactory implements TemplateFactory {
 
@@ -114,10 +113,11 @@ public class NARsTemplateFactory implements TemplateFactory {
 		for (String column : row.keySet()) {
 			if (NARsSetters.containsKey(column)) { 
 				NARsSetters.get(column).accept(row.get(column)); 
+			} else {
+				throw new IllegalArgumentException();
 			}
 		}
 		return template;
 	}
-
 
 }

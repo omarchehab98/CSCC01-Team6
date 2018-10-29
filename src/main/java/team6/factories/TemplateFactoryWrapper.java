@@ -11,8 +11,10 @@ import team6.throwables.IllegalTemplateException;
 public class TemplateFactoryWrapper {
 
 	HashMap<String, Function<HashMap<String, String>, TemplateInterface>> templateFactories;
+	NARsTemplateFactory required;
 
 	public TemplateFactoryWrapper() {
+		this.required = new NARsTemplateFactory();
 		this.templateFactories = new HashMap<>();
 		// TODO: update when other template factories are done.
 		templateFactories.put("NARs", NARsTemplateFactory::build);
