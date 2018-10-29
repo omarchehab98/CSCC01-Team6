@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import team6.models.NARsTemplate;
 
-public interface NARsTemplateRepository extends CrudRepository<NARsTemplate, Long>{
+public interface NARsTempelateRepository extends TemplateRepositoryInterface, CrudRepository<NARsTemplate, Long>{
 
 }
