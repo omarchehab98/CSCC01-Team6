@@ -30,17 +30,19 @@ Contains folders containing each version of the following:
 * [Maven 3.2+](https://maven.apache.org/download.cgi)
 * [MySQL 5.6](https://dev.mysql.com/downloads/mysql/5.6.html)
 
-#### Development
-
 ```sh
-mvn compile && mvn exec:java -Dexec.mainClass="team6.Application"
-# or, run using docker (optional)
-docker-compose up 
+cp src/main/resources/application-local.properties src/main/resources/application.properties
+mvn spring-boot:run
 ```
 
-Navigate to http://localhost:8080 in your browser
+### Docker
 
-#### Production 
+```
+cp src/main/resources/application-docker.properties src/main/resources/application.properties
+docker-compose up
+```
+
+### Production 
 
 ```sh
 mvn package && java -jar target/team6-0.1.0.jar

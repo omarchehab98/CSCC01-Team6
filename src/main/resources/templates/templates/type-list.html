@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Templates</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+    <a href="/">Home</a>
+  </div>
+
+  <h1>Templates</h1>
+
+  <div>
+      <a href="/templates/NARs">NARs</a>
+  </div>
+
+  <div>
+    <p data-th-utext="${#strings.replace(#strings.escapeXml(file),'&#10;','&lt;br&gt;')}"></p>
+  </div>
+</body>
+
+</html>
