@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Templates</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+    <a href="/">Home</a>
+  </div>
+
+  <h1>Templates</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date of Birth</th>
+        <th>Preferred Language</th>
+        <th>Postal Code</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr th:each="template : ${templates}">
+        <td th:text="${template.clientValidationTypeId}"></td>
+        <td th:text="${template.clientBirthDt}"></td>
+        <td th:text="${template.preferredOfficialLanguageId}"></td>
+        <td th:text="${template.postalCd}"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

@@ -27,8 +27,15 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.ModelMap;
 
+import team6.models.NARsTemplate;
+import team6.repositories.NARsTemplateRepository;
+
+
 @Controller
 public class TemplateController {
+
+    @Autowired
+    private NARsTemplateRepository narsRepository;
 
     @GetMapping("/templates")
     public String readAllView() {
@@ -52,6 +59,8 @@ public class TemplateController {
 
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model) {
-	return "templates/type-list";
+	Iterable<NARsTemplate> templates = narsRepository.findAll();
+        model.addAttribute("templates", templates);
+	return "templates/read-list";
     }
 }
