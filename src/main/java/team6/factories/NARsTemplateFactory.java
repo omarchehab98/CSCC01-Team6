@@ -10,8 +10,11 @@ public class NARsTemplateFactory implements TemplateFactory {
 
 	private static HashMap<String, Consumer<String>> NARsSetters;
 	private static NARsTemplate template;
+	private static NARsTemplateFactory instance;
 
-	public NARsTemplateFactory() {
+	private NARsTemplateFactory() {}
+
+	private static NARsTemplate populateSetters() {
 		NARsSetters = new HashMap<String, Consumer<String>>();
 		template = new NARsTemplate();
 		// Add the setters
@@ -107,9 +110,27 @@ public class NARsTemplateFactory implements TemplateFactory {
 		NARsSetters.put("settlement_plan_ind", template::setSettlementPlanInd);
 		NARsSetters.put("assessment_completed_dt", template::setAssessmentCompletedDt);
 		NARsSetters.put("assessment_update_reason_id", template::setAssessmentUpdateReasonId);
+		
+		return template;
+	}
+
+	public static NARsTemplateFactory getInstance() {
+		if (instance == null) {
+			return new NARsTemplateFactory();
+		}
+		return instance;
 	}
 
 	public static TemplateInterface build(HashMap<String, String> row) {
+		if (template != null) {
+			template = null;
+			@SuppressWarnings("unused")
+			NARsTemplate template = populateSetters();
+		} else {
+			@SuppressWarnings("unused")
+			NARsTemplate template = populateSetters();
+		}
+		
 		for (String column : row.keySet()) {
 			if (NARsSetters.containsKey(column)) { 
 				NARsSetters.get(column).accept(row.get(column)); 

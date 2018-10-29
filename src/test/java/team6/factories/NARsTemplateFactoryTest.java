@@ -12,9 +12,6 @@ public class NARsTemplateFactoryTest {
 	@Test
 	public void buildSingleInputTest() {
 		HashMap<String, String> singleColumn = new HashMap<String, String>(); 
-		// NARsTemplate result = new NARsTemplate();
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
 		
 		singleColumn.put("processing_details", "test processing details");
 		NARsTemplate result = (NARsTemplate) NARsTemplateFactory.build(singleColumn);
@@ -25,9 +22,6 @@ public class NARsTemplateFactoryTest {
 	@Test
 	public void buildMultipleInputTest() {
 		HashMap<String, String> multipleColumn = new HashMap<String, String>(); 
-		// NARsTemplate result = new NARsTemplate();
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
 		
 		multipleColumn.put("processing_details", "Test1");
 		multipleColumn.put("update_record_id", "Test2");
@@ -42,9 +36,6 @@ public class NARsTemplateFactoryTest {
 	@Test
 	public void buildTwoEntitiesTest() {
 		HashMap<String, String> in0 = new HashMap<String, String>(); 
-		// NARsTemplate result = new NARsTemplate();
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
 		
 		in0.put("processing_details", "Test1");
 		NARsTemplate result0 = (NARsTemplate) NARsTemplateFactory.build(in0);
@@ -70,9 +61,7 @@ public class NARsTemplateFactoryTest {
 
 	@Test
 	public void buildNoInputTest() {
-		HashMap<String, String> singleColumn = new HashMap<String, String>(); 
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
+		HashMap<String, String> singleColumn = new HashMap<String, String>();  
 		
 		singleColumn.put("processing_details", "test processing details");
 		NARsTemplate result = (NARsTemplate) NARsTemplateFactory.build(singleColumn);
