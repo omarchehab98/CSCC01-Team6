@@ -24,6 +24,8 @@ Contains folders containing each version of the following:
 * Sprint Execution
 * Execution Burndown Chart
 
+As well as a breakdown of the tasks from the kanban board for each deliverable
+
 ### Development Environment
 
 * [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
