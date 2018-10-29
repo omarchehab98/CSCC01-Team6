@@ -39,6 +39,27 @@ public class NARsTemplateFactoryTest {
 		assertEquals("Test3", result.getClientValidationTypeId());
 	}
 
+	@Test
+	public void buildTwoEntitiesTest() {
+		HashMap<String, String> in0 = new HashMap<String, String>(); 
+		// NARsTemplate result = new NARsTemplate();
+		@SuppressWarnings("unused")
+		NARsTemplateFactory factory = new NARsTemplateFactory(); 
+		
+		in0.put("processing_details", "Test1");
+		NARsTemplate result0 = (NARsTemplate) NARsTemplateFactory.build(in0);
+
+		HashMap<String, String> in1 = new HashMap<String, String>(); 
+		in1.put("client_validation_type_id", "Test2");
+		NARsTemplate result1 = (NARsTemplate) NARsTemplateFactory.build(in1);
+		
+		assertEquals("Test1", result0.getProcessingDetails());
+		assertEquals(null, result0.getClientValidationTypeId());
+		
+		assertEquals(null, result1.getProcessingDetails());
+		assertEquals("Test2", result1.getClientValidationTypeId());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void buildEmtpyInputTest() {
 		HashMap<String, String> singleColumn = new HashMap<String, String>(); 
