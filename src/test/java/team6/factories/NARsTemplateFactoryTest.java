@@ -12,9 +12,6 @@ public class NARsTemplateFactoryTest {
 	@Test
 	public void buildSingleInputTest() {
 		HashMap<String, String> singleColumn = new HashMap<String, String>(); 
-		// NARsTemplate result = new NARsTemplate();
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
 		
 		singleColumn.put("processing_details", "test processing details");
 		NARsTemplate result = (NARsTemplate) NARsTemplateFactory.build(singleColumn);
@@ -25,9 +22,6 @@ public class NARsTemplateFactoryTest {
 	@Test
 	public void buildMultipleInputTest() {
 		HashMap<String, String> multipleColumn = new HashMap<String, String>(); 
-		// NARsTemplate result = new NARsTemplate();
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
 		
 		multipleColumn.put("processing_details", "Test1");
 		multipleColumn.put("update_record_id", "Test2");
@@ -37,6 +31,24 @@ public class NARsTemplateFactoryTest {
 		assertEquals("Test1", result.getProcessingDetails());
 		assertEquals("Test2", result.getUpdateRecordId());
 		assertEquals("Test3", result.getClientValidationTypeId());
+	}
+
+	@Test
+	public void buildTwoEntitiesTest() {
+		HashMap<String, String> in0 = new HashMap<String, String>(); 
+		
+		in0.put("processing_details", "Test1");
+		NARsTemplate result0 = (NARsTemplate) NARsTemplateFactory.build(in0);
+
+		HashMap<String, String> in1 = new HashMap<String, String>(); 
+		in1.put("client_validation_type_id", "Test2");
+		NARsTemplate result1 = (NARsTemplate) NARsTemplateFactory.build(in1);
+		
+		assertEquals("Test1", result0.getProcessingDetails());
+		assertEquals(null, result0.getClientValidationTypeId());
+		
+		assertEquals(null, result1.getProcessingDetails());
+		assertEquals("Test2", result1.getClientValidationTypeId());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -49,9 +61,7 @@ public class NARsTemplateFactoryTest {
 
 	@Test
 	public void buildNoInputTest() {
-		HashMap<String, String> singleColumn = new HashMap<String, String>(); 
-		@SuppressWarnings("unused")
-		NARsTemplateFactory factory = new NARsTemplateFactory(); 
+		HashMap<String, String> singleColumn = new HashMap<String, String>();  
 		
 		singleColumn.put("processing_details", "test processing details");
 		NARsTemplate result = (NARsTemplate) NARsTemplateFactory.build(singleColumn);
