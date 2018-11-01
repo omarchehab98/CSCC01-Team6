@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -59,8 +61,17 @@ public class TemplateController {
 
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model) {
-	Iterable<NARsTemplate> templates = narsRepository.findAll();
+	Iterable<NARsTemplate> templates = narsRepository.findAll();	
         model.addAttribute("templates", templates);
+	HashMap<String,String> attributes = new NARsTemplate().getAttributes();
+        ArrayList<String> modelNames = new ArrayList<>();
+        ArrayList<String> friendlyNames = new ArrayList<>();
+        for(String attribute : attributes.keySet()) {
+            modelNames.add(attributes.get(attribute));
+            friendlyNames.add(attribute);
+        }
+        model.addAttribute("friendlyNames", friendlyNames);
+	model.addAttribute("modelNames", modelNames);
 	return "templates/read-list";
     }
 }

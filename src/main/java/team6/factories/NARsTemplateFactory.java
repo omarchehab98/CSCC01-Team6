@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 import team6.models.NARsTemplate;
-import team6.models.TemplateInterface;
+import team6.models.Template;
 
 public class NARsTemplateFactory {
-	public static TemplateInterface build(HashMap<String, String> row) {
+	public static Template build(HashMap<String, String> row) {
 		NARsTemplate narsTemplate = new NARsTemplate();
 		HashMap<String, Consumer<String>> setters = new HashMap<String, Consumer<String>>();
 

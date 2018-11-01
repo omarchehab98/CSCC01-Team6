@@ -17,18 +17,14 @@
   <table>
     <thead>
       <tr>
-        <th>Assessment Start Date</th>
-        <th>Assessment Language</th>
-        <th>Assessment Referral</th>
-	<th>Assessment End Date</th>
+        <th th:each="friendlyName : ${friendlyNames}">
+          <span th:text="${friendlyName}"></span>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr th:each="template : ${templates}">
         <td th:text="${template.assessmentStartDt}"></td>
-        <td th:text="${template.assessmentLanguageId}"></td>
-        <td th:text="${template.assessmentReferralId}"></td>
-        <td th:text="${template.assessmentCompletedDt}"></td>
       </tr>
     </tbody>
   </table>

@@ -8,15 +8,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class NARsTemplate implements TemplateInterface {
+public class NARsTemplate extends Template {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     // Processing Details
+    @FriendlyName(value="Processing Details")
     private String processingDetails;
     // Update Record ID
+    @FriendlyName(value="Update Record ID")
     private String updateRecordId;
     // Unique Identifier
+    @FriendlyName(value="Unique Identifier Type")
     private String clientValidationTypeId;
     // Unique Identifier Value
     private String clientValidationId;
