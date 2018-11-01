@@ -16,26 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import team6.factories.NARsTemplateFactory;
 import team6.factories.TemplateFactoryWrapper;
 import team6.models.TemplateInterface;
-import team6.repositories.NARsTemplateRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.SheetAdapterWrapper;
+import team6.repositories.NARsTemplateRepository;
 
 @Controller
 public class TemplateController {
-
+    
     @Autowired
-    private NARsTemplateRepository nARsTemplateRepository;
+    private NARsTemplateRepository narsTemplateRepository;
 
-    public CrudRepository getRepositoryClass(String template) {
-        switch (template) {
-            case "NARs":
-                return nARsTemplateRepository;
-        }
-        throw new IllegalArgumentException();
-    }
-
+    private CrudRepository templateRepository;
 
     @GetMapping("/templates")
     public String readAllView() {
@@ -47,20 +41,25 @@ public class TemplateController {
         //Converting the multipart file into a filestream, to be parseable
         InputStream in = file.getInputStream();
         BufferedReader fileRead = new BufferedReader(new InputStreamReader(in));
-        StringBuilder result = new StringBuilder();
+
         // send BufferedReader to SheetAdapterWrapper
         SheetAdapterWrapper saw = new SheetAdapterWrapper();
+
         // get HashMap representation from the wrapper
         List<HashMap<String,String>> dataMap = saw.parse("csv", fileRead, 1, 3);
-        // send list of maps to factory
+
         TemplateFactoryWrapper templateFactoryWrapper = new TemplateFactoryWrapper();
-        CrudRepository templateRepository = getRepositoryClass(templateType);
+        
+        // find which repository is needed to be saved to:
+        templateRepository = getRepo(templateType);
+
         for(HashMap<String,String> item : dataMap){
-            // System.out.println(item.toString());
-            TemplateInterface templateInterface = templateFactoryWrapper.build(templateType, item);
+            // find out which template it is and store it in respective repo
+            TemplateInterface templateInterface = templateFactoryWrapper.build(templateType ,item);
+            
             templateRepository.save(templateInterface);
         }
-        model.addAttribute("file", result);
+        //model.addAttribute("file", result);
         return "templates/type-list";
     }
 
@@ -68,4 +67,13 @@ public class TemplateController {
     public String readAllNARsView(Model model) {
 	return "templates/type-list";
     }
+
+    public CrudRepository getRepo(String templateType){
+        switch(templateType){
+            case "NARs":
+                return narsTemplateRepository;
+        }
+        throw new IllegalArgumentException();
+    }
+
 }
