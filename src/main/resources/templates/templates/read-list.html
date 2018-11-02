@@ -24,8 +24,8 @@
     </thead>
     <tbody>
       <tr th:each="template : ${templates}">
-        <td th:each="modelName : ${modelNames}">
-          <span th:text="${template.__${modelName}__}"></span>
+        <td th:each="attributeName : ${attributeNames}">
+          <span th:text="${template.__${attributeName}__}"></span>
         </td>
       </tr>
     </tbody>

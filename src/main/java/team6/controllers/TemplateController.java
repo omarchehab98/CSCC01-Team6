@@ -72,14 +72,14 @@ public class TemplateController {
         Iterable<NARsTemplate> templates = narsRepository.findAll();
         model.addAttribute("templates", templates);
         HashMap<String, String> attributes = new NARsTemplate().getAttributes();
-        ArrayList<String> modelNames = new ArrayList<>();
+        ArrayList<String> attributeNames = new ArrayList<>();
         ArrayList<String> friendlyNames = new ArrayList<>();
         for (String attribute : attributes.keySet()) {
-            modelNames.add(attributes.get(attribute));
+            attributeNames.add(attributes.get(attribute));
             friendlyNames.add(attribute);
         }
         model.addAttribute("friendlyNames", friendlyNames);
-        model.addAttribute("modelNames", modelNames);
+        model.addAttribute("attributeNames", attributeNames);
         return "templates/read-list";
     }
 
