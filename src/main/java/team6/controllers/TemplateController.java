@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -68,18 +71,21 @@ public class TemplateController {
     }
 
     @GetMapping("/templates/NARs")
-    public String readAllNARsView(Model model) {
-        Iterable<NARsTemplate> templates = narsRepository.findAll();
-        model.addAttribute("templates", templates);
-        HashMap<String, String> attributes = new NARsTemplate().getAttributes();
-        ArrayList<String> attributeNames = new ArrayList<>();
-        ArrayList<String> friendlyNames = new ArrayList<>();
-        for (String attribute : attributes.keySet()) {
-            attributeNames.add(attributes.get(attribute));
-            friendlyNames.add(attribute);
+    public String readAllNARsView(Model model, @RequestParam Optional<String> select) {
+        NARsTemplate nARsTemplate = new NARsTemplate();
+        Map<String, String> attributeToFriendlyNameMap = nARsTemplate.getAttributeToFriendlyNameMap();
+        List<String> attributeNames = nARsTemplate.getAttributeNames();
+        List<String> friendlyNames = nARsTemplate.getFriendlyNames();
+        if (select.isPresent()) {
+            attributeNames = Arrays.asList(select.get().split(","));
+            friendlyNames = attributeNames.stream()
+                .map(attributeToFriendlyNameMap::get)
+                .collect(Collectors.toList());
         }
-        model.addAttribute("friendlyNames", friendlyNames);
+        Iterable<NARsTemplate> templates = narsRepository.findAll();
         model.addAttribute("attributeNames", attributeNames);
+        model.addAttribute("friendlyNames", friendlyNames);
+        model.addAttribute("templates", templates);
         return "templates/read-list";
     }
 
