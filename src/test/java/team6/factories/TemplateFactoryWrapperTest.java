@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import team6.models.NARsTemplate;
+import team6.models.ClientProfileTemplate;
 import team6.throwables.IllegalTemplateException;
 
 public class TemplateFactoryWrapperTest {
@@ -37,6 +38,22 @@ public class TemplateFactoryWrapperTest {
 		assertEquals("Test1", nARsResult.getProcessingDetails());
 		assertEquals("Test2", nARsResult.getUpdateRecordId());
 		assertEquals("Test3", nARsResult.getClientValidationTypeId());
+	}
+
+	@Test
+	public void wrapMultipleTemplateTypeTest() throws Exception {
+		TemplateFactoryWrapper factoryWrapper = new TemplateFactoryWrapper();
+		HashMap<String, String> singleEntryOne = new HashMap<String, String>();
+		HashMap<String, String> singleEntryTwo = new HashMap<String, String>();
+		
+		singleEntryOne.put("preferred_official_language_id", "English");
+		singleEntryTwo.put("street_nme", "Front Street");
+		
+		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARs", singleEntryOne);
+		ClientProfileTemplate clientProfileResult = (ClientProfileTemplate) factoryWrapper.build("clientProfile", singleEntryTwo);
+		
+		assertEquals("English", nARsResult.getPreferredOfficialLanguageId());
+		assertEquals("Front Street", clientProfileResult.getStreetNme());
 	}
 
 	@Test(expected = IllegalTemplateException.class)
