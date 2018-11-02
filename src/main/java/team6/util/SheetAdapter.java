@@ -9,17 +9,17 @@ public abstract class SheetAdapter {
     /**
      * Parses a sheet document and returns a list of hashmaps.
      * 
-     * Each hashmap in the list is a row in the sheet, where the keys in the
-     * hashmap correspond to the column's name found in the sheet's row
-     * `headerRow`.
+     * Each hashmap in the list is a row in the sheet, where the keys in the hashmap
+     * correspond to the column's name found in the sheet's row `headerRow`.
      * 
      * @param reader
-     * @param headerRow 0 based index of the sheet's header
+     * @param headerRow    0 based index of the sheet's header
      * @param dataStartRow 0 based index of the first data row in the sheet
      * @return
      * @throws IOException
      */
-    public abstract List<HashMap<String, String>> parse(Reader reader, int headerRow, int dataStartRow) throws IOException;
+    public abstract List<HashMap<String, String>> parse(Reader reader, int headerRow, int dataStartRow)
+            throws IOException;
 
     /**
      * Calls parse(reader, headerRow, headerRow + 1);

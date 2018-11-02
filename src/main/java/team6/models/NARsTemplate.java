@@ -9,17 +9,14 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class NARsTemplate extends Template {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    // Processing Details
-    @FriendlyName(value="Processing Details")
+    @FriendlyName(value = "Processing Details")
     private String processingDetails;
-    // Update Record ID
-    @FriendlyName(value="Update Record ID")
+    @FriendlyName(value = "Update Record ID")
     private String updateRecordId;
-    // Unique Identifier
-    @FriendlyName(value="Unique Identifier Type")
+    @FriendlyName(value = "Unique Identifier Type")
     private String clientValidationTypeId;
     // Unique Identifier Value
     private String clientValidationId;
@@ -205,7 +202,7 @@ public class NARsTemplate extends Template {
 
     public NARsTemplate() {
     }
-    
+
     public Long getId() {
         return this.id;
     }
@@ -778,7 +775,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren1ChildmindingAgeId;
     }
 
-    public void setChildmindingNewcomerChildren1ChildmindingAgeId(String childmindingNewcomerChildren1ChildmindingAgeId) {
+    public void setChildmindingNewcomerChildren1ChildmindingAgeId(
+            String childmindingNewcomerChildren1ChildmindingAgeId) {
         this.childmindingNewcomerChildren1ChildmindingAgeId = childmindingNewcomerChildren1ChildmindingAgeId;
     }
 
@@ -786,7 +784,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren1ChildmindingTypeId;
     }
 
-    public void setChildmindingNewcomerChildren1ChildmindingTypeId(String childmindingNewcomerChildren1ChildmindingTypeId) {
+    public void setChildmindingNewcomerChildren1ChildmindingTypeId(
+            String childmindingNewcomerChildren1ChildmindingTypeId) {
         this.childmindingNewcomerChildren1ChildmindingTypeId = childmindingNewcomerChildren1ChildmindingTypeId;
     }
 
@@ -794,7 +793,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren2ChildmindingAgeId;
     }
 
-    public void setChildmindingNewcomerChildren2ChildmindingAgeId(String childmindingNewcomerChildren2ChildmindingAgeId) {
+    public void setChildmindingNewcomerChildren2ChildmindingAgeId(
+            String childmindingNewcomerChildren2ChildmindingAgeId) {
         this.childmindingNewcomerChildren2ChildmindingAgeId = childmindingNewcomerChildren2ChildmindingAgeId;
     }
 
@@ -802,7 +802,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren2ChildmindingTypeId;
     }
 
-    public void setChildmindingNewcomerChildren2ChildmindingTypeId(String childmindingNewcomerChildren2ChildmindingTypeId) {
+    public void setChildmindingNewcomerChildren2ChildmindingTypeId(
+            String childmindingNewcomerChildren2ChildmindingTypeId) {
         this.childmindingNewcomerChildren2ChildmindingTypeId = childmindingNewcomerChildren2ChildmindingTypeId;
     }
 
@@ -810,7 +811,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren3ChildmindingAgeId;
     }
 
-    public void setChildmindingNewcomerChildren3ChildmindingAgeId(String childmindingNewcomerChildren3ChildmindingAgeId) {
+    public void setChildmindingNewcomerChildren3ChildmindingAgeId(
+            String childmindingNewcomerChildren3ChildmindingAgeId) {
         this.childmindingNewcomerChildren3ChildmindingAgeId = childmindingNewcomerChildren3ChildmindingAgeId;
     }
 
@@ -818,7 +820,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren3ChildmindingTypeId;
     }
 
-    public void setChildmindingNewcomerChildren3ChildmindingTypeId(String childmindingNewcomerChildren3ChildmindingTypeId) {
+    public void setChildmindingNewcomerChildren3ChildmindingTypeId(
+            String childmindingNewcomerChildren3ChildmindingTypeId) {
         this.childmindingNewcomerChildren3ChildmindingTypeId = childmindingNewcomerChildren3ChildmindingTypeId;
     }
 
@@ -826,7 +829,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren4ChildmindingAgeId;
     }
 
-    public void setChildmindingNewcomerChildren4ChildmindingAgeId(String childmindingNewcomerChildren4ChildmindingAgeId) {
+    public void setChildmindingNewcomerChildren4ChildmindingAgeId(
+            String childmindingNewcomerChildren4ChildmindingAgeId) {
         this.childmindingNewcomerChildren4ChildmindingAgeId = childmindingNewcomerChildren4ChildmindingAgeId;
     }
 
@@ -834,7 +838,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren4ChildmindingTypeId;
     }
 
-    public void setChildmindingNewcomerChildren4ChildmindingTypeId(String childmindingNewcomerChildren4ChildmindingTypeId) {
+    public void setChildmindingNewcomerChildren4ChildmindingTypeId(
+            String childmindingNewcomerChildren4ChildmindingTypeId) {
         this.childmindingNewcomerChildren4ChildmindingTypeId = childmindingNewcomerChildren4ChildmindingTypeId;
     }
 
@@ -842,7 +847,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren5ChildmindingAgeId;
     }
 
-    public void setChildmindingNewcomerChildren5ChildmindingAgeId(String childmindingNewcomerChildren5ChildmindingAgeId) {
+    public void setChildmindingNewcomerChildren5ChildmindingAgeId(
+            String childmindingNewcomerChildren5ChildmindingAgeId) {
         this.childmindingNewcomerChildren5ChildmindingAgeId = childmindingNewcomerChildren5ChildmindingAgeId;
     }
 
@@ -850,7 +856,8 @@ public class NARsTemplate extends Template {
         return this.childmindingNewcomerChildren5ChildmindingTypeId;
     }
 
-    public void setChildmindingNewcomerChildren5ChildmindingTypeId(String childmindingNewcomerChildren5ChildmindingTypeId) {
+    public void setChildmindingNewcomerChildren5ChildmindingTypeId(
+            String childmindingNewcomerChildren5ChildmindingTypeId) {
         this.childmindingNewcomerChildren5ChildmindingTypeId = childmindingNewcomerChildren5ChildmindingTypeId;
     }
 

@@ -16,25 +16,22 @@ public class SheetAdapterWrapper {
         typeToSheetAdapter.put("text/csv", csvSheetAdapter);
     }
 
-    public List<HashMap<String, String>> parse(String type, Reader reader,
-        int headerRow, int dataStartRow) throws IOException {
+    public List<HashMap<String, String>> parse(String type, Reader reader, int headerRow, int dataStartRow)
+            throws IOException {
         return this.getSheetAdapterByType(type).parse(reader, headerRow, dataStartRow);
     }
 
-    public List<HashMap<String, String>> parse(String type, Reader reader,
-        int headerRow) throws IOException {
+    public List<HashMap<String, String>> parse(String type, Reader reader, int headerRow) throws IOException {
         return this.getSheetAdapterByType(type).parse(reader, headerRow);
     }
 
-    public List<HashMap<String, String>> parse(String type, Reader reader)
-        throws IOException {
+    public List<HashMap<String, String>> parse(String type, Reader reader) throws IOException {
         return this.getSheetAdapterByType(type).parse(reader);
     }
 
     public SheetAdapter getSheetAdapterByType(String type) {
         if (!typeToSheetAdapter.containsKey(type)) {
-            throw new IllegalArgumentException(String.format(
-                "invalid type: %s", type));
+            throw new IllegalArgumentException(String.format("invalid type: %s", type));
         }
         return typeToSheetAdapter.get(type);
     }

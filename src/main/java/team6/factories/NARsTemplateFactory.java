@@ -81,16 +81,26 @@ public class NARsTemplateFactory {
 		setters.put("community_services_referrals_ind", narsTemplate::setCommunityServicesReferralsInd);
 		setters.put("support_received_ind", narsTemplate::setSupportReceivedInd);
 		setters.put("childminding_ind", narsTemplate::setChildmindingInd);
-		setters.put("childminding_NewcomerChildren[1]childminding_age_id", narsTemplate::setChildmindingNewcomerChildren1ChildmindingAgeId);
-		setters.put("childminding_NewcomerChildren[1]childminding_type_id", narsTemplate::setChildmindingNewcomerChildren1ChildmindingTypeId);
-		setters.put("childminding_NewcomerChildren[2]childminding_age_id", narsTemplate::setChildmindingNewcomerChildren2ChildmindingAgeId);
-		setters.put("childminding_NewcomerChildren[2]childminding_type_id", narsTemplate::setChildmindingNewcomerChildren2ChildmindingTypeId);
-		setters.put("childminding_NewcomerChildren[3]childminding_age_id", narsTemplate::setChildmindingNewcomerChildren3ChildmindingAgeId);
-		setters.put("childminding_NewcomerChildren[3]childminding_type_id", narsTemplate::setChildmindingNewcomerChildren3ChildmindingTypeId);
-		setters.put("childminding_NewcomerChildren[4]childminding_age_id", narsTemplate::setChildmindingNewcomerChildren4ChildmindingAgeId);
-		setters.put("childminding_NewcomerChildren[4]childminding_type_id", narsTemplate::setChildmindingNewcomerChildren4ChildmindingTypeId);
-		setters.put("childminding_NewcomerChildren[5]childminding_age_id", narsTemplate::setChildmindingNewcomerChildren5ChildmindingAgeId);
-		setters.put("childminding_NewcomerChildren[5]childminding_type_id", narsTemplate::setChildmindingNewcomerChildren5ChildmindingTypeId);
+		setters.put("childminding_NewcomerChildren[1]childminding_age_id",
+				narsTemplate::setChildmindingNewcomerChildren1ChildmindingAgeId);
+		setters.put("childminding_NewcomerChildren[1]childminding_type_id",
+				narsTemplate::setChildmindingNewcomerChildren1ChildmindingTypeId);
+		setters.put("childminding_NewcomerChildren[2]childminding_age_id",
+				narsTemplate::setChildmindingNewcomerChildren2ChildmindingAgeId);
+		setters.put("childminding_NewcomerChildren[2]childminding_type_id",
+				narsTemplate::setChildmindingNewcomerChildren2ChildmindingTypeId);
+		setters.put("childminding_NewcomerChildren[3]childminding_age_id",
+				narsTemplate::setChildmindingNewcomerChildren3ChildmindingAgeId);
+		setters.put("childminding_NewcomerChildren[3]childminding_type_id",
+				narsTemplate::setChildmindingNewcomerChildren3ChildmindingTypeId);
+		setters.put("childminding_NewcomerChildren[4]childminding_age_id",
+				narsTemplate::setChildmindingNewcomerChildren4ChildmindingAgeId);
+		setters.put("childminding_NewcomerChildren[4]childminding_type_id",
+				narsTemplate::setChildmindingNewcomerChildren4ChildmindingTypeId);
+		setters.put("childminding_NewcomerChildren[5]childminding_age_id",
+				narsTemplate::setChildmindingNewcomerChildren5ChildmindingAgeId);
+		setters.put("childminding_NewcomerChildren[5]childminding_type_id",
+				narsTemplate::setChildmindingNewcomerChildren5ChildmindingTypeId);
 		setters.put("transportation_ind", narsTemplate::setTransportationInd);
 		setters.put("support_disability_ind", narsTemplate::setSupportDisabilityInd);
 		setters.put("translation_ind", narsTemplate::setTranslationInd);

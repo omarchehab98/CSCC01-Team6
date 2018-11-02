@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.ui.ModelMap;
 
 import team6.models.Organization;
 import team6.repositories.OrganizationRepository;
@@ -25,7 +20,6 @@ import team6.throwables.OrganizationNotFoundException;
 public class OrganizationController {
     @Autowired
     private OrganizationRepository organizationRepository;
-    
 
     @GetMapping("/organizations")
     public String readAllView(Model model) {
@@ -58,12 +52,12 @@ public class OrganizationController {
         organizationRepository.save(organization);
         return "redirect:/organizations";
     }
-    
+
     @PostMapping("/organizations/{id}")
     public String updatedOrganization(Model model, @ModelAttribute Organization organization, @PathVariable String id) {
-    	organizationRepository.save(organization);
-    	model.addAttribute("organization", organization);
-    	return "redirect:/organizations/{id}";
+        organizationRepository.save(organization);
+        model.addAttribute("organization", organization);
+        return "redirect:/organizations/{id}";
     }
 
     @GetMapping("/organizations/{id}/update")
