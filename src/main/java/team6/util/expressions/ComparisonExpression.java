@@ -38,8 +38,8 @@ public class ComparisonExpression implements BooleanExpression {
         if (rhs instanceof ExpressionSymbol) {
             throw new SymbolicBooleanExpressionException(rhs.toString());
         }
-        
-        return operator.compare(lhs, rhs);
+
+        return operator.isTrue(lhs, rhs);
     }
 
     public void populate(String symbol, Object value) {
