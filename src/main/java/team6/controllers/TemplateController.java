@@ -4,14 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,9 @@ import team6.models.Template;
 import team6.repositories.NARsTemplateRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.SheetAdapterWrapper;
+import team6.util.parameters.SelectParameter;
+import team6.util.parameters.WhereParameter;
+import team6.util.expressions.BooleanExpression;
 
 @Controller
 public class TemplateController {
@@ -71,18 +75,27 @@ public class TemplateController {
     }
 
     @GetMapping("/templates/NARs")
-    public String readAllNARsView(Model model, @RequestParam Optional<String> select) {
+    public String readAllNARsView(Model model,
+        @RequestParam Optional<String> select,
+        @RequestParam Optional<String> where
+    ) {
         NARsTemplate nARsTemplate = new NARsTemplate();
         Map<String, String> attributeToFriendlyNameMap = nARsTemplate.getAttributeToFriendlyNameMap();
         List<String> attributeNames = nARsTemplate.getAttributeNames();
         List<String> friendlyNames = nARsTemplate.getFriendlyNames();
         if (select.isPresent()) {
-            attributeNames = Arrays.asList(select.get().split(","));
+            attributeNames = SelectParameter.parse(select.get());
             friendlyNames = attributeNames.stream()
                 .map(attributeToFriendlyNameMap::get)
                 .collect(Collectors.toList());
         }
-        Iterable<NARsTemplate> templates = narsRepository.findAll();
+        final Iterable<NARsTemplate> allTemplates = narsRepository.findAll();
+        Iterable<NARsTemplate> templates = allTemplates;
+        if (where.isPresent()) {
+            templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
+                .filter(template -> template.matches(WhereParameter.parse(where.get())))
+                .iterator();
+        }
         model.addAttribute("attributeNames", attributeNames);
         model.addAttribute("friendlyNames", friendlyNames);
         model.addAttribute("templates", templates);
