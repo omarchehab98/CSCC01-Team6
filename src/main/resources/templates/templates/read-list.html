@@ -24,7 +24,9 @@
     </thead>
     <tbody>
       <tr th:each="template : ${templates}">
-        <td th:text="${template.assessmentStartDt}"></td>
+        <td th:each="modelName : ${modelNames}">
+          <span th:text="${template.__${modelName}__}"></span>
+        </td>
       </tr>
     </tbody>
   </table>
