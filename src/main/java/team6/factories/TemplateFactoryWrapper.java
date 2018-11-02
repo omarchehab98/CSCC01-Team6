@@ -12,6 +12,7 @@ public class TemplateFactoryWrapper {
 	public TemplateFactoryWrapper() {
 		this.templateFactories = new HashMap<>();
 		templateFactories.put("NARs", NARsTemplateFactory::build);
+		templateFactories.put("clientProfile", ClientProfileTemplateFactory::build);
 	}
 
 	public Template build(String template, HashMap<String, String> row) throws IllegalTemplateException {
