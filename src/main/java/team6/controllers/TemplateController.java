@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import team6.repositories.NARsTemplateRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.SheetAdapterWrapper;
 import team6.util.parameters.SelectParameter;
+import team6.util.parameters.SortParameter;
 import team6.util.parameters.WhereParameter;
 
 @Controller
@@ -74,7 +76,8 @@ public class TemplateController {
 
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
-            @RequestParam Optional<String> where) {
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection) {
         NARsTemplate nARsTemplate = new NARsTemplate();
         Map<String, String> attributeToFriendlyNameMap = nARsTemplate.getAttributeToFriendlyNameMap();
         List<String> attributeNames = nARsTemplate.getAttributeNames();
@@ -83,7 +86,8 @@ public class TemplateController {
             attributeNames = SelectParameter.parse(select.get());
             friendlyNames = attributeNames.stream().map(attributeToFriendlyNameMap::get).collect(Collectors.toList());
         }
-        final Iterable<NARsTemplate> allTemplates = narsRepository.findAll();
+        Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
+        final Iterable<NARsTemplate> allTemplates = narsRepository.findAll(sortObj);
         Iterable<NARsTemplate> templates = allTemplates;
         if (where.isPresent()) {
             templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
