@@ -47,15 +47,13 @@ public class TemplateController {
     @Autowired
     private OrganizationRepository organizationRepository;
 
-    private Organization organization;
-
     @GetMapping("/templates")
     public String readAllView() {
         return "templates/type-list";
     }
 
     @PostMapping("/templates")
-    public String uploadFile(Model model, MultipartFile file, @RequestParam String templateType)
+    public String uploadFile(Model model, MultipartFile file, String id, @RequestParam String templateType)
             throws IOException, IllegalTemplateException {
         // Converting the multipart file into a filestream, to be parseable
         InputStream in = file.getInputStream();
@@ -73,6 +71,9 @@ public class TemplateController {
         templateRepository = getRepo(templateType);
 
         // get the organization for this template:
+        Long orgId = Long.parseLong(id);
+        Optional<Organization> org = organizationRepository.findById(orgId);
+        Organization organization = org.get();
 
         for (HashMap<String, String> item : dataMap) {
             // find out which template it is and store it in respective repo
