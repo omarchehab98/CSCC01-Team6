@@ -1,9 +1,9 @@
 package team6.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import team6.models.NARsTemplate;
 
-public interface NARsTemplateRepository extends CrudRepository<NARsTemplate, Long> {
+public interface NARsTemplateRepository extends JpaRepository<NARsTemplate, Long> {
 
 }

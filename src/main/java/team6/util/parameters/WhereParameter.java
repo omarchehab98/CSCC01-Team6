@@ -1,5 +1,9 @@
 package team6.util.parameters;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,59 +13,52 @@ import team6.util.expressions.ExpressionSymbol;
 import team6.util.expressions.LogicalExpression;
 import team6.util.operators.comparison.ComparisonOperator;
 import team6.util.operators.comparison.ComparisonOperatorFactory;
-import team6.util.operators.comparison.EqualsComparisonOperator;
-import team6.util.operators.comparison.LikeComparisonOperator;
-import team6.util.operators.logical.AndLogicalOperator;
 import team6.util.operators.logical.LogicalOperator;
 import team6.util.operators.logical.LogicalOperatorFactory;
-import team6.util.operators.logical.OrLogicalOperator;
 
 public class WhereParameter {
-    private static String[] LOGICAL_OPERATORS = {
-        AndLogicalOperator.OPERATOR,
-        OrLogicalOperator.OPERATOR,
-    };
-
-    private static String[] COMPARISON_OPERATORS = {
-        EqualsComparisonOperator.OPERATOR,
-        LikeComparisonOperator.OPERATOR,
-    };
-
     public static BooleanExpression parse(String where) {
         return parse(new JSONObject(where));
     }
 
     public static BooleanExpression parse(JSONObject where) {
-        for (String OPERATOR : LOGICAL_OPERATORS) {
-            String operator = "$".concat(OPERATOR);
+        for (String operator : LogicalOperatorFactory.getOperators()) {
+            String operatorSymbol = "$".concat(operator);
             // Logical Expression
-            if (where.has(operator)) {
-                JSONArray arr = where.getJSONArray(operator);
-                BooleanExpression lhs = parse(arr.getJSONObject(0));
-                BooleanExpression rhs = parse(arr.getJSONObject(1));
-                LogicalOperator logicalOperator = LogicalOperatorFactory.make(OPERATOR);
-                return new LogicalExpression(logicalOperator, lhs, rhs);
+            if (where.has(operatorSymbol)) {
+                JSONArray arr = where.getJSONArray(operatorSymbol);
+                List<BooleanExpression> operands = new ArrayList<>();
+                for (int i = 0; i < arr.length(); i++) {
+                    BooleanExpression operand = parse(arr.getJSONObject(i));
+                    operands.add(operand);
+                }
+                LogicalOperator logicalOperator = LogicalOperatorFactory.make(operator);
+                return new LogicalExpression(logicalOperator, operands);
             }
         }
-        
-        for (String OPERATOR : COMPARISON_OPERATORS) {
-            String operator = "$".concat(OPERATOR);
+
+        for (String operator : ComparisonOperatorFactory.getOperators()) {
+            String operatorSymbol = "$".concat(operator);
             // Logical Expression
-            if (where.has(operator)) {
-                JSONArray arr = where.getJSONArray(operator);
-                Object lhs = makeIfSymbol(arr.getString(0));
-                Object rhs = arr.get(1);
-                ComparisonOperator comparisonOperator = ComparisonOperatorFactory.make(OPERATOR);
-                return new ComparisonExpression(comparisonOperator, lhs, rhs);
+            if (where.has(operatorSymbol)) {
+                JSONArray arr = where.getJSONArray(operatorSymbol);
+                ComparisonOperator comparisonOperator = ComparisonOperatorFactory.make(operator);
+                List<Object> operands = arr.toList().stream().map(operand -> convertToSymbol(operand))
+                        .collect(Collectors.toList());
+                assert operands.size() == 2;
+                return new ComparisonExpression(comparisonOperator, operands.get(0), operands.get(1));
             }
         }
 
         throw new IllegalArgumentException();
     }
 
-    private static Object makeIfSymbol(String leaf) {
-        if (leaf.startsWith("$") && leaf.endsWith("$")) {
-            return new ExpressionSymbol(leaf.substring(1, leaf.length() - 1));
+    private static Object convertToSymbol(Object leaf) {
+        if (leaf instanceof String) {
+            String leafStr = (String) leaf;
+            if (leafStr.startsWith("$") && leafStr.endsWith("$")) {
+                return new ExpressionSymbol(leafStr.substring(1, leafStr.length() - 1));
+            }
         }
         return leaf;
     }

@@ -1,7 +1,7 @@
 package team6.util.parameters;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public class SelectParameter {
     public static List<String> parse(String select) {
