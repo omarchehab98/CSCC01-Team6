@@ -59,6 +59,8 @@ public class TemplateController {
             @RequestParam String templateType) throws IOException, IllegalTemplateException {
         // Converting the multipart file into a filestream, to be parseable
         InputStream in = file.getInputStream();
+        String fileName = file.getOriginalFilename();
+
         BufferedReader fileRead = new BufferedReader(new InputStreamReader(in));
         // send BufferedReader to SheetAdapterWrapper
         SheetAdapterWrapper saw = new SheetAdapterWrapper();
@@ -76,10 +78,21 @@ public class TemplateController {
         Optional<Organization> org = organizationRepository.findById(orgId);
         Organization organization = org.get();
 
+        ArrayList<Template> templateList = new ArrayList<Template>();
+        // first make sure that all templates are converted as the right template
         for (HashMap<String, String> item : dataMap) {
             // find out which template it is and store it in respective repo
-            Template template = templateFactoryWrapper.build(templateType, item, organization);
-
+            try{
+                Template template = templateFactoryWrapper.build(templateType, item, organization);
+                templateList.add(template);
+            }catch(IllegalTemplateException | IllegalArgumentException e){
+                model.addAttribute("templateType" ,templateType.toString());
+                model.addAttribute("fileName" ,fileName.toString());
+                return "error-template-upload-fail";
+            }
+            
+        }
+        for (Template template : templateList){
             templateRepository.save(template);
         }
         // model.addAttribute("file", result);
