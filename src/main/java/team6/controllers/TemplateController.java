@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,7 @@ import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.SheetAdapterWrapper;
 import team6.util.parameters.SelectParameter;
+import team6.util.parameters.SortParameter;
 import team6.util.parameters.WhereParameter;
 
 @Controller
@@ -39,8 +42,6 @@ public class TemplateController {
     private NARsTemplateRepository narsTemplateRepository;
     @Autowired
     private ClientProfileTemplateRepository clientProfileTemplateRepository;
-
-    private CrudRepository templateRepository;
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -56,17 +57,16 @@ public class TemplateController {
         // Converting the multipart file into a filestream, to be parseable
         InputStream in = file.getInputStream();
         BufferedReader fileRead = new BufferedReader(new InputStreamReader(in));
-
         // send BufferedReader to SheetAdapterWrapper
         SheetAdapterWrapper saw = new SheetAdapterWrapper();
 
         // get HashMap representation from the wrapper
-        List<HashMap<String, String>> dataMap = saw.parse("csv", fileRead, 1, 3);
+        List<HashMap<String, String>> dataMap = saw.parse(file.getContentType(), fileRead, 1, 3);
 
         TemplateFactoryWrapper templateFactoryWrapper = new TemplateFactoryWrapper();
 
         // find which repository is needed to be saved to:
-        templateRepository = getRepo(templateType);
+        CrudRepository templateRepository = getRepo(templateType);
 
         // get the organization for this template:
         Long orgId = Long.parseLong(organizationId);
@@ -85,18 +85,23 @@ public class TemplateController {
 
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
-            @RequestParam Optional<String> where) {
-        return templateReadList(model, select, where, new NARsTemplate(), narsTemplateRepository);
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection) {
+        model.addAttribute("templateName", "Needs Assessment & Referrals");
+        return templateReadList(model, select, where, sort, sortDirection, new NARsTemplate(), narsTemplateRepository);
     }
 
     @GetMapping("/templates/clientProfile")
     public String readAllClientProfileView(Model model, @RequestParam Optional<String> select,
-            @RequestParam Optional<String> where) {
-        return templateReadList(model, select, where, new ClientProfileTemplate(), clientProfileTemplateRepository);
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection) {
+        model.addAttribute("templateName", "Client Profiles");
+        return templateReadList(model, select, where, sort, sortDirection, new ClientProfileTemplate(), clientProfileTemplateRepository);
     }
 
     private String templateReadList(Model model, @RequestParam Optional<String> select,
-            @RequestParam Optional<String> where, Template template, CrudRepository repository) {
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection, Template template, JpaRepository repository) {
         Map<String, String> attributeToFriendlyNameMap = template.getAttributeToFriendlyNameMap();
         List<String> attributeNames = template.getAttributeNames();
         List<String> friendlyNames = template.getFriendlyNames();
@@ -104,20 +109,20 @@ public class TemplateController {
             attributeNames = SelectParameter.parse(select.get());
             friendlyNames = attributeNames.stream().map(attributeToFriendlyNameMap::get).collect(Collectors.toList());
         }
-        final Iterable<Object> allTemplates = repository.findAll();
+        Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
+        final Iterable<Object> allTemplates = repository.findAll(sortObj);
         Iterable<Object> templates = allTemplates;
         if (where.isPresent()) {
             templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
                     .filter(row -> WhereParameter.parse(where.get()).populateWithObject(row).isTrue()).iterator();
         }
-        model.addAttribute("templateName", "Needs Assessment & Referrals");
         model.addAttribute("attributeNames", attributeNames);
         model.addAttribute("friendlyNames", friendlyNames);
         model.addAttribute("templates", templates);
         return "templates/read-list";
     }
 
-    public CrudRepository getRepo(String templateType) {
+    public JpaRepository getRepo(String templateType) {
         switch (templateType) {
         case "clientProfile":
             return clientProfileTemplateRepository;
