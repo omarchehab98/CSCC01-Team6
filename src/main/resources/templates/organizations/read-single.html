@@ -55,7 +55,9 @@
   <a href="/templates/NARs">NARs Templates</a>
 
   <div>
-		<form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
+    <form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
+      <input type="hidden" name="organizationId" th:value="${organization.id}" />
+      
 			<table>
         <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
         

@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 import team6.models.ClientProfileTemplate;
+import team6.models.Organization;
 import team6.models.Template;
 
 public class ClientProfileTemplateFactory {
-	public static Template build(HashMap<String, String> row) {
+	public static Template build(HashMap<String, String> row, Organization organization) {
 		ClientProfileTemplate clientProfileTemplate = new ClientProfileTemplate();
 		HashMap<String, Consumer<String>> setters = new HashMap<String, Consumer<String>>();
 
@@ -36,6 +37,9 @@ public class ClientProfileTemplateFactory {
 				throw new IllegalArgumentException();
 			}
 		}
+
+		clientProfileTemplate.setOrganization(organization);
+
 		return clientProfileTemplate;
 	}
 

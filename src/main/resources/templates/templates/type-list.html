@@ -14,9 +14,10 @@
 
   <h1>Templates</h1>
 
-  <div>
-      <a href="/templates/NARs">NARs</a>
-  </div>
+  <ul>
+    <li><a href="/templates/NARs">NARs</a></li>
+    <li><a href="/templates/clientProfile">Client Profiles</a></li>
+  </ul>
 
   <div>
     <p data-th-utext="${#strings.replace(#strings.escapeXml(file),'&#10;','&lt;br&gt;')}"></p>

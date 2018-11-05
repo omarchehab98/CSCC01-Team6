@@ -3,16 +3,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Templates</title>
+  <title th:text="${templateName}"></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body>
   <div>
     <a href="/">Home</a>
+    &bull;
+    <a href="/templates">Templates</a>
   </div>
 
-  <h1>Templates</h1>
+  <h1 th:text="${templateName}"></h1>
 
   <table>
     <thead>

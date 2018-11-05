@@ -3,7 +3,7 @@ package team6.util.expressions;
 import team6.throwables.SymbolicBooleanExpressionException;
 import team6.util.operators.comparison.ComparisonOperator;
 
-public class ComparisonExpression implements BooleanExpression {
+public class ComparisonExpression extends BooleanExpression {
     private ComparisonOperator operator;
     private Object lhs;
     private Object rhs;
@@ -45,14 +45,16 @@ public class ComparisonExpression implements BooleanExpression {
     public void populate(String symbol, Object value) {
         if (this.lhs instanceof ExpressionSymbol) {
             ExpressionSymbol expressionSymbol = (ExpressionSymbol) this.lhs;
-            if (symbol.equals(expressionSymbol.getSymbol())) {
+            if (symbol.equals(expressionSymbol.getSymbol()) ||
+                (value == null && expressionSymbol.getSymbol().startsWith(symbol + "."))) {
                 this.lhs = value;
             }
         }
 
         if (this.rhs instanceof ExpressionSymbol) {
             ExpressionSymbol expressionSymbol = (ExpressionSymbol) this.rhs;
-            if (symbol.equals(expressionSymbol.getSymbol())) {
+            if (symbol.equals(expressionSymbol.getSymbol()) ||
+                (value == null && expressionSymbol.getSymbol().startsWith(symbol + "."))) {
                 this.rhs = value;
             }
         }

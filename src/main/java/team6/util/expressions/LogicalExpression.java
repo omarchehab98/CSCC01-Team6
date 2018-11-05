@@ -4,7 +4,7 @@ import java.util.List;
 
 import team6.util.operators.logical.LogicalOperator;
 
-public class LogicalExpression implements BooleanExpression {
+public class LogicalExpression extends BooleanExpression {
     private LogicalOperator operator;
     private List<BooleanExpression> operands;
 
