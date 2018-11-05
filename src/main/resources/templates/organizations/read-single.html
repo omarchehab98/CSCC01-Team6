@@ -52,6 +52,8 @@
     </tbody>
   </table>
 
+  <a th:href="@{'/templates/NARs?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}">NARs Templates</a>
+
   <div>
     <form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
       <input type="hidden" name="organizationId" th:value="${organization.id}" />
