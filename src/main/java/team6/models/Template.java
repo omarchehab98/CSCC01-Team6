@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import team6.util.expressions.BooleanExpression;
-
 public abstract class Template {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
@@ -72,19 +70,5 @@ public abstract class Template {
             friendlyNames.add(friendlyName);
         }
         return friendlyNames;
-    }
-
-    public boolean matches(BooleanExpression booleanExpression) {
-        try {
-            for (Field attribute : this.getClass().getDeclaredFields()) {
-                attribute.setAccessible(true);
-                String key = attribute.getName();
-                Object value = attribute.get(this);
-                booleanExpression.populate(key, value);
-            }
-            return booleanExpression.isTrue();
-        } catch (IllegalAccessException err) {
-            throw new RuntimeException(err.getMessage());
-        }
     }
 }

@@ -91,7 +91,10 @@ public class TemplateController {
         Iterable<NARsTemplate> templates = allTemplates;
         if (where.isPresent()) {
             templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
-                    .filter(template -> template.matches(WhereParameter.parse(where.get()))).iterator();
+                    .filter(template -> WhereParameter.parse(where.get())
+                        .populateWithObject(template)
+                        .isTrue()
+                    ).iterator();
         }
         model.addAttribute("attributeNames", attributeNames);
         model.addAttribute("friendlyNames", friendlyNames);
