@@ -53,7 +53,9 @@
   </table>
 
   <div>
-		<form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
+    <form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
+      <input type="hidden" name="organizationId" th:value="${organization.id}" />
+      
 			<table>
         <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
         
@@ -65,8 +67,6 @@
         </select></td></tr>
 
         <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-
-        <tr><td></td><td><input type="hidden" name="id" th:value="${organization.id}" /></td></tr>
 			</table>
 		</form>
   </div>
