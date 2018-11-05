@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import team6.factories.TemplateFactoryWrapper;
+import team6.models.ClientProfileTemplate;
 import team6.models.NARsTemplate;
 import team6.models.Organization;
 import team6.models.Template;
+import team6.repositories.ClientProfileTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.SheetAdapterWrapper;
@@ -38,11 +40,10 @@ import team6.repositories.OrganizationRepository;
 public class TemplateController {
     @Autowired
     private NARsTemplateRepository narsTemplateRepository;
+    @Autowired
+    private ClientProfileTemplateRepository clientProfileTemplateRepository;
 
     private CrudRepository templateRepository;
-
-    @Autowired
-    private NARsTemplateRepository narsRepository;
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -90,25 +91,42 @@ public class TemplateController {
         @RequestParam Optional<String> select,
         @RequestParam Optional<String> where
     ) {
-        NARsTemplate nARsTemplate = new NARsTemplate();
-        Map<String, String> attributeToFriendlyNameMap = nARsTemplate.getAttributeToFriendlyNameMap();
-        List<String> attributeNames = nARsTemplate.getAttributeNames();
-        List<String> friendlyNames = nARsTemplate.getFriendlyNames();
+        return templateReadList(model, select, where, new NARsTemplate(), narsTemplateRepository);
+    }
+
+    @GetMapping("/templates/clientProfile")
+    public String readAllClientProfileView(Model model,
+        @RequestParam Optional<String> select,
+        @RequestParam Optional<String> where
+    ) {
+        return templateReadList(model, select, where, new ClientProfileTemplate(), clientProfileTemplateRepository);
+    }
+
+    private String templateReadList(Model model,
+        @RequestParam Optional<String> select,
+        @RequestParam Optional<String> where,
+        Template template,
+        CrudRepository repository
+    ) {
+        Map<String, String> attributeToFriendlyNameMap = template.getAttributeToFriendlyNameMap();
+        List<String> attributeNames = template.getAttributeNames();
+        List<String> friendlyNames = template.getFriendlyNames();
         if (select.isPresent()) {
             attributeNames = SelectParameter.parse(select.get());
             friendlyNames = attributeNames.stream()
                 .map(attributeToFriendlyNameMap::get)
                 .collect(Collectors.toList());
         }
-        final Iterable<NARsTemplate> allTemplates = narsRepository.findAll();
-        Iterable<NARsTemplate> templates = allTemplates;
+        final Iterable<Object> allTemplates = repository.findAll();
+        Iterable<Object> templates = allTemplates;
         if (where.isPresent()) {
             templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
-                    .filter(template -> WhereParameter.parse(where.get())
-                        .populateWithObject(template)
+                    .filter(row -> WhereParameter.parse(where.get())
+                        .populateWithObject(row)
                         .isTrue()
                     ).iterator();
         }
+        model.addAttribute("templateName", "Needs Assessment & Referrals");
         model.addAttribute("attributeNames", attributeNames);
         model.addAttribute("friendlyNames", friendlyNames);
         model.addAttribute("templates", templates);
@@ -117,8 +135,10 @@ public class TemplateController {
 
     public CrudRepository getRepo(String templateType) {
         switch (templateType) {
-        case "NARs":
-            return narsTemplateRepository;
+            case "clientProfile":
+                return clientProfileTemplateRepository;
+            case "NARs":
+                return narsTemplateRepository;
         }
         throw new IllegalArgumentException();
     }
