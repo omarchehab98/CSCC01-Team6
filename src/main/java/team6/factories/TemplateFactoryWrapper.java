@@ -1,13 +1,14 @@
 package team6.factories;
 
 import java.util.HashMap;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
+import team6.models.Organization;
 import team6.models.Template;
 import team6.throwables.IllegalTemplateException;
 
 public class TemplateFactoryWrapper {
-	private HashMap<String, Function<HashMap<String, String>, Template>> templateFactories;
+	private HashMap<String, BiFunction<HashMap<String, String>, Organization, Template>> templateFactories;
 
 	public TemplateFactoryWrapper() {
 		this.templateFactories = new HashMap<>();
@@ -15,11 +16,11 @@ public class TemplateFactoryWrapper {
 		templateFactories.put("clientProfile", ClientProfileTemplateFactory::build);
 	}
 
-	public Template build(String template, HashMap<String, String> row) throws IllegalTemplateException {
+	public Template build(String template, HashMap<String, String> row, Organization organization) throws IllegalTemplateException {
 		if (!templateFactories.containsKey(template)) {
 			throw new IllegalTemplateException(String.format("invalid template: %s", template));
 		}
-		return templateFactories.get(template).apply(row);
+		return templateFactories.get(template).apply(row, organization);
 	}
 
 }

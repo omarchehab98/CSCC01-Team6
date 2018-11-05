@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 import team6.models.NARsTemplate;
+import team6.models.Organization;
 import team6.models.Template;
 
 public class NARsTemplateFactory {
-	public static Template build(HashMap<String, String> row) {
+	public static Template build(HashMap<String, String> row, Organization organization) {
 		NARsTemplate narsTemplate = new NARsTemplate();
 		HashMap<String, Consumer<String>> setters = new HashMap<String, Consumer<String>>();
 
@@ -121,6 +122,9 @@ public class NARsTemplateFactory {
 				throw new IllegalArgumentException();
 			}
 		}
+
+		narsTemplate.setOrganization(organization);
+
 		return narsTemplate;
 	}
 
