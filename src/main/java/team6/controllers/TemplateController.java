@@ -85,12 +85,14 @@ public class TemplateController {
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where) {
+        model.addAttribute("templateName", "Needs Assessment & Referrals");
         return templateReadList(model, select, where, new NARsTemplate(), narsTemplateRepository);
     }
 
     @GetMapping("/templates/clientProfile")
     public String readAllClientProfileView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where) {
+        model.addAttribute("templateName", "Client Profiles");
         return templateReadList(model, select, where, new ClientProfileTemplate(), clientProfileTemplateRepository);
     }
 
@@ -109,7 +111,6 @@ public class TemplateController {
             templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
                     .filter(row -> WhereParameter.parse(where.get()).populateWithObject(row).isTrue()).iterator();
         }
-        model.addAttribute("templateName", "Needs Assessment & Referrals");
         model.addAttribute("attributeNames", attributeNames);
         model.addAttribute("friendlyNames", friendlyNames);
         model.addAttribute("templates", templates);
