@@ -56,12 +56,11 @@ public class TemplateController {
         // Converting the multipart file into a filestream, to be parseable
         InputStream in = file.getInputStream();
         BufferedReader fileRead = new BufferedReader(new InputStreamReader(in));
-
         // send BufferedReader to SheetAdapterWrapper
         SheetAdapterWrapper saw = new SheetAdapterWrapper();
 
         // get HashMap representation from the wrapper
-        List<HashMap<String, String>> dataMap = saw.parse("csv", fileRead, 1, 3);
+        List<HashMap<String, String>> dataMap = saw.parse(file.getContentType(), fileRead, 1, 3);
 
         TemplateFactoryWrapper templateFactoryWrapper = new TemplateFactoryWrapper();
 
