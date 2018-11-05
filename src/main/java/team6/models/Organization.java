@@ -27,6 +27,9 @@ public class Organization {
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	private Set<NARsTemplate> nARsTemplates;
 
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	private Set<ClientProfileTemplate> clientProfileTemplate;
+
 	public Organization() {
 	}
 
@@ -162,14 +165,16 @@ public class Organization {
 		this.nARsTemplates = nARsTemplates;
 	}
 
+	public Set<ClientProfileTemplate> getClientProfileTemplate() {
+		return this.clientProfileTemplate;
+	}
+
+	public void setClientProfileTemplate(Set<ClientProfileTemplate> clientProfileTemplate) {
+		this.clientProfileTemplate = clientProfileTemplate;
+	}
+
 	@Override
 	public String toString() {
-		String result = String.format("Organization [id=%d, name='%s']%n", id, name);
-		if (nARsTemplates != null) {
-			for (NARsTemplate nARsTemplate : nARsTemplates) {
-				result += nARsTemplate.toString();
-			}
-		}
-		return result;
+		return String.format("Organization [id=%d, name='%s']%n", id, name);
 	}
 }
