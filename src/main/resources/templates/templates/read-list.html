@@ -16,7 +16,7 @@
 
   <h1 th:text="${templateName}"></h1>
 
-  <table>
+  <table th:each="templates : ${templateGroups}">
     <thead>
       <tr>
         <th th:each="friendlyName : ${friendlyNames}">
