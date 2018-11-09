@@ -103,7 +103,8 @@ public class TemplateController {
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group) {
-        model.addAttribute("templateName", "Needs Assessment & Referrals");
+        model.addAttribute("templateFriendlyName", "Needs Assessment & Referrals");
+	model.addAttribute("templateModelName", "NARs");
         return templateReadList(model, select, where, sort, sortDirection, group, new NARsTemplate(), narsTemplateRepository);
     }
 

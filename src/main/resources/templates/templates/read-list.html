@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title th:text="${templateName}"></title>
+  <title th:text="${templateFriendlyName}"></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -14,13 +14,16 @@
     <a href="/templates">Templates</a>
   </div>
 
-  <h1 th:text="${templateName}"></h1>
+  <h1 th:text="${templateFriendlyName}"></h1>
 
   <table th:each="templates : ${templateGroups}">
     <thead>
       <tr>
         <th th:each="friendlyName : ${friendlyNames}">
           <span th:text="${friendlyName}"></span>
+          <form action="#" th:action="@{/templates/__${templateModelName}__/sort}" th:object="${friendlyName}" method="post">
+            <input type="submit" value="Sort">
+          </form>
         </th>
       </tr>
     </thead>
