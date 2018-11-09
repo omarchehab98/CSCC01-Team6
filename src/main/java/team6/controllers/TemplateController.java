@@ -98,7 +98,8 @@ public class TemplateController {
         // model.addAttribute("file", result);
         return "templates/type-list";
     }
-
+    
+    
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
