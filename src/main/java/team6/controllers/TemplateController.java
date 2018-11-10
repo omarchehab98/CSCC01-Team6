@@ -25,10 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import team6.factories.TemplateFactoryWrapper;
 import team6.models.ClientProfileTemplate;
+import team6.models.CommunityConnectionsTemplate;
 import team6.models.NARsTemplate;
 import team6.models.Organization;
 import team6.models.Template;
 import team6.repositories.ClientProfileTemplateRepository;
+import team6.repositories.CommunityConnectionsTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
@@ -45,6 +47,8 @@ public class TemplateController {
     private NARsTemplateRepository narsTemplateRepository;
     @Autowired
     private ClientProfileTemplateRepository clientProfileTemplateRepository;
+    @Autowired
+    private CommunityConnectionsTemplateRepository communityConnectionsTemplateRepository;
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -115,6 +119,14 @@ public class TemplateController {
         return templateReadList(model, select, where, sort, sortDirection, group, new ClientProfileTemplate(), clientProfileTemplateRepository);
     }
 
+    @GetMapping("/templates/communityConnections")
+    public String readAllCommunityConnectionsView(Model model, @RequestParam Optional<String> select,
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group) {
+        model.addAttribute("templateName", "Community Connections");
+        return templateReadList(model, select, where, sort, sortDirection, group, new CommunityConnectionsTemplate(), communityConnectionsTemplateRepository);
+    }
+
     private String templateReadList(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
@@ -159,6 +171,8 @@ public class TemplateController {
             return clientProfileTemplateRepository;
         case "NARs":
             return narsTemplateRepository;
+        case "communityConnections":
+        	return communityConnectionsTemplateRepository;
         }
         throw new IllegalArgumentException();
     }
