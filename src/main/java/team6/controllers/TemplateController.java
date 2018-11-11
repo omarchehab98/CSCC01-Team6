@@ -33,8 +33,10 @@ import team6.repositories.NARsTemplateRepository;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.AttributeResolver;
+import team6.util.JoinTable;
 import team6.util.SheetAdapterWrapper;
 import team6.util.parameters.GroupParameter;
+import team6.util.parameters.JoinParameter;
 import team6.util.parameters.SelectParameter;
 import team6.util.parameters.SortParameter;
 import team6.util.parameters.WhereParameter;
@@ -102,54 +104,72 @@ public class TemplateController {
     @GetMapping("/templates/NARs")
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
-            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group) {
+            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
+            @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Needs Assessment & Referrals");
-        return templateReadList(model, select, where, sort, sortDirection, group, new NARsTemplate(), narsTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new NARsTemplate(), narsTemplateRepository);
     }
 
     @GetMapping("/templates/clientProfile")
     public String readAllClientProfileView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
-            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group) {
+            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
+            @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Client Profiles");
-        return templateReadList(model, select, where, sort, sortDirection, group, new ClientProfileTemplate(), clientProfileTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new ClientProfileTemplate(), clientProfileTemplateRepository);
     }
 
     private String templateReadList(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
-            Template template, JpaRepository repository) {
-        Map<String, String> attributeToFriendlyNameMap = template.getAttributeToFriendlyNameMap();
+            @RequestParam Optional<String> join,
+            Template template, JpaRepository repository) throws IllegalTemplateException {
+        Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
+        final List<Object> rows = repository.findAll(sortObj);
+        Map<String, String> attributeToFriendlyNameMap = new HashMap<>();
         List<String> attributeNames = template.getAttributeNames();
         List<String> friendlyNames = template.getFriendlyNames();
+        if (join.isPresent()) {
+            List<JoinTable> joinTables = JoinParameter.parse(join.get());
+            for (JoinTable joinTable : joinTables) {
+                String entity = joinTable.getEntity();
+                JpaRepository otherRepository = getRepo(entity);
+                Template otherTemplate = new TemplateFactoryWrapper().build(entity, new HashMap<>(), null);
+                final List<Object> otherRows = otherRepository.findAll();
+                attributeToFriendlyNameMap.putAll(otherTemplate.getAttributeToFriendlyNameMap());
+                attributeNames.addAll(otherTemplate.getAttributeNames());
+                friendlyNames.addAll(otherTemplate.getFriendlyNames());
+            }
+        }
+        attributeToFriendlyNameMap.putAll(template.getAttributeToFriendlyNameMap());
         if (select.isPresent()) {
             attributeNames = SelectParameter.parse(select.get());
             friendlyNames = attributeNames.stream().map(attributeToFriendlyNameMap::get).collect(Collectors.toList());
         }
-        Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
-        final Iterable<Object> allTemplates = repository.findAll(sortObj);
-        Iterable<Object> templates = allTemplates;
+        Iterable<Object> filteredRows = rows;
         if (where.isPresent()) {
-            templates = () -> StreamSupport.stream(allTemplates.spliterator(), false)
+            filteredRows = () -> StreamSupport.stream(rows.spliterator(), false)
                 .filter(row -> WhereParameter.parse(where.get()).populateWithObject(row).isTrue()).iterator();
         }
-        List<Iterable<Object>> templateGroups = new ArrayList<>();
+        List<List<Object>> rowGroups = new ArrayList<>();
         if (group.isPresent()) {
             String groupBy = GroupParameter.parse(group.get());
-            final HashMap<Object, Iterable<Object>> templateGroupsMap = new HashMap<>();
-            templates.forEach(row -> {
+            final HashMap<Object, List<Object>> rowGroupsMap = new HashMap<>();
+            filteredRows.forEach(row -> {
                 Object attribute = AttributeResolver.get(groupBy, row);
-                List<Object> templateGroup = (List<Object>) templateGroupsMap.getOrDefault(attribute, new ArrayList<>());
-                templateGroup.add(row);
-                templateGroupsMap.put(attribute, templateGroup);
+                List<Object> rowGroup = (List<Object>) rowGroupsMap.getOrDefault(attribute, new ArrayList<>());
+                rowGroup.add(row);
+                rowGroupsMap.put(attribute, rowGroup);
             });
-            templateGroups = new ArrayList<>(templateGroupsMap.values());
+            rowGroups = new ArrayList<>(rowGroupsMap.values());
         } else {
-            templateGroups.add(templates);
+            List<Object> rowGroup = new ArrayList<>();
+            filteredRows.forEach(row -> rowGroup.add(row));
+            rowGroups.add(rowGroup);
         }
         model.addAttribute("attributeNames", attributeNames);
         model.addAttribute("friendlyNames", friendlyNames);
-        model.addAttribute("templateGroups", templateGroups);
+        model.addAttribute("rowGroups", rowGroups);
         return "templates/read-list";
     }
 

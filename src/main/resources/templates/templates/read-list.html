@@ -16,7 +16,7 @@
 
   <h1 th:text="${templateName}"></h1>
 
-  <table th:each="templates : ${templateGroups}">
+  <table th:each="rows : ${rowGroups}">
     <thead>
       <tr>
         <th th:each="friendlyName : ${friendlyNames}">
@@ -25,9 +25,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr th:each="template : ${templates}">
+      <tr th:each="row : ${rows}">
         <td th:each="attributeName : ${attributeNames}">
-          <span th:text="${template.__${attributeName}__}"></span>
+          <span th:text="${row.__${attributeName}__}"></span>
         </td>
       </tr>
     </tbody>
