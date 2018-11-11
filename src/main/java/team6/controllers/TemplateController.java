@@ -153,14 +153,16 @@ public class TemplateController {
         return "templates/read-list";
     }
 
-    public JpaRepository getRepo(String templateType) {
+    public JpaRepository getRepo(String templateType) throws IllegalTemplateException {
         switch (templateType) {
+        case "ClientProfileTemplate":
         case "clientProfile":
             return clientProfileTemplateRepository;
+        case "NARsTemplate":
         case "NARs":
             return narsTemplateRepository;
         }
-        throw new IllegalArgumentException();
+        throw new IllegalTemplateException(String.format("invalid template: %s", templateType));
     }
 
 }

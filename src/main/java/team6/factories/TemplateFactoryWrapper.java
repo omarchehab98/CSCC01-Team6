@@ -12,7 +12,9 @@ public class TemplateFactoryWrapper {
 
 	public TemplateFactoryWrapper() {
 		this.templateFactories = new HashMap<>();
+		templateFactories.put("NARsTemplate", NARsTemplateFactory::build);
 		templateFactories.put("NARs", NARsTemplateFactory::build);
+		templateFactories.put("ClientProfileTemplate", ClientProfileTemplateFactory::build);
 		templateFactories.put("clientProfile", ClientProfileTemplateFactory::build);
 	}
 
