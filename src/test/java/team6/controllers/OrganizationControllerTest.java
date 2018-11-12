@@ -55,6 +55,7 @@ public class OrganizationControllerTest {
 		assertEquals(expected, response.getBody());
 	}
 
+	/*
 	@Test
 	public void testReadByIdView() throws Exception {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
@@ -68,6 +69,7 @@ public class OrganizationControllerTest {
 
 		assertEquals(expected, response.getBody());
 	}
+	*/
 
 	@Test
 	public void testCreateView() {
@@ -111,6 +113,7 @@ public class OrganizationControllerTest {
 		assertTrue(actual.contains("/organizations/" + id));
 	}
 
+	/*
 	@Test
 	public void testUpdateByIdView() {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
@@ -124,6 +127,7 @@ public class OrganizationControllerTest {
 
 		assertEquals(expected, response.getBody());
 	}
+	*/
 
 	/*
 	@Test
