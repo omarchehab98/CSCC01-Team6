@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create • Query</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div>
+        <a href="/">Home</a>
+
+        •
+    
+        <a href="/queries">queries</a>
+    </div>
+    
+    <form action="#" th:action="@{/queries}" th:object="${query}" method="post">
+        <h1>Create Queries</h1>
+    	<label>
+            Query Name*
+            <br />
+            <input type="text" th:field="*{queryName}" required />
+        </label>
+        <br />
+        <label>
+            Select*
+            <br />
+            <input type="text" th:field="*{selectParam}" required />
+        </label>
+        <br />
+        <label>
+            From*
+            <br />
+            <input type="text" th:field="*{fromParam}" required />
+        </label>
+        <br />
+        <label>
+            Where*
+            <br />
+            <input type="text" th:field="*{whereParam}" required />
+        </label>
+        <br />
+        <label>
+            Group
+            <br />
+            <input type="text" th:field="*{groupParam}" />
+        </label>
+        <br />
+        <label>
+            Sort
+            <br />
+            <input type="text" th:field="*{sortParam}" />
+        </label>
+        <br />
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
+    </form>
+
+</body>
+</html>

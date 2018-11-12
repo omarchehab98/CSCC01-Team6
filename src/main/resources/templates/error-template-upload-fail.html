@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Internal Error</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <h1>Template Failed to Upload</h1>
+    <p>This may have been caused by either a mal-formatted csv or choosing the wrong template type when uploading.</p>
+
+    <h5>You tried to upload: <span th:text="${fileName}"></span>
+        <br>
+        as a <span th:text="${templateType}"></span> template.
+    </h5>
+    
+    <a href="/">Home</a>
+</body>
+
+</html>
