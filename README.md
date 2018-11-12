@@ -23,8 +23,10 @@ Contains folders containing each version of the following:
 * Provisional Burndown Chart
 * Sprint Execution
 * Execution Burndown Chart
+* Task Breakdown (From Sprint 3 onwards)
 
 As well as a breakdown of the tasks from the kanban board for each deliverable
+Task breakdowns before Sprint 3 are contained in the Deliverable 3 Task Breakdown file.
 
 ### Development Environment
 
