@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Queries</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+    <a href="/">Home</a>
+  </div>
+
+  <h1>Queries</h1>
+
+  <div>
+      <a href="/queries/create">Create</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Select</th>
+        <th>From</th>
+        <th>Where</th>
+        <th>GroupBy</th>
+        <th>Sort</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr th:each="query : ${queries}">
+        <td th:text="${query.id}"></td>
+        <td th:text="${query.queryName}"></td>
+        <td th:text="${query.selectParam}"></td>
+        <td th:text="${query.fromParam}"></td>
+        <td th:text="${query.whereParam}"></td>
+        <td th:text="${query.groupParam}"></td>
+        <td th:text="${query.sortParam}"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

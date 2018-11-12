@@ -11,13 +11,18 @@ import javax.persistence.ManyToOne;
 public class Query {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String queryName;
+	private Long id;
 
+	private String queryName;
 	private String whereParam;
 	private String sortParam;
 	private String groupParam;
 	private String selectParam;
 	private String fromParam;
+	
+	public Query() {
+		
+	}
 	
 	public Query(String qName, String wP, String gP, String sP, String fP) {
 		this.queryName = qName;
@@ -25,6 +30,10 @@ public class Query {
 		this.groupParam = gP;
 		this.selectParam = sP;
 		this.fromParam = fP;
+	}
+	
+	public long getId() {
+		return this.id;
 	}
 	
 	public void setName(String name) {

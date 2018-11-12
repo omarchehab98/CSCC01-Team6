@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import team6.models.Organization;
 import team6.models.Query;
 
-public interface QueryRepository extends CrudRepository<Query, String>{
+public interface QueryRepository extends CrudRepository<Query, Long>{
 
 }

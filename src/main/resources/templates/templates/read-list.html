@@ -31,13 +31,6 @@
         </td>
       </tr>
     </tbody>
-    <form class="displays" th:action="@{/templates}" method="GET" th:object="${template}">
-    	<tr th:each="template : ${templates}">
-    		<th td th:each="attributeName : ${attributeNames}">
-    			<input type="checkbox" th:field="*{attributeNames}" th:value="${attributeName}">
-    		</th>
-    	</tr>
-    </form>
   </table>
   <span th:text="${select}"></span>
 </body>
