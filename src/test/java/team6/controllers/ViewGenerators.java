@@ -1,16 +1,8 @@
 package team6.controllers;
 
-import static org.junit.Assert.assertEquals;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import team6.models.Organization;
-import team6.repositories.OrganizationRepository;
 
 public class ViewGenerators {
 
@@ -88,6 +80,22 @@ public class ViewGenerators {
 		ResponseEntity<String> response = 
 				restTemplate.getForEntity("http://localhost:8080/templates" 
 						+ "/clientProfile", String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getReadAllViewQuesries() {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/queries", 
+						String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getCreateViewQueries() {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/queries/" 
+						+ "create", String.class);
 		String res = response.getBody();
 		return res;
 	}
