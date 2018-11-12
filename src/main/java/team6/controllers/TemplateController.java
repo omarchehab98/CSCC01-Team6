@@ -171,19 +171,9 @@ public class TemplateController {
         }
 
         attributes = attributeNames.stream()
-            .map(entityAndName -> {
-                String[] entityAndNameArr = entityAndName.split("\\.");
-                if (entityAndNameArr.length == 1) {
-                    final String entityName = template.getClass().getSimpleName();
-                    final String attributeName = entityAndNameArr[0];
-                    return new Attribute(entityNameToIndex.get(entityName), attributeName);
-                } else if (entityAndNameArr.length == 2) {
-                    final String entityName = entityAndNameArr[0];
-                    final String attributeName = entityAndNameArr[1];
-                    return new Attribute(entityNameToIndex.get(entityName), attributeName);
-                } else {
-                    throw new IllegalArgumentException();
-                }
+            .map(attributeName -> {
+                final String[] defaultedAttributeName = getEntityAndAttributeName(attributeName, template.getClass().getSimpleName());
+                return new Attribute(entityNameToIndex.get(defaultedAttributeName[0]), defaultedAttributeName[1]);
             })
             .collect(Collectors.toList());
         List<List<Object>> filteredJoinedRows;
@@ -204,9 +194,10 @@ public class TemplateController {
         List<List<List<Object>>> groupedFilteredJoinedRows;
         if (group.isPresent()) {
             final String groupBy = GroupParameter.parse(group.get());
+            final String[] defaultedGroupBy = getEntityAndAttributeName(groupBy, template.getClass().getSimpleName());
             final HashMap<Object, List<List<Object>>> rowGroupsMap = new HashMap<>();
             filteredJoinedRows.forEach(row -> {
-                final Object attribute = AttributeResolver.get(groupBy, row);
+                final Object attribute = AttributeResolver.get(defaultedGroupBy[1], row.get(entityNameToIndex.get(defaultedGroupBy[0])));
                 final List<List<Object>> rowGroup = rowGroupsMap.getOrDefault(attribute, new ArrayList<>());
                 rowGroup.add(row);
                 rowGroupsMap.put(attribute, rowGroup);
@@ -222,6 +213,21 @@ public class TemplateController {
         model.addAttribute("friendlyNames", friendlyNames);
         model.addAttribute("groupsOfRows", groupedFilteredJoinedRows);
         return "templates/read-list";
+    }
+
+    private String[] getEntityAndAttributeName(String entityAndName, String defaultEntityName) {
+        String[] entityAndNameArr = entityAndName.split("\\.");
+        if (entityAndNameArr.length == 1) {
+            final String entityName = defaultEntityName;
+            final String attributeName = entityAndNameArr[0];
+            return new String[]{entityName, attributeName};
+        } else if (entityAndNameArr.length == 2) {
+            final String entityName = entityAndNameArr[0];
+            final String attributeName = entityAndNameArr[1];
+            return new String[]{entityName, attributeName};
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public JpaRepository getRepo(String templateType) throws IllegalTemplateException {
