@@ -28,6 +28,12 @@ Contains folders containing each version of the following:
 As well as a breakdown of the tasks from the kanban board for each deliverable
 Task breakdowns before Sprint 3 are contained in the Deliverable 3 Task Breakdown file.
 
+### Code Review
+
+Contains code review documentation for each of the following:
+
+* Deliverable 4
+
 ### Development Environment
 
 * [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
