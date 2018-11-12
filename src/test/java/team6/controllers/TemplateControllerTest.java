@@ -23,6 +23,7 @@ import team6.repositories.ClientProfileTemplateRepository;
 import team6.repositories.CommunityConnectionsTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
 import team6.repositories.OrganizationRepository;
+import team6.throwables.IllegalTemplateException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @RunWith(SpringRunner.class)
@@ -119,7 +120,7 @@ public class TemplateControllerTest {
 	*/
 
 	@Test
-	public void testGetRepo() {
+	public void testGetRepo() throws IllegalTemplateException {
 		assertEquals(narsTemplateRepository,
 				templateController.getRepo("NARs"));
 		assertEquals(clientProfileTemplateRepository, 
@@ -128,8 +129,8 @@ public class TemplateControllerTest {
 				templateController.getRepo("communityConnections"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testGetRepoException() {
+	@Test(expected = IllegalTemplateException.class)
+	public void testGetRepoException() throws IllegalTemplateException {
 		templateController.getRepo("");
 	}
 
