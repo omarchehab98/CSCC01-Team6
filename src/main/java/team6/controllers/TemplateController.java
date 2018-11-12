@@ -126,9 +126,10 @@ public class TemplateController {
     @GetMapping("/templates/communityConnections")
     public String readAllCommunityConnectionsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
-            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group) {
+            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
+            @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Community Connections");
-        return templateReadList(model, select, where, sort, sortDirection, group, new CommunityConnectionsTemplate(), communityConnectionsTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new CommunityConnectionsTemplate(), communityConnectionsTemplateRepository);
     }
 
     private String templateReadList(Model model, @RequestParam Optional<String> select,
