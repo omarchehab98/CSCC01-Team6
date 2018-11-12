@@ -16,7 +16,7 @@
 
   <h1 th:text="${templateName}"></h1>
 
-  <table th:each="rows : ${rowGroups}">
+  <table th:each="rows : ${groupsOfRows}">
     <thead>
       <tr>
         <th th:each="friendlyName : ${friendlyNames}">
@@ -26,8 +26,8 @@
     </thead>
     <tbody>
       <tr th:each="row : ${rows}">
-        <td th:each="attributeName : ${attributeNames}">
-          <span th:text="${row.__${attributeName}__}"></span>
+        <td th:each="attribute : ${attributes}">
+          <span th:text="${row[__${attribute.entityIndex}__].__${attribute.name}__}"></span>
         </td>
       </tr>
     </tbody>

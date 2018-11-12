@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -33,8 +32,9 @@ import team6.repositories.NARsTemplateRepository;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
 import team6.util.AttributeResolver;
-import team6.util.JoinTable;
+import team6.util.CartesianProduct;
 import team6.util.SheetAdapterWrapper;
+import team6.util.expressions.BooleanExpression;
 import team6.util.parameters.GroupParameter;
 import team6.util.parameters.JoinParameter;
 import team6.util.parameters.SelectParameter;
@@ -124,52 +124,103 @@ public class TemplateController {
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join,
             Template template, JpaRepository repository) throws IllegalTemplateException {
-        Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
-        final List<Object> rows = repository.findAll(sortObj);
-        Map<String, String> attributeToFriendlyNameMap = new HashMap<>();
+        final Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
+        final Map<String, String> attributeToFriendlyNameMap = new HashMap<>();
+        final Map<String, Integer> entityNameToIndex = new HashMap<>();
+        List<Attribute> attributes = new ArrayList<>();
         List<String> attributeNames = template.getAttributeNames();
         List<String> friendlyNames = template.getFriendlyNames();
+        List<List<Object>> joinedRows;
+        entityNameToIndex.put(template.getClass().getSimpleName(), 0);
         if (join.isPresent()) {
-            List<JoinTable> joinTables = JoinParameter.parse(join.get());
-            for (JoinTable joinTable : joinTables) {
-                String entity = joinTable.getEntity();
-                JpaRepository otherRepository = getRepo(entity);
-                Template otherTemplate = new TemplateFactoryWrapper().build(entity, new HashMap<>(), null);
+            final String[] joinEntities = JoinParameter.parse(join.get());
+            List<List<Object>> allRows = new ArrayList<>();
+            allRows.add(repository.findAll(sortObj));
+            int i = 1;
+            for (String entity : joinEntities) {
+                entityNameToIndex.put(entity, i++);
+                final JpaRepository otherRepository = getRepo(entity);
+                final Template otherTemplate = new TemplateFactoryWrapper().build(entity, new HashMap<>(), null);
                 final List<Object> otherRows = otherRepository.findAll();
                 attributeToFriendlyNameMap.putAll(otherTemplate.getAttributeToFriendlyNameMap());
-                attributeNames.addAll(otherTemplate.getAttributeNames());
+                List<String> selectAttributes = otherTemplate.getAttributeNames()
+                    .stream()
+                    .map(attributeName -> entity + "." + attributeName)
+                    .collect(Collectors.toList());
+                attributeNames.addAll(selectAttributes);
                 friendlyNames.addAll(otherTemplate.getFriendlyNames());
+                allRows.add(otherRows);
             }
+            joinedRows = CartesianProduct.evaluate(allRows);
+        } else {
+            final List<Object> rows = repository.findAll(sortObj);
+            joinedRows = rows.stream()
+                .map(row -> {
+                    List<Object> rowInList = new ArrayList<>();
+                    rowInList.add(row);
+                    return rowInList;
+                })
+                .collect(Collectors.toList());
         }
         attributeToFriendlyNameMap.putAll(template.getAttributeToFriendlyNameMap());
         if (select.isPresent()) {
             attributeNames = SelectParameter.parse(select.get());
-            friendlyNames = attributeNames.stream().map(attributeToFriendlyNameMap::get).collect(Collectors.toList());
+            friendlyNames = attributeNames.stream()
+                .map(attributeName -> attributeToFriendlyNameMap.get(attributeName.replaceFirst("(.+\\.)?", "")))
+                .collect(Collectors.toList());
         }
-        Iterable<Object> filteredRows = rows;
+
+        attributes = attributeNames.stream()
+            .map(entityAndName -> {
+                String[] entityAndNameArr = entityAndName.split("\\.");
+                if (entityAndNameArr.length == 1) {
+                    final String entityName = template.getClass().getSimpleName();
+                    final String attributeName = entityAndNameArr[0];
+                    return new Attribute(entityNameToIndex.get(entityName), attributeName);
+                } else if (entityAndNameArr.length == 2) {
+                    final String entityName = entityAndNameArr[0];
+                    final String attributeName = entityAndNameArr[1];
+                    return new Attribute(entityNameToIndex.get(entityName), attributeName);
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            })
+            .collect(Collectors.toList());
+        List<List<Object>> filteredJoinedRows;
         if (where.isPresent()) {
-            filteredRows = () -> StreamSupport.stream(rows.spliterator(), false)
-                .filter(row -> WhereParameter.parse(where.get()).populateWithObject(row).isTrue()).iterator();
+            filteredJoinedRows = joinedRows.stream()
+                .filter(joinedRow -> {
+                    final BooleanExpression expression = WhereParameter.parse(where.get());
+                    expression.populateWithObject(joinedRow.get(0));
+                    for (Object object : joinedRow) {
+                        expression.populateWithObject(object, object.getClass().getSimpleName() + ".");
+                    }
+                    return expression.isTrue();
+                })
+                .collect(Collectors.toList());
+        } else {
+            filteredJoinedRows = joinedRows;
         }
-        List<List<Object>> rowGroups = new ArrayList<>();
+        List<List<List<Object>>> groupedFilteredJoinedRows;
         if (group.isPresent()) {
-            String groupBy = GroupParameter.parse(group.get());
-            final HashMap<Object, List<Object>> rowGroupsMap = new HashMap<>();
-            filteredRows.forEach(row -> {
-                Object attribute = AttributeResolver.get(groupBy, row);
-                List<Object> rowGroup = (List<Object>) rowGroupsMap.getOrDefault(attribute, new ArrayList<>());
+            final String groupBy = GroupParameter.parse(group.get());
+            final HashMap<Object, List<List<Object>>> rowGroupsMap = new HashMap<>();
+            filteredJoinedRows.forEach(row -> {
+                final Object attribute = AttributeResolver.get(groupBy, row);
+                final List<List<Object>> rowGroup = rowGroupsMap.getOrDefault(attribute, new ArrayList<>());
                 rowGroup.add(row);
                 rowGroupsMap.put(attribute, rowGroup);
             });
-            rowGroups = new ArrayList<>(rowGroupsMap.values());
+            groupedFilteredJoinedRows = new ArrayList<>(rowGroupsMap.values());
         } else {
-            List<Object> rowGroup = new ArrayList<>();
-            filteredRows.forEach(row -> rowGroup.add(row));
-            rowGroups.add(rowGroup);
+            List<List<Object>> rowGroup = new ArrayList<>();
+            filteredJoinedRows.forEach(rowGroup::add);
+            groupedFilteredJoinedRows = new ArrayList<>();
+            groupedFilteredJoinedRows.add(rowGroup);
         }
-        model.addAttribute("attributeNames", attributeNames);
+        model.addAttribute("attributes", attributes);
         model.addAttribute("friendlyNames", friendlyNames);
-        model.addAttribute("rowGroups", rowGroups);
+        model.addAttribute("groupsOfRows", groupedFilteredJoinedRows);
         return "templates/read-list";
     }
 
@@ -185,4 +236,30 @@ public class TemplateController {
         throw new IllegalTemplateException(String.format("invalid template: %s", templateType));
     }
 
+}
+
+class Attribute {
+    private Integer entityIndex;
+    private String name;
+
+    public Attribute(Integer entityIndex, String name) {
+        this.entityIndex = entityIndex;
+        this.name = name;
+    }
+
+    public Integer getEntityIndex() {
+        return this.entityIndex;
+    }
+
+    public void setEntityIndex(Integer entityIndex) {
+        this.entityIndex = entityIndex;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
