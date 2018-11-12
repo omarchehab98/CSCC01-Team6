@@ -69,8 +69,6 @@ public class OrganizationControllerTest {
 		assertEquals(expected, response.getBody());
 	}
 
-	// Add test for exceptions
-
 	@Test
 	public void testCreateView() {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
