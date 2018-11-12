@@ -12,7 +12,6 @@ public class Query {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
 	private String queryName;
 	private String whereParam;
 	private String sortParam;
@@ -32,11 +31,15 @@ public class Query {
 		this.fromParam = fP;
 	}
 	
-	public long getId() {
-		return this.id;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id){
+		this.id = id;
 	}
 	
-	public void setName(String name) {
+	public void setQueryName(String name) {
 		this.queryName = name;
 	}
 	
@@ -44,43 +47,43 @@ public class Query {
 		return this.queryName;
 	}
 	
-	public void setWhereParameter(String whereParam) {
+	public void setWhereParam(String whereParam) {
 		this.whereParam = whereParam;
 	}
 
-	public String getWhereParameter() {
+	public String getWhereParam() {
 		return this.whereParam;
 	}
 	
-	public void setSortParameter(String sortParam) {
+	public void setSortParam(String sortParam) {
 		this.sortParam = sortParam;
 	}
 	
-	public String getSortParameter() {
+	public String getSortParam() {
 		return this.sortParam;
 	}
 	
-	public void setGroupParameter(String groupParam) {
+	public void setGroupParam(String groupParam) {
 		this.groupParam = groupParam;
 	}
 	
-	public String getGroupParameter() {
+	public String getGroupParam() {
 		return this.groupParam;
 	}
 	
-	public void setSelectParameter(String selectParam) {
+	public void setSelectParam(String selectParam) {
 		this.selectParam = selectParam;
 	}
 	
-	public String getSelectParameter() {
+	public String getSelectParam() {
 		return this.selectParam;
 	}
 	
-	public void setFromParameter(String fromParam) {
+	public void setFromParam(String fromParam) {
 		this.fromParam = fromParam;
 	}
 	
-	public String getFromParameter() {
+	public String getFromParam() {
 		return this.fromParam;
 	}
 	
