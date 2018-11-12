@@ -251,6 +251,7 @@ public class TemplateController {
         case "NARsTemplate":
         case "NARs":
             return narsTemplateRepository;
+        case "CommunityConnectionsTemplate":
         case "communityConnections":
         	return communityConnectionsTemplateRepository;
         }
