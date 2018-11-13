@@ -12,23 +12,19 @@ public class Query {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String queryName;
-	private String whereParam;
-	private String sortParam;
-	private String groupParam;
-	private String selectParam;
-	private String fromParam;
+	private String name;
+	private String query;
+	private String path;
+
 	
 	public Query() {
 		
 	}
 	
-	public Query(String qName, String wP, String gP, String sP, String fP) {
-		this.queryName = qName;
-		this.whereParam = wP;
-		this.groupParam = gP;
-		this.selectParam = sP;
-		this.fromParam = fP;
+	public Query(String qName, String name, String query, String path) {
+		this.name = qName;
+		this.query = query;
+		this.path = path;
 	}
 	
 	public Long getId() {
@@ -39,57 +35,28 @@ public class Query {
 		this.id = id;
 	}
 	
-	public void setQueryName(String name) {
-		this.queryName = name;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public String getQueryName() {
-		return this.queryName;
+	public String getName() {
+		return this.name;
 	}
 	
-	public void setWhereParam(String whereParam) {
-		this.whereParam = whereParam;
-	}
-
-	public String getWhereParam() {
-		return this.whereParam;
+	public void setQuery(String query) {
+		this.query = query;
 	}
 	
-	public void setSortParam(String sortParam) {
-		this.sortParam = sortParam;
+	public String getPath() {
+		return this.path;
 	}
 	
-	public String getSortParam() {
-		return this.sortParam;
+	public void setPath(String path) {
+		this.path = path;
 	}
-	
-	public void setGroupParam(String groupParam) {
-		this.groupParam = groupParam;
-	}
-	
-	public String getGroupParam() {
-		return this.groupParam;
-	}
-	
-	public void setSelectParam(String selectParam) {
-		this.selectParam = selectParam;
-	}
-	
-	public String getSelectParam() {
-		return this.selectParam;
-	}
-	
-	public void setFromParam(String fromParam) {
-		this.fromParam = fromParam;
-	}
-	
-	public String getFromParam() {
-		return this.fromParam;
-	}
-	
 	@Override
 	public String toString() {
-		return String.format("The Query '%s': %s%s%s%s%s", this.queryName, 
-				this.selectParam, this.fromParam, this.whereParam, this.groupParam, this.sortParam);
+		return String.format("The Query '%s': %s", this.name, 
+				this.query);
 	}
 }
