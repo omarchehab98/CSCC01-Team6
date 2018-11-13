@@ -24,23 +24,17 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Select</th>
-        <th>From</th>
-        <th>Where</th>
-        <th>GroupBy</th>
-        <th>Sort</th>
+        <th>Path</th>
+        <th>Query</th>
       </tr>
     </thead>
     <tbody>
 
       <tr th:each="query : ${queries}">
         <td th:text="${query.id}"></td>
-        <td th:text="${query.queryName}"></td>
-        <td th:text="${query.selectParam}"></td>
-        <td th:text="${query.fromParam}"></td>
-        <td th:text="${query.whereParam}"></td>
-        <td th:text="${query.groupParam}"></td>
-        <td th:text="${query.sortParam}"></td>
+        <td th:text="${query.name}"></td>
+        <td th:text="${query.path}"></td>
+        <td th:text="${query.query}"></td>
       </tr>
     </tbody>
   </table>

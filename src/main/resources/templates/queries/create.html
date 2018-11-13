@@ -18,37 +18,19 @@
     	<label>
             Query Name*
             <br />
-            <input type="text" th:field="*{queryName}" required />
+            <input type="text" th:field="*{name}" required />
         </label>
         <br />
         <label>
-            Select*
+            Path*
             <br />
-            <input type="text" th:field="*{selectParam}" required />
+            <input type="text" th:field="*{path}" required />
         </label>
         <br />
         <label>
-            From*
+            Query*
             <br />
-            <input type="text" th:field="*{fromParam}" required />
-        </label>
-        <br />
-        <label>
-            Where*
-            <br />
-            <input type="text" th:field="*{whereParam}" required />
-        </label>
-        <br />
-        <label>
-            Group
-            <br />
-            <input type="text" th:field="*{groupParam}" />
-        </label>
-        <br />
-        <label>
-            Sort
-            <br />
-            <input type="text" th:field="*{sortParam}" />
+            <input type="text" th:field="*{query}" required />
         </label>
         <br />
         <input type="submit" value="Submit" />
