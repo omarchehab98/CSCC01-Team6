@@ -20,9 +20,8 @@
     <thead>
       <tr>
         <th th:each="friendlyName : ${friendlyNames}">
-          <span th:text="${friendlyName}"></span>
-          <form action="#" th:action="@{/templates/__${templateModelName}__?sort=assessmentLanguageId}" th:object="${friendlyName}" method="post">
-            <input type="submit" value="Sort">
+          <form action="#" method="get">
+            <input type="submit" name="sort" th:value="${friendlyName}">
           </form>
         </th>
       </tr>
