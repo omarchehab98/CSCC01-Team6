@@ -11,15 +11,15 @@ public class Query {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private String path;
-	private String query;
+	private String template;
+	private String queryString;
 
 	public Query() {}
 	
-	public Query(String name, String query, String path) {
+	public Query(String name, String template, String queryString) {
 		this.name = name;
-		this.path = path;
-		this.query = query;
+		this.template = template;
+		this.queryString = queryString;
 	}
 	
 	public Long getId() {
@@ -37,25 +37,25 @@ public class Query {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getQuery() {
-		return this.query;
-	}
-	
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	
-	public String getPath() {
-		return this.path;
-	}
-	
-	public void setPath(String path) {
-		this.path = path;
-	}
 
+	public String getTemplate() {
+		return this.template;
+	}
+	
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+	
+	public String getQueryString() {
+		return this.queryString;
+	}
+	
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
+	}
+	
 	public String getRoute() {
-		return this.path + '?' + this.query;
+		return String.format("/templates/%s?%s", this.template, this.queryString);
 	}
 
 	@Override

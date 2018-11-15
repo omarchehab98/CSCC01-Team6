@@ -1,16 +1,19 @@
 package team6.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import team6.models.Organization;
 import team6.models.Query;
 import team6.repositories.QueryRepository;
+import team6.throwables.QueryNotFoundException;
 
 @Controller
 public class QueryController {
@@ -21,19 +24,52 @@ public class QueryController {
     public String readAllView(Model model) {
         Iterable<Query> queries = queryRepository.findAll(); 
         model.addAttribute("queries", queries);
-        return "queries/read-queries";
+        return "queries/read-list";
     }
     
     @GetMapping("/queries/create")
     public String createView(Model model) {
+        model.addAttribute("isCreate", true);
         model.addAttribute("query", new Query());
-        return "queries/create";
+        return "queries/upsert";
+    }
+
+    @GetMapping("/queries/{id}")
+    public String readByIdView(@PathVariable String id, Model model) {
+        try {
+            Long queryId = Long.parseLong(id);
+            Optional<Query> query = queryRepository.findById(queryId);
+            model.addAttribute("query", query.get());
+            return "queries/read-single.html";
+
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new QueryNotFoundException();
+        }
     }
 
     @PostMapping("/queries")
-    public String saveQuery(Model model, @ModelAttribute Query query){
+    public String create(@ModelAttribute Query query){
         queryRepository.save(query);
-        return readAllView(model);
+        return "redirect:/queries";
     }
     
+    @GetMapping("/queries/{id}/update")
+    public String updateByIdView(@PathVariable String id, Model model) {
+        try {
+            Long queryId = Long.parseLong(id);
+            Optional<Query> query = queryRepository.findById(queryId);
+            model.addAttribute("isCreate", false);
+            model.addAttribute("query", query.get());
+            return "queries/upsert";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new QueryNotFoundException();
+        }
+    }
+
+    @PostMapping("/queries/{id}")
+    public String updateById(Model model, @ModelAttribute Query query, @PathVariable String id) {
+        queryRepository.save(query);
+        model.addAttribute("query", query);
+        return "redirect:/queries/{id}";
+    }
 }

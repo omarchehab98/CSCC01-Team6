@@ -15,8 +15,7 @@
   <h1>Queries</h1>
 
   <div>
-      <a href="/queries/create">Create</a>
-      
+    <a href="/queries/create">Create</a>
   </div>
 
   <table>
@@ -24,20 +23,27 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Path</th>
-        <th>Query</th>
+        <th>Template</th>
       </tr>
     </thead>
     <tbody>
 
-      <tr th:each="query : ${queries}">
+      <tr>
         <td th:text="${query.id}"></td>
         <td th:text="${query.name}"></td>
-        <td th:text="${query.path}"></td>
-        <td th:text="${query.query}"></td>
+        <td th:text="${query.template}"></td>
+        <td>
+          <a th:href="@{'/queries/' + ${query.id} + '/update'}">
+            Edit
+          </a>
+        </td>
       </tr>
     </tbody>
   </table>
+
+  <h4>Query String</h4>
+
+  <pre th:text="${query.queryString}"></pre>
 </body>
 
 </html>

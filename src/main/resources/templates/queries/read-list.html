@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Queries</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+    <a href="/">Home</a>
+  </div>
+
+  <h1>Queries</h1>
+
+  <div>
+    <a href="/queries/create">Create</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Template</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr th:each="query : ${queries}">
+        <td th:text="${query.id}"></td>
+        <td th:text="${query.name}"></td>
+        <td th:text="${query.template}"></td>
+        <td>
+          <a th:href="@{'/queries/' + ${query.id}}">
+            View
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>
