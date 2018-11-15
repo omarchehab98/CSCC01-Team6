@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Query {
@@ -13,18 +11,15 @@ public class Query {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private String query;
 	private String path;
+	private String query;
 
+	public Query() {}
 	
-	public Query() {
-		
-	}
-	
-	public Query(String qName, String name, String query, String path) {
-		this.name = qName;
-		this.query = query;
+	public Query(String name, String query, String path) {
+		this.name = name;
 		this.path = path;
+		this.query = query;
 	}
 	
 	public Long getId() {
@@ -35,12 +30,16 @@ public class Query {
 		this.id = id;
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	public String getName() {
-		return this.name;
+	public String getQuery() {
+		return this.query;
 	}
 	
 	public void setQuery(String query) {
@@ -54,9 +53,13 @@ public class Query {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
+	public String getRoute() {
+		return this.path + '?' + this.query;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("The Query '%s': %s", this.name, 
-				this.query);
+		return String.format("Query[id=%d,name=%s]%n", this.id, this.name);
 	}
 }
