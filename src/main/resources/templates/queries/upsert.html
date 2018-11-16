@@ -484,14 +484,16 @@
                 },
             },
 
-            data: function () {
+            data() {
                 return {
                     operator: '',
+                    lhsIsNumber: false,
+                    rhsIsNumber: false,
                 };
             },
 
             computed: {
-                comparisonOperator: function() {
+                comparisonOperator() {
                     return this.value.$eq ||
                         this.value.$ne ||
                         this.value.$gt ||
@@ -501,7 +503,7 @@
                         this.value.$like;
                 },
 
-                logicalOperator: function() {
+                logicalOperator() {
                     return this.value.$and ||
                         this.value.$or ||
                         this.value.$not ||
@@ -509,8 +511,29 @@
                 },
             },
 
+            created() {
+                if (this.comparisonOperator) {
+                    this.lhsIsNumber = typeof this.comparisonOperator[0] === 'number';
+                    this.rhsIsNumber = typeof this.comparisonOperator[1] === 'number';
+                }
+            },
+
+            watch: {
+                lhsIsNumber() {
+                    if (this.comparisonOperator && (typeof this.comparisonOperator[0] === 'number' ^ this.lhsIsNumber)) {
+                        Vue.set(this.comparisonOperator, 0, this.lhsIsNumber ? 0 : "");
+                    }
+                },
+
+                rhsIsNumber() {
+                    if (this.comparisonOperator && (typeof this.comparisonOperator[1] === 'number' ^ this.rhsIsNumber)) {
+                        Vue.set(this.comparisonOperator, 1, this.rhsIsNumber ? 0 : "");
+                    }
+                },
+            },
+
             methods: {
-                add: function () {
+                add() {
                     switch (this.operator) {
                         case "$eq":
                         case "$ne":
@@ -534,7 +557,7 @@
                     }
                 },
 
-                remove: function() {
+                remove() {
                     Object.keys(this.value)
                         .map(key => {
                             this.value[key] = undefined;
@@ -546,7 +569,21 @@
                 <div v-bind:style="{ 'margin-left': (depth * 30) + 'px' }">
                     <input
                         v-if="comparisonOperator"
+                        v-model="lhsIsNumber"
+                        type="checkbox"
+                    />
+
+                    <input
+                        v-if="lhsIsNumber && comparisonOperator"
+                        v-model.number="comparisonOperator[0]"
+                        type="number"
+                        placeholder="Number"
+                    />
+
+                    <input
+                        v-if="!lhsIsNumber && comparisonOperator"
                         v-model="comparisonOperator[0]"
+                        placeholder="Text"
                         list="autocomplete-columns"
                     />
 
@@ -608,9 +645,23 @@
                     </button>
 
                     <input
-                        v-if="comparisonOperator && comparisonOperator.length > 1"
+                        v-if="!rhsIsNumber && comparisonOperator && comparisonOperator.length > 1"
                         v-model="comparisonOperator[1]"
+                        placeholder="Text"
                         list="autocomplete-columns"
+                    />
+
+                    <input
+                        v-if="rhsIsNumber && comparisonOperator && comparisonOperator.length > 1"
+                        v-model.number="comparisonOperator[1]"
+                        type="number"
+                        placeholder="Number"
+                    />
+
+                    <input
+                        v-if="comparisonOperator && comparisonOperator.length > 1"
+                        v-model="rhsIsNumber"
+                        type="checkbox"
                     />
 
                     <input-boolean-expression
@@ -680,7 +731,7 @@
 
             computed: {
                 queryStringComputed: {
-                    get: function () {
+                    get() {
                         const queryString = [];
                         const select = this.parameterSelect.map(({ value }) => value).join(',');
                         if (select) {
@@ -712,55 +763,55 @@
             },
 
             methods: {
-                setIsEditingQueryString: function (isEditingQueryString) {
+                setIsEditingQueryString(isEditingQueryString) {
                     this.isEditingQueryString = isEditingQueryString;
                 },
 
-                pushParameterSelect: function () {
+                pushParameterSelect() {
                     this.parameterSelect.push({value: this.getAttributeName(0)});
                 },
 
-                popParameterSelect: function () {
+                popParameterSelect() {
                     this.parameterSelect.pop();
                 },
                 
-                pushParameterSort: function () {
+                pushParameterSort() {
                     this.parameterSort.push({value: this.getAttributeName(0)});
                 },
 
-                popParameterSort: function () {
+                popParameterSort() {
                     this.parameterSort.pop();
                 },
                 
-                pushParameterJoin: function () {
+                pushParameterJoin() {
                     this.parameterJoin.push({value: this.getTemplateName(0)});
                 },
 
-                popParameterJoin: function () {
+                popParameterJoin() {
                     this.parameterJoin.pop();
                 },
                 
-                getAttributeCount: function () {
+                getAttributeCount() {
                     return this[this.template + 'AttributeNames'].length;
                 },
 
-                getAttributeName: function (index) {
+                getAttributeName(index) {
                     return this[this.template + 'AttributeNames'][index];
                 },
 
-                getAttributeFriendlyName: function (index) {
+                getAttributeFriendlyName(index) {
                     return this[this.template + 'FriendlyNames'][index];
                 },
                 
-                getTemplateCount: function () {
+                getTemplateCount() {
                     return this.templateNames.length;
                 },
 
-                getTemplateName: function (index) {
+                getTemplateName(index) {
                     return this.templateNames[index];
                 },
 
-                getTemplateFriendlyName: function (index) {
+                getTemplateFriendlyName(index) {
                     return this.templateNames[index];
                 },
             },
