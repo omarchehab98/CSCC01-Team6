@@ -101,6 +101,13 @@
                     >
                     </query-sort-direction-parameter>
 
+                    <query-where-parameter
+                        v-bind="{
+                            value: parameterWhere,
+                        }"
+                    >
+                    </query-where-parameter>
+
                     <query-group-parameter
                         v-bind="{
                             value: parameterGroup,
@@ -127,13 +134,12 @@
                 <!-- Code Tab -->
                 <div v-bind:style="{ display: (isEditingQueryString ? 'block' : 'none') }">
                     <label>
-                        Query String*
+                        Query String
                         <br />
                         <textarea
                             id="queryString"
                             name="queryString"
                             v-model="queryStringComputed"
-                            required
                         >
                         </textarea>
                     </label>
@@ -281,6 +287,23 @@
             `,
         });
         
+        Vue.component('query-where-parameter', {
+            props: {
+                value: Object,
+            },
+
+            template: `
+                <div>
+                    <label>
+                        Where
+                    </label>
+                    
+                    <input-boolean-expression v-bind="{ value }">
+                    </input-boolean-expression>
+                </div>
+            `,
+        });
+
         Vue.component('query-group-parameter', {
             props: {
                 value: Object,
@@ -422,6 +445,163 @@
             `,
         });
 
+        Vue.component('input-boolean-expression', {
+            props: {
+                value: Object,
+                depth: {
+                    type: Number,
+                    default: 0,
+                },
+            },
+
+            data: function () {
+                return {
+                    operator: '',
+                };
+            },
+
+            computed: {
+                comparisonOperator: function() {
+                    return this.value.$eq ||
+                        this.value.$ne ||
+                        this.value.$gt ||
+                        this.value.$gte ||
+                        this.value.$lt ||
+                        this.value.$lte ||
+                        this.value.$like;
+                },
+
+                logicalOperator: function() {
+                    return this.value.$and ||
+                        this.value.$or ||
+                        this.value.$not ||
+                        this.value.$nor;
+                },
+            },
+
+            methods: {
+                add: function () {
+                    switch (this.operator) {
+                        case "$eq":
+                        case "$ne":
+                        case "$gt":
+                        case "$gte":
+                        case "$lt":
+                        case "$lte":
+                        case "$like":
+                            Vue.set(this.value, this.operator, ["", ""]);
+                            break;
+
+                        case "$and":
+                        case "$or":
+                        case "$nor":
+                            Vue.set(this.value, this.operator, [{}, {}]);
+                            break;
+
+                        case "$not":
+                            Vue.set(this.value, this.operator, [{}]);
+                            break;
+                    }
+                },
+
+                remove: function() {
+                    Object.keys(this.value)
+                        .map(key => {
+                            this.value[key] = undefined;
+                        });
+                },
+            },
+            
+            template: `
+                <div v-bind:style="{ 'margin-left': (depth * 30) + 'px' }">
+                    <input
+                        v-if="comparisonOperator"
+                        v-model="comparisonOperator[0]"
+                    />
+
+                    <input-boolean-expression
+                        v-if="logicalOperator && logicalOperator.length > 1"
+                        v-bind="{
+                            value: logicalOperator[0],
+                            depth: depth + 1,
+                        }"
+                    >
+                    </input-boolean-expression>
+
+                    <!-- Comparison Operators -->
+                    <em v-if="value.$eq">Equal</em>
+                    <em v-else-if="value.$ne">Not Equal</em>
+                    <em v-else-if="value.$gt">Greater Than</em>
+                    <em v-else-if="value.$gte">Greater Than Or Equal</em>
+                    <em v-else-if="value.$lt">Less Than</em>
+                    <em v-else-if="value.$lte">Less Than Or Equal</em>
+                    <em v-else-if="value.$like">Like (regex)</em>
+                    
+                    <!-- Logical Operators -->
+                    <em v-else-if="value.$and">And</em>
+                    <em v-else-if="value.$or">Or</em>
+                    <em v-else-if="value.$not">Not</em>
+                    <em v-else-if="value.$nor">Nor</em>
+
+                    <!-- Empty Leaf Node -->
+                    <div v-else>
+                        <select v-model="operator">
+                            <option></option>
+                            <option value="$eq">Equal</option>
+                            <option value="$ne">Not Equal</option>
+                            <option value="$gt">Greater Than</option>
+                            <option value="$gte">Greater Than Or Equal</option>
+                            <option value="$lt">Less Than</option>
+                            <option value="$lte">Less Than Or Equal</option>
+                            <option value="$like">Like (regex)</option>
+                            <option value="$and">And</option>
+                            <option value="$or">Or</option>
+                            <option value="$not">Not</option>
+                            <option value="$nor">Nor</option>
+                        </select>
+                        <button
+                            v-if="operator"
+                            v-on:click="add()"
+                            type="button"
+                        >
+                            Add
+                        </button>
+                    </div>
+
+                    <button
+                        v-if="comparisonOperator || logicalOperator"
+                        v-on:click="remove()"
+                        type="button"
+                    >
+                        Remove
+                    </button>
+
+                    <input
+                        v-if="comparisonOperator && comparisonOperator.length > 1"
+                        v-model="comparisonOperator[1]"
+                    />
+
+                    <input-boolean-expression
+                        v-if="logicalOperator && logicalOperator.length > 1"
+                        v-bind="{
+                            value: logicalOperator[1],
+                            depth: depth + 1,
+                        }"
+                    >
+                    </input-boolean-expression>
+
+                    <input-boolean-expression
+                        v-if="logicalOperator && logicalOperator.length === 1"
+                        v-bind="{
+                            value: logicalOperator[0],
+                            depth: depth + 1,
+                        }"
+                    >
+                    </input-boolean-expression>
+                </div>
+            `,
+        })
+
         function computeParametersFromQueryString(queryString) {
             const {
                 select,
@@ -430,7 +610,7 @@
                 where,
                 group,
                 join,
-            } = queryString
+            } = (queryString || '')
                 .split('&')
                 .map((param) => param.split('=').map(decodeURIComponent))
                 .reduce((result, [ key, value ]) => ({
@@ -462,7 +642,7 @@
             
             data: {
                 ...data,
-                ...computeParametersFromQueryString(data.queryString || ''),
+                ...computeParametersFromQueryString(data.queryString),
                 isEditingQueryString: false,
             },
 
