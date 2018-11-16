@@ -10,9 +10,13 @@
 <body>
   <div>
     <a href="/">Home</a>
+
+    •
+    
+    <a href="/queries">Queries</a>
   </div>
 
-  <h1>Queries</h1>
+  <h1 th:text="${query.name}"></h1>
 
   <div>
     <a href="/queries/create">Create</a>
