@@ -145,6 +145,16 @@
                     </label>
                 </div>
             </div>
+
+            <input-datalist
+                v-bind="{
+                    id: 'autocomplete-columns',
+                    getCount: getAttributeCount,
+                    getName: (index) => '$' + getAttributeName(index) + '$',
+                    getValue: getAttributeFriendlyName,
+                }"
+            >
+            </input-datalist>
         </div>
 
         <br />
@@ -445,6 +455,26 @@
             `,
         });
 
+        Vue.component('input-datalist', {
+            props: {
+                id: String,
+                getCount: Function,
+                getName: Function,
+                getValue: Function,
+            },
+
+            template: `
+                <datalist v-bind:id="id">
+                    <option
+                        v-for="index in getCount()"
+                        v-bind:value="getName(index - 1)"
+                    >
+                        {{ getValue(index - 1) }}
+                    </option>
+                </datalist>
+            `,
+        });
+
         Vue.component('input-boolean-expression', {
             props: {
                 value: Object,
@@ -517,6 +547,7 @@
                     <input
                         v-if="comparisonOperator"
                         v-model="comparisonOperator[0]"
+                        list="autocomplete-columns"
                     />
 
                     <input-boolean-expression
@@ -579,6 +610,7 @@
                     <input
                         v-if="comparisonOperator && comparisonOperator.length > 1"
                         v-model="comparisonOperator[1]"
+                        list="autocomplete-columns"
                     />
 
                     <input-boolean-expression
