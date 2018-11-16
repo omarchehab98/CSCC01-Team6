@@ -55,7 +55,11 @@ public class Query {
 	}
 	
 	public String getRoute() {
-		return String.format("/templates/%s?%s", this.template, this.queryString);
+		return String.format(
+			"/templates/%s?%s",
+			this.template != null ? this.template : "",
+			this.queryString != null ? this.queryString : ""
+		);
 	}
 
 	@Override
