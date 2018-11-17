@@ -2,22 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>TEQLIP</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:replace="../fragments/head.html"></th:block>
+    <title>TEQ LIP</title>
 </head>
-
 <body>
-    <h1>TEQLIP</h1>
+    <th:block th:replace="../fragments/navigation.html"></th:block>
 
-    <a href="/organizations">Organizations</a>
+    <style>
+    .home--links {
+        display: flex;
+        margin-top: 30px;
+    }
 
-    <br>
+    .home--links-item {
+        width: 0;
+        flex-grow: 1;
+        padding: 0 15px;
+        text-align: center;
+    }
 
-    <a href="/templates">Templates</a>
+    .home--links-item h3 {
+        font-size: 2rem;
+    }
 
-    <br>
+    .home--links-item a {
+        display: inline-block;
+        color: inherit;
+        text-decoration: none;
+    }
 
-    <a href="/queries">Queries</a>
+    .home--links-item i {
+        font-size: 7.5rem;
+        transition: 0.32s transform;
+    }
+
+    .home--links-item a:hover i {
+        transform: scale(1.16);
+    }
+
+    .home--links-item p {
+        text-align: left;
+    }
+    </style>
+
+    <main>
+        <h1>TEQ LIP</h1>
+        <h2>Toronto East Quadrant Local Immigration Partnership</h2>
+
+        <div class="home--links">
+            <section class="home--links-item">
+                <a href="/organizations">
+                    <h3>Partners</h3>
+
+                    <i class="fal fa-handshake-alt"></i>
+                </a>
+            </section>
+
+            <section class="home--links-item">
+                <a href="/templates">
+                    <h3>Data</h3>
+
+                    <i class="fal fa-archive"></i>
+                </a>
+            </section>
+
+            <section class="home--links-item">
+                <a href="/queries">
+                    <h3>Queries</h3>
+                    
+                    <i class="fal fa-bolt"></i>
+                </a>
+            </section>
+        </div>
+    </main>
 </body>
 
 </html>
