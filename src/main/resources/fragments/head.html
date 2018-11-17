@@ -8,37 +8,48 @@
 
 body {
     font-family: 'Lato', sans-serif;
+    color: #222f3e;
     font-size: 16px;
     margin: 0;
     display: flex;
+    font-weight: lighter;
 }
 
-main {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
+.container {
     padding: 0 10px;
     margin: 0 auto;
     width: 100%;
 }
 
 @media (min-width: 576px) {
-    main {
+    .container {
         max-width: 540px;
     }
 }
 
 @media (min-width: 768px) {
-    main {
+    .container {
         max-width: 720px;
     }
 }
 
 @media (min-width: 992px) {
-    main {
+    .container {
         max-width: 960px;
     }
 }
 
 @media (min-width: 1200px) {
-    main {
+    .container {
         max-width: 1140px;
     }
 }
