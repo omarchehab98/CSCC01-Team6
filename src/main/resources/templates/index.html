@@ -31,7 +31,6 @@
     
     .home--body {
         background: #ebf0f5;
-        padding: 3rem 0;
     }
 
     /* Home Card */
@@ -39,12 +38,13 @@
     .home--card {
         background: #ffffff;
         display: flex;
-        flex-direction: column;
         width: 100%;
         padding: 1rem;
         border-radius: .1875rem;
         box-shadow: 0 1px 5px 0 rgba(45,62,80,.12);
         position: relative;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
 
     /* Home Links */
@@ -84,6 +84,110 @@
 
     .home--links-item p {
         text-align: left;
+    }
+
+    /* Home Tasks */
+
+    /* Home Task Checkmark */
+
+    .home--task-check {
+        color: #8395a7;
+        font-size: 2rem;
+        padding: 0 1rem;
+    }
+
+    .home--task[data-iscomplete] .home--task-check {
+        color: #10ac84;
+    }
+
+    /* Home Task Body */
+
+    .home--task-body {
+        flex-grow: 1;
+        padding: 0 1rem;
+    }
+
+    .home--task-body-heading {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-heading {
+        text-decoration: line-through;
+    }
+
+    /* Home Task Action */
+
+    .home--task-action {
+        display: flex;
+        border-top: 1px dashed #c8d6e5;
+    }
+
+    .home--task-action-description {
+        margin-left: 2rem;
+        flex-grow: 1;
+    }
+
+    .home--task-action-description-heading {
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    .home--task[data-iscomplete] .home--task-action-description-heading {
+        text-decoration: line-through;
+    }
+    
+    .home--task-action-button {
+        padding-top: 2rem;
+    }
+
+    /* Home Task Action Show/Hide */
+
+    .home--task-body-toggleactionvisibility,
+    .home--task-body-showactionvisibility,
+    .home--task-body-hideactionvisibility {
+        display: none;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-showactionvisibility,
+    .home--task[data-iscomplete] .home--task-body-hideactionvisibility {
+        display: none;
+        cursor: pointer;
+        text-align: center;
+        color: #2e86de;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-showactionvisibility:hover,
+    .home--task[data-iscomplete] .home--task-body-hideactionvisibility:hover {
+        color: #1e6dbb;
+        text-decoration: underline;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-showactionvisibility,
+    .home--task[data-iscomplete] .home--task-body-hideactionvisibility {
+        display: block;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility {
+        display: none;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-action {
+        display: none;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-showactionvisibility {
+        display: none;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-showactionvisibility {
+        padding-top: 1rem;
+        border-top: 1px dashed #c8d6e5;
+        display: block;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-hideactionvisibility {
+        display: none;
     }
     </style>
 
@@ -126,6 +230,76 @@
                         
                         <i class="fal fa-bolt"></i>
                     </a>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${organizations.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Add a Partner Organization
+                    </h3>
+
+                    <blockquote
+                        cite="https://scarboroughlip.com/home"
+                        style="margin: 0;"
+                    >
+                        <p>
+                            TEQ LIP is a community-based partnership project that
+                            involves diverse service providers, stakeholders and
+                            newcomers in the planning and development of
+                            collaborative and innovative solutions to enhance
+                            newcomer settlement in Scarborough while promoting
+                            efficient use of resources.
+                        </p>
+                    </blockquote>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Invite your first Partner Organization
+                            </h4>
+
+                            <p>
+                                Allow them to upload their data to the system.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                href="/organizations/create"
+                            >
+                                Add Partner
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
                 </div>
             </section>
         </div>
