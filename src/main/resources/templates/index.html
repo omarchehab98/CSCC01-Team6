@@ -5,24 +5,65 @@
     <th:block th:replace="../fragments/head.html"></th:block>
     <title>TEQ LIP</title>
 </head>
-<body>
+<body style="background: #ebf0f5;">
     <th:block th:replace="../fragments/navigation.html"></th:block>
 
     <style>
+    /* Home */
+    
+    .home {
+        width: 100%;
+    }
+
+    /* Home Header */
+    
+    .home--header {
+        background: #ffffff;
+        border-bottom: 2px solid #c8d6e5;
+        padding: 0.75rem;
+    }
+
+    .home--header-heading {
+        margin: 2rem 0;
+    }
+
+    /* Home Body */
+    
+    .home--body {
+        background: #ebf0f5;
+        padding: 3rem 0;
+    }
+
+    /* Home Card */
+
+    .home--card {
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 1rem;
+        border-radius: .1875rem;
+        box-shadow: 0 1px 5px 0 rgba(45,62,80,.12);
+        position: relative;
+    }
+
+    /* Home Links */
+
     .home--links {
         display: flex;
-        margin-top: 30px;
+        flex-direction: row;
     }
 
     .home--links-item {
         width: 0;
         flex-grow: 1;
-        padding: 0 15px;
+        padding: 0 1rem;
         text-align: center;
     }
 
-    .home--links-item h3 {
+    .home--links-item-heading {
         font-size: 2rem;
+        margin: 1.25rem 0;
     }
 
     .home--links-item a {
@@ -32,8 +73,9 @@
     }
 
     .home--links-item i {
-        font-size: 7.5rem;
+        font-size: 5rem;
         transition: 0.32s transform;
+        margin-bottom: 1.25rem;
     }
 
     .home--links-item a:hover i {
@@ -45,33 +87,46 @@
     }
     </style>
 
-    <main>
-        <h1>TEQ LIP</h1>
-        <h2>Toronto East Quadrant Local Immigration Partnership</h2>
+    <main class="home">
+        <header class="home--header">
+            <div class="container">
+                <h1 class="home--header-heading">
+                    Getting started with TEQ LIP
+                </h1>
+            </div>
+        </header>
 
-        <div class="home--links">
-            <section class="home--links-item">
-                <a href="/organizations">
-                    <h3>Partners</h3>
+        <div class="home--body">
+            <section class="home--card home--links container">
+                <div class="home--links-item">
+                    <a href="/organizations">
+                        <h3 class="home--links-item-heading">
+                            Partners
+                        </h3>
 
-                    <i class="fal fa-handshake-alt"></i>
-                </a>
-            </section>
+                        <i class="fal fa-handshake-alt"></i>
+                    </a>
+                </div>
 
-            <section class="home--links-item">
-                <a href="/templates">
-                    <h3>Data</h3>
+                <div class="home--links-item">
+                    <a href="/templates">
+                        <h3 class="home--links-item-heading">
+                            Data
+                        </h3>
 
-                    <i class="fal fa-archive"></i>
-                </a>
-            </section>
+                        <i class="fal fa-archive"></i>
+                    </a>
+                </div>
 
-            <section class="home--links-item">
-                <a href="/queries">
-                    <h3>Queries</h3>
-                    
-                    <i class="fal fa-bolt"></i>
-                </a>
+                <div class="home--links-item">
+                    <a href="/queries">
+                        <h3 class="home--links-item-heading">
+                            Queries
+                        </h3>
+                        
+                        <i class="fal fa-bolt"></i>
+                    </a>
+                </div>
             </section>
         </div>
     </main>
