@@ -12,10 +12,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import team6.repositories.ReportRepository;
+import team6.models.Report;
 
 @Controller
 public class ReportController{
 
     @Autowired
     private ReportRepository reportRepository;
+
+    @PostMapping("/reports")
+    public String createReport(Model model){
+        //todo after the tinyMCE gets implemented
+        return "/";
+    }
+
+    @PostMapping("/reports/update")
+    public String createReport(){
+        //todo after the tinyMCE gets implemented
+        return "/";
+    }
 }
