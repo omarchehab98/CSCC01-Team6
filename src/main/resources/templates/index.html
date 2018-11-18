@@ -96,7 +96,7 @@
         padding: 0 1rem;
     }
 
-    .home--task[data-iscomplete] .home--task-check {
+    [data-iscomplete] .home--task-check {
         color: #10ac84;
     }
 
@@ -112,7 +112,7 @@
         font-weight: bold;
     }
 
-    .home--task[data-iscomplete] .home--task-body-heading {
+    [data-iscomplete] .home--task-body-heading {
         text-decoration: line-through;
     }
 
@@ -133,7 +133,7 @@
         margin-bottom: 0;
     }
 
-    .home--task[data-iscomplete] .home--task-action-description-heading {
+    [data-iscomplete] .home--task-action-description-heading {
         text-decoration: line-through;
     }
     
@@ -149,26 +149,26 @@
         display: none;
     }
 
-    .home--task[data-iscomplete] .home--task-body-showactionvisibility,
-    .home--task[data-iscomplete] .home--task-body-hideactionvisibility {
+    [data-iscomplete] .home--task-body-showactionvisibility,
+    [data-iscomplete] .home--task-body-hideactionvisibility {
         display: none;
         cursor: pointer;
         text-align: center;
         color: #2e86de;
     }
 
-    .home--task[data-iscomplete] .home--task-body-showactionvisibility:hover,
-    .home--task[data-iscomplete] .home--task-body-hideactionvisibility:hover {
+    [data-iscomplete] .home--task-body-showactionvisibility:hover,
+    [data-iscomplete] .home--task-body-hideactionvisibility:hover {
         color: #1e6dbb;
         text-decoration: underline;
     }
 
-    .home--task[data-iscomplete] .home--task-body-showactionvisibility,
-    .home--task[data-iscomplete] .home--task-body-hideactionvisibility {
+    [data-iscomplete] .home--task-body-showactionvisibility,
+    [data-iscomplete] .home--task-body-hideactionvisibility {
         display: block;
     }
 
-    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility {
+    [data-iscomplete] .home--task-body-toggleactionvisibility {
         display: none;
     }
 
@@ -177,23 +177,23 @@
         border-top: 1px dashed #c8d6e5;
     }
 
-    .home--task[data-iscomplete] .home--task-action {
+    [data-iscomplete] .home--task-action {
         display: none;
     }
 
-    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-action {
+    [data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-action {
         display: flex;
     }
 
-    .home--task[data-iscomplete] .home--task-body-hideactionvisibility {
+    [data-iscomplete] .home--task-body-hideactionvisibility {
         display: none;
     }
 
-    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-showactionvisibility {
+    [data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-showactionvisibility {
         display: none;
     }
 
-    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-hideactionvisibility {
+    [data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-hideactionvisibility {
         display: block;
     }
     </style>
@@ -312,7 +312,7 @@
 
             <section
                 class="home--card home--task container"
-                th:attr="data-iscomplete=${clientProfiles.size() > 0 ? 'true' : null}"
+                th:attr="data-iscomplete=${clientProfiles.size() > 0 && nars.size() > 0 ? 'true' : null}"
             >
                 <div class="home--task-check">
                     <i class="fas fa-check-circle"></i>
@@ -338,7 +338,10 @@
                         type="checkbox"
                     >
 
-                    <div class="home--task-action">
+                    <div
+                        class="home--task-action"
+                        th:attr="data-iscomplete=${clientProfiles.size() > 0 ? 'true' : null}"
+                    >
                         <div class="home--task-action-description">
                             <h4 class="home--task-action-description-heading">
                                 Upload your first Client Profile sheet
@@ -347,6 +350,32 @@
                             <p>
                                 Typically filled out by a front desk staff/receptionist
                                 when a client first seeks settlement services.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
+                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}"
+                            >
+                                Upload Sheet
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="home--task-action"
+                        th:attr="data-iscomplete=${nars.size() > 0 ? 'true' : null}"
+                    >
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Upload your first Needs Assesment &amp; Referral Service sheet
+                            </h4>
+
+                            <p>
+                                Typically filled out by a settlement worker when
+                                a client seeks referrals for settlement services.
                             </p>
                         </div>
 
