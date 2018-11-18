@@ -1,55 +1,67 @@
 <!DOCTYPE HTML>
-
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Queries</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <title><th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP</title>
 </head>
-
 <body>
-  <div>
-    <a href="/">Home</a>
+  <th:block th:replace="../fragments/navigation.html"></th:block>
 
-    •
-    
+  <style>
+    .query--header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c8d6e5;
+    }
+  </style>
+
+  <div class="breadcrumbs">
+    <a
+      class="fal fa-chevron-left"
+      href="/queries"
+    ></a>
+
     <a href="/queries">Queries</a>
   </div>
 
-  <h1 th:text="${query.name}"></h1>
+  <main class="container">
+    <header class="query--header">
+      <h1 th:text="${query.name}"></h1>
+  
+      <div style="flex-grow: 1;"></div>
 
-  <div>
-    <a href="/queries/create">Create</a>
-  </div>
+      <a
+        class="btn btn-primary m-left-3"
+        th:href="${query.getRoute()}"
+      >
+        Execute
+      </a>
+      <a
+        class="btn btn-primary m-left-3"
+        th:href="@{'/queries/' + ${query.id} + '/update'}"
+      >
+        Edit
+      </a>
+    </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Template</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <tr>
-        <td th:text="${query.id}"></td>
-        <td th:text="${query.name}"></td>
-        <td th:text="${query.template}"></td>
-        <td>
-          <a th:href="${query.getRoute()}">Execute</a>
-          
-          &nbsp;
-
-          <a th:href="@{'/queries/' + ${query.id} + '/update'}">Edit</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Query String</h4>
-
-  <pre th:text="${query.queryString}"></pre>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>iCare Template</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td th:text="${query.name}"></td>
+            <td th:text="${query.template}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </body>
 
 </html>
