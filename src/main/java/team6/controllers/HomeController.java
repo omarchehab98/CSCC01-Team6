@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import team6.repositories.ClientProfileTemplateRepository;
 import team6.repositories.OrganizationRepository;
+import team6.repositories.QueryRepository;
 
 @Controller
 public class HomeController {
@@ -14,11 +15,14 @@ public class HomeController {
     private OrganizationRepository organizationRepository;
     @Autowired
     private ClientProfileTemplateRepository clientProfileRepository;
+    @Autowired
+    private QueryRepository queryRepository;
 
     @GetMapping("/")
     public String homeView(Model model) {
         model.addAttribute("organizations", organizationRepository.findAll());
         model.addAttribute("clientProfiles", clientProfileRepository.findAll());
+        model.addAttribute("queries", queryRepository.findAll());
         return "index";
     }
 }

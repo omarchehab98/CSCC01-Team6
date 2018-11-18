@@ -323,19 +323,14 @@
                         Upload iCare sheet data
                     </h3>
 
-                    <blockquote
-                        cite="https://scarboroughlip.com/home"
-                        style="margin: 0;"
-                    >
-                        <p>
-                            At the end of every month, each organization
-                            exports their data from their data management system
-                            in the form of one or more iCare template. These
-                            templates are then submitted to the government and
-                            are necessary for the organization to receive
-                            funding.
-                        </p>
-                    </blockquote>
+                    <p>
+                        At the end of every month, each organization
+                        exports their data from their data management system
+                        in the form of one or more iCare template. These
+                        templates are then submitted to the government and
+                        are necessary for the organization to receive
+                        funding.
+                    </p>
 
                     <input
                         id="home--task-body-toggleactionvisibility-1"
@@ -375,6 +370,68 @@
 
                     <label
                         for="home--task-body-toggleactionvisibility-1"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${queries.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Add a query
+                    </h3>
+
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Curabitur ut auctor augue, eu rutrum est. Cras fringilla
+                        lectus sed elementum bibendum.
+                    </p>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-2"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Create your first query
+                            </h4>
+
+                            <p>
+                                Aggregate and analyze all the data in the system.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                href="/queries/create"
+                            >
+                                Add Query
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-2"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-2"
                         class="home--task-body-hideactionvisibility"
                     >
                         Hide completed tasks
