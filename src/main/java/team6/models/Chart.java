@@ -1,10 +1,13 @@
 package team6.models;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Chart {
@@ -13,7 +16,11 @@ public class Chart {
 	private Long id;
 	private String name;
 	private String type;
-	// private 
+	private String[] labels;
+	private int[][] data;
+	private String[] sourceLabels;
+	@OneToMany(mappedBy = "chart", cascade = CascadeType.ALL)
+	private Set<ChartQuery> chartQueries;
 
 	public Long getId() {
 		return id;
@@ -32,6 +39,30 @@ public class Chart {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String[] getLabels() {
+		return labels;
+	}
+	public void setLabels(String[] labels) {
+		this.labels = labels;
+	}
+	public int[][] getData() {
+		return data;
+	}
+	public void setData(int[][] data) {
+		this.data = data;
+	}
+	public String[] getSourceLabels() {
+		return sourceLabels;
+	}
+	public void setSourceLabels(String[] sourceLabels) {
+		this.sourceLabels = sourceLabels;
+	}
+	public Set<ChartQuery> getChartQueries() {
+		return chartQueries;
+	}
+	public void setChartQueries(Set<ChartQuery> chartQueries) {
+		this.chartQueries = chartQueries;
 	}
 
 	@Override

@@ -1,9 +1,13 @@
 package team6.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Query {
@@ -13,6 +17,8 @@ public class Query {
 	private String name;
 	private String template;
 	private String queryString;
+	@OneToMany(mappedBy = "queries", cascade = CascadeType.ALL)
+	private Set<ChartQuery> chartQueries;
 
 	public Query() {}
 	
@@ -54,6 +60,14 @@ public class Query {
 		this.queryString = queryString;
 	}
 	
+	public Set<ChartQuery> getChartQueries() {
+		return chartQueries;
+	}
+
+	public void setChartQueries(Set<ChartQuery> chartQueries) {
+		this.chartQueries = chartQueries;
+	}
+
 	public String getRoute() {
 		return String.format(
 			"/templates/%s?%s",

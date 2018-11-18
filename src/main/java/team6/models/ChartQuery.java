@@ -4,14 +4,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ChartQuery {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Long chartId;
-	private Long queryId;
+	@ManyToOne
+	@JoinColumn(name="chartId")
+	private Chart chart;
+	@ManyToOne
+	@JoinColumn(name="queryId")
+	private Query query;
 
 	public Long getId() {
 		return id;
@@ -19,16 +25,17 @@ public class ChartQuery {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getChartId() {
-		return chartId;
+	public Chart getChart() {
+		return chart;
 	}
-	public void setChartId(Long chartId) {
-		this.chartId = chartId;
+	public void setChart(Chart chart) {
+		this.chart = chart;
 	}
-	public Long getQueryId() {
-		return queryId;
+	public Query getQuery() {
+		return query;
 	}
-	public void setQueryId(Long queryId) {
-		this.queryId = queryId;
+	public void setQuery(Query query) {
+		this.query = query;
 	}
+
 }
