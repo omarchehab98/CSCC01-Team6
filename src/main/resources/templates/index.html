@@ -172,22 +172,29 @@
         display: none;
     }
 
-    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-action {
+    .home--task-body-showactionvisibility {
+        padding-top: 1rem;
+        border-top: 1px dashed #c8d6e5;
+    }
+
+    .home--task[data-iscomplete] .home--task-action {
         display: none;
     }
 
-    .home--task[data-iscomplete] .home--task-body-showactionvisibility {
+    .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-action {
+        display: flex;
+    }
+
+    .home--task[data-iscomplete] .home--task-body-hideactionvisibility {
         display: none;
     }
 
     .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-showactionvisibility {
-        padding-top: 1rem;
-        border-top: 1px dashed #c8d6e5;
-        display: block;
+        display: none;
     }
 
     .home--task[data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-hideactionvisibility {
-        display: none;
+        display: block;
     }
     </style>
 
@@ -296,6 +303,78 @@
 
                     <label
                         for="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${clientProfiles.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Upload iCare sheet data
+                    </h3>
+
+                    <blockquote
+                        cite="https://scarboroughlip.com/home"
+                        style="margin: 0;"
+                    >
+                        <p>
+                            At the end of every month, each organization
+                            exports their data from their data management system
+                            in the form of one or more iCare template. These
+                            templates are then submitted to the government and
+                            are necessary for the organization to receive
+                            funding.
+                        </p>
+                    </blockquote>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-1"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Upload your first Client Profile sheet
+                            </h4>
+
+                            <p>
+                                Typically filled out by a front desk staff/receptionist
+                                when a client first seeks settlement services.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
+                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}"
+                            >
+                                Upload Sheet
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-1"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-1"
                         class="home--task-body-hideactionvisibility"
                     >
                         Hide completed tasks
