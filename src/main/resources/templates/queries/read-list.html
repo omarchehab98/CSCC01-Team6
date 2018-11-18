@@ -15,8 +15,7 @@
   <h1>Queries</h1>
 
   <div>
-      <a href="/queries/create">Create</a>
-      
+    <a href="/queries/create">Create</a>
   </div>
 
   <table>
@@ -24,23 +23,23 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Select</th>
-        <th>From</th>
-        <th>Where</th>
-        <th>GroupBy</th>
-        <th>Sort</th>
+        <th>Template</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
 
       <tr th:each="query : ${queries}">
         <td th:text="${query.id}"></td>
-        <td th:text="${query.queryName}"></td>
-        <td th:text="${query.selectParam}"></td>
-        <td th:text="${query.fromParam}"></td>
-        <td th:text="${query.whereParam}"></td>
-        <td th:text="${query.groupParam}"></td>
-        <td th:text="${query.sortParam}"></td>
+        <td th:text="${query.name}"></td>
+        <td th:text="${query.template}"></td>
+        <td>
+          <a th:href="${query.getRoute()}">Execute</a>
+          
+          &nbsp;
+          
+          <a th:href="@{'/queries/' + ${query.id}}">View</a>
+        </td>
       </tr>
     </tbody>
   </table>

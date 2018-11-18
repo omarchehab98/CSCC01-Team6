@@ -4,31 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Query {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String queryName;
-	private String whereParam;
-	private String sortParam;
-	private String groupParam;
-	private String selectParam;
-	private String fromParam;
+	private String name;
+	private String template;
+	private String queryString;
+
+	public Query() {}
 	
-	public Query() {
-		
-	}
-	
-	public Query(String qName, String wP, String gP, String sP, String fP) {
-		this.queryName = qName;
-		this.whereParam = wP;
-		this.groupParam = gP;
-		this.selectParam = sP;
-		this.fromParam = fP;
+	public Query(String name, String template, String queryString) {
+		this.name = name;
+		this.template = template;
+		this.queryString = queryString;
 	}
 	
 	public Long getId() {
@@ -39,57 +30,40 @@ public class Query {
 		this.id = id;
 	}
 	
-	public void setQueryName(String name) {
-		this.queryName = name;
+	public String getName() {
+		return this.name;
 	}
 	
-	public String getQueryName() {
-		return this.queryName;
-	}
-	
-	public void setWhereParam(String whereParam) {
-		this.whereParam = whereParam;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getWhereParam() {
-		return this.whereParam;
+	public String getTemplate() {
+		return this.template;
 	}
 	
-	public void setSortParam(String sortParam) {
-		this.sortParam = sortParam;
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 	
-	public String getSortParam() {
-		return this.sortParam;
+	public String getQueryString() {
+		return this.queryString;
 	}
 	
-	public void setGroupParam(String groupParam) {
-		this.groupParam = groupParam;
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
 	}
 	
-	public String getGroupParam() {
-		return this.groupParam;
+	public String getRoute() {
+		return String.format(
+			"/templates/%s?%s",
+			this.template != null ? this.template : "",
+			this.queryString != null ? this.queryString : ""
+		);
 	}
-	
-	public void setSelectParam(String selectParam) {
-		this.selectParam = selectParam;
-	}
-	
-	public String getSelectParam() {
-		return this.selectParam;
-	}
-	
-	public void setFromParam(String fromParam) {
-		this.fromParam = fromParam;
-	}
-	
-	public String getFromParam() {
-		return this.fromParam;
-	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("The Query '%s': %s%s%s%s%s", this.queryName, 
-				this.selectParam, this.fromParam, this.whereParam, this.groupParam, this.sortParam);
+		return String.format("Query[id=%d,name=%s]%n", this.id, this.name);
 	}
 }
