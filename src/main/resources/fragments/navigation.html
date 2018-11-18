@@ -1,0 +1,69 @@
+<style>
+/* Navigation */
+.navigation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    background: #222f3e;
+    border-top: 4px solid #ff9f43;
+    height: 60px;
+}
+
+body {
+    margin-top: 60px;
+}
+
+/* Navigation Link */
+
+.navigation--link {
+    color: #c8d6e5;
+    font-weight: lighter;
+    text-decoration: none;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    font-size: 1.16rem;
+}
+
+.navigation--link:hover {
+    background: #3c4958;
+}
+
+.navigation--link i {
+    width: 40px;
+    text-align: center;
+}
+
+.navigation--link span {
+    flex-grow: 1;
+}
+
+</style>
+<nav class="navigation">
+    <a
+        class="navigation--link"
+        href="/organizations"
+    >
+        <i class="fas fa-handshake-alt"></i>
+
+        <span>Partners</span>
+    </a>
+    <a
+        class="navigation--link"
+        href="/templates"
+    >
+        <i class="fas fa-archive"></i>
+
+        <span>Data</span>
+    </a>
+    <a
+        class="navigation--link"
+        href="/queries"
+    >
+        <i class="fas fa-bolt"></i>
+
+        <span>Queries</span>
+    </a>
+</nav>
