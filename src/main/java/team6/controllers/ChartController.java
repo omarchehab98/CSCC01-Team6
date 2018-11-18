@@ -23,17 +23,24 @@ import team6.util.JSONStringHelper;
 @Controller
 public class ChartController {
 	
-    @GetMapping("/charts")
+    @GetMapping("/charts/{id}/embed")
     public String readAllView(Model model) {
 	// Type for the chart, must be one of Bar, Line, or Pie
-	// String type = "Bar";
+	String type = "Bar";
+
 	// List containing all the labels for the chart
-	String[] labels = {"Apple", "Orange", "Banana"};
+	// i.e. String[] labels = {"Label1", "Label2", "Label3"};
+	String[] labels = {};
+
 	// List containing the datasets for the chart, each dataset needs a datapoint for each label
-	int[][] data = {{1, 2, 3},{4,5,6}};
+	// i.e. int[][] data = {{1, 2, 3}, {4, 5, 6}};
+	int[][] data = {};
+
 	// List containing the labels for each dataset, need one label for each dataset
-	String[] sourceLabels = {"Fruit","Bagels"};
-	model.addAttribute("type", "bar");
+	// i.e. String[] sourceLabels = {"Fruit","Bagels"};
+	String[] sourceLabels = {};
+
+	model.addAttribute("type", type);
 	model.addAttribute("labels", labels);
 	model.addAttribute("data", data);
 	model.addAttribute("sourceLabels", sourceLabels);
