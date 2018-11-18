@@ -25,11 +25,15 @@ import org.springframework.web.multipart.MultipartFile;
 import team6.factories.TemplateFactoryWrapper;
 import team6.models.ClientProfileTemplate;
 import team6.models.CommunityConnectionsTemplate;
+import team6.models.EmploymentTemplate;
+import team6.models.InformationAndOrientationTemplate;
 import team6.models.NARsTemplate;
 import team6.models.Organization;
 import team6.models.Template;
 import team6.repositories.ClientProfileTemplateRepository;
 import team6.repositories.CommunityConnectionsTemplateRepository;
+import team6.repositories.EmploymentTemplateRepository;
+import team6.repositories.InformationAndOrientationTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
@@ -51,6 +55,10 @@ public class TemplateController {
     private ClientProfileTemplateRepository clientProfileTemplateRepository;
     @Autowired
     private CommunityConnectionsTemplateRepository communityConnectionsTemplateRepository;
+    @Autowired
+    private EmploymentTemplateRepository employmentTemplateRepository;
+    @Autowired
+    private InformationAndOrientationTemplateRepository informationAndOrientationTemplateRepository;
 
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -131,6 +139,24 @@ public class TemplateController {
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Community Connections");
         return templateReadList(model, select, where, sort, sortDirection, group, join, new CommunityConnectionsTemplate(), communityConnectionsTemplateRepository);
+    }
+
+    @GetMapping("/templates/employment")
+    public String readAllEmploymentView(Model model, @RequestParam Optional<String> select,
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
+            @RequestParam Optional<String> join) throws IllegalTemplateException {
+        model.addAttribute("templateName", "Employment");
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new EmploymentTemplate(), employmentTemplateRepository);
+    }
+
+    @GetMapping("/templates/informationAndOrientation")
+    public String readAllInformationAndOrientationView(Model model, @RequestParam Optional<String> select,
+            @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
+            @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
+            @RequestParam Optional<String> join) throws IllegalTemplateException {
+        model.addAttribute("templateName", "Information and Orientation");
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new InformationAndOrientationTemplate(), informationAndOrientationTemplateRepository);
     }
 
     private String templateReadList(Model model, @RequestParam Optional<String> select,
@@ -255,6 +281,12 @@ public class TemplateController {
         case "CommunityConnectionsTemplate":
         case "communityConnections":
         	return communityConnectionsTemplateRepository;
+        case "EmploymentTemplate":
+        case "employment":
+        	return employmentTemplateRepository;
+        case "InformationAndOrientationTemplate":
+        case "informationAndOrientation":
+        	return informationAndOrientationTemplateRepository;
         }
         throw new IllegalTemplateException(String.format("invalid template: %s", templateType));
     }
