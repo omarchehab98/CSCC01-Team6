@@ -25,12 +25,18 @@ public class ChartController {
 	
     @GetMapping("/charts")
     public String readAllView(Model model) {
-	model.addAttribute("type", "bar");
+	// Type for the chart, must be one of Bar, Line, or Pie
+	// String type = "Bar";
+	// List containing all the labels for the chart
 	String[] labels = {"Apple", "Orange", "Banana"};
-	int[] data = {1, 2, 3};
+	// List containing the datasets for the chart, each dataset needs a datapoint for each label
+	int[][] data = {{1, 2, 3},{4,5,6}};
+	// List containing the labels for each dataset, need one label for each dataset
+	String[] sourceLabels = {"Fruit","Bagels"};
+	model.addAttribute("type", "bar");
 	model.addAttribute("labels", labels);
 	model.addAttribute("data", data);
-	model.addAttribute("dataLabel", "Fruit");
+	model.addAttribute("sourceLabels", sourceLabels);
         return "reports/chart";
     }
 }

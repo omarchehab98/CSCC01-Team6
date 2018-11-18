@@ -12,18 +12,20 @@
   <canvas id="myChart" width="100" height="100"></canvas>
   <script th:inline="javascript">
   var ctx = document.getElementById("myChart");
-  var chartType = /*[[${type}]]*/;
-  var chartLabels = /*[[${labels}]]*/;
-  var chartData = /*[[${data}]]*/;
-  var dataLabel = /*[[${dataLabel}]]*/
   var myChart = new Chart(ctx, {
-      type: chartType,
+      type: /*[[${type}]]*/,
       data: {
-          labels: chartLabels,
-          datasets: [{
-              label: dataLabel,
-              data: chartData
-          }]
+          labels: /*[[${labels}]]*/,
+          datasets: [
+            /*<![CDATA[*/
+              /*[# th:each="index : ${#numbers.sequence(0, #arrays.length(data)-1)}"]*/
+                {
+                  label: /*[[${sourceLabels[index]}]]*/,
+                  data: /*[[${data[index]}]]*/
+                },
+              /*[/]*/
+            /*]]>*/
+          ]
       },
       options: {
           scales: {
