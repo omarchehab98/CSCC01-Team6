@@ -1,71 +1,141 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Create • Query</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <title><th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP</title>
 </head>
-<body>
-    <div>
-        <a href="/">Home</a>
+<body class="body-color">
+  <th:block th:replace="../fragments/navigation.html"></th:block>
 
-        •
-    
-        <a href="/queries">Queries</a>
+  <style>
+    .query--header {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border-bottom: 1px solid #c8d6e5;
+    }
 
-        <span th:if="${!isCreate}">•</span>
+    .query--meta {
+        display: flex;
+    }
 
-        <a th:if="${!isCreate}" th:href="@{'/queries/' + ${query.id}}" th:text="${query.name}"></a>
-    </div>
-    
+    .query--meta-column {
+        margin: 1.25rem;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    .query--builder-tabs {
+        text-align: right;
+    }
+
+    .query--where-expression {
+        display: inline-block;
+        line-height: 3;
+    }
+
+    .query--where-expression-add {
+        display: flex;
+        align-items: center;
+    }
+
+    .query--where-expression-remove {
+        display: none;
+    }
+
+    .query--where-expression:hover .query--where-expression-remove {
+        display: initial;
+    }
+  </style>
+
+  <div class="breadcrumbs">
+    <a
+      class="fal fa-chevron-left"
+      href="/queries"
+    ></a>
+
+    <a href="/queries">Queries</a>
+
+    <span th:if="${!isCreate}">•</span>
+
+    <a
+        th:if="${!isCreate}"
+        th:href="@{'/queries/' + ${query.id}}"
+        th:text="${query.name}"
+    ></a>
+  </div>
+
+  <main>
+    <header class="query--header">
+        <div class="container">
+            <h1 th:if="${isCreate}">Create Query</h1>
+            <h1 th:if="${!isCreate}" th:text="${query.name}"></h1>
+        </div>
+    </header>
+
     <form
+        class="container"
         th:action="${isCreate} ? @{/queries} : @{'/queries/' + ${query.id}}"
         th:object="${query}"
         method="post"
     >
-        <h1 th:if="${isCreate}">Create Query</h1>
-        <h1 th:if="${!isCreate}" th:text="${query.name}"></h1>
-
-    	<label>
-            Query Name*
-            <br />
-            <input type="text" th:field="*{name}" required />
-        </label>
-
         <!-- Vue.js is initialized here -->
         <div id="queryForm">
-            <label>
-                Template*
-                <br />
-                <select 
-                    id="template"
-                    name="template"
-                    v-model="template"
-                    required
-                >
-                    <option></option>
-                    <option value="NARs">NARs</option>
-                    <option value="clientProfile">Client Profiles</option>
-                </select>
-            </label>
-    
-            <br />
-            <br />
+            <div class="card query--meta">
+                <label class="query--meta-column m-left-0">
+                    Query Name*
+                    <br />
+                    <input type="text" th:field="*{name}" required />
+                </label>
+
+                <label class="query--meta-column m-right-0">
+                    Template*
+                    <br />
+                    <select 
+                        id="template"
+                        name="template"
+                        v-model="template"
+                        required
+                    >
+                        <option></option>
+                        <option value="NARs">NARs</option>
+                        <option value="clientProfile">Client Profiles</option>
+                    </select>
+                </label>
+            </div>
         
             <!-- Query Editor -->
             <div v-if="template">
-                <button
-                    v-on:click="setIsEditingQueryString(false)"
-                    type="button"
-                >
-                    Visual
-                </button>
+                <div class="query--builder-tabs">
+                    <button
+                        v-bind:class="{
+                            btn: true,
+                            'btn-primary': !isEditingQueryString,
+                            'btn-secondary': isEditingQueryString,
+                            'btn-sm': true,
+                            'm-left-3': true,
+                        }"
+                        v-on:click="setIsEditingQueryString(false)"
+                        type="button"
+                    >
+                        Visual
+                    </button>
 
-                <button
-                    v-on:click="setIsEditingQueryString(true)"
-                    type="button"
-                >
-                    Code
-                </button>
+                    <button
+                        v-bind:class="{
+                            btn: true,
+                            'btn-primary': isEditingQueryString,
+                            'btn-secondary': !isEditingQueryString,
+                            'btn-sm': true,
+                            'm-left-3': true,
+                        }"
+                        v-on:click="setIsEditingQueryString(true)"
+                        type="button"
+                    >
+                        Code
+                    </button>
+                </div>
 
                 <!-- Visual Tab -->
                 <div v-bind:style="{ display: (!isEditingQueryString ? 'block' : 'none') }">
@@ -132,14 +202,24 @@
                 </div>
 
                 <!-- Code Tab -->
-                <div v-bind:style="{ display: (isEditingQueryString ? 'block' : 'none') }">
+                <div
+                    class="card"
+                    v-bind:style="{ display: (isEditingQueryString ? 'block' : 'none') }"
+                >
                     <label>
                         Query String
+                        
                         <br />
+
                         <textarea
                             id="queryString"
                             name="queryString"
                             v-model="queryStringComputed"
+                            style="
+                                resize: vertical;
+                                min-height: 80px;
+                                height: 120px;
+                            "
                         >
                         </textarea>
                     </label>
@@ -157,13 +237,23 @@
             </input-datalist>
         </div>
 
-        <br />
+        <div class="card">
+            <input
+                class="btn btn-primary"
+                type="submit"
+                value="Submit"
+            />
 
-        <input type="submit" value="Submit" />
+            <button
+                class="btn btn-secondary"
+                type="button"
+                th:if="!isCreate"
+                th:onclick="@{'deleteQuery(' + ${query.id} + ')'}"
+            >
+                Delete
+            </button>
+        </div>
 
-        <button type="button" th:onclick="@{'deleteQuery(' + ${query.id} + ')'}">
-            Delete
-        </button>
         <script type="text/javascript">
             async function deleteQuery(id) {
                 const yes = confirm("Are you sure you want to delete the query? You cannot undo this action.");
@@ -237,8 +327,8 @@
             },
 
             template: `
-                <div>
-                    <label>
+                <div class="card">
+                    <label class="m-bottom-6">
                         Select
                     </label>
 
@@ -270,8 +360,8 @@
             },
 
             template: `
-                <div>
-                    <label>
+                <div class="card">
+                    <label class="m-bottom-6">
                         Sort by
                     </label>
 
@@ -298,12 +388,12 @@
             },
 
             template: `
-                <div>
-                    <label>
+                <div class="card">
+                    <label class="m-top-3">
                         Sort Direction
                     </label>
 
-                    <select v-model="value.value">
+                    <select class="input-inline" v-model="value.value">
                         <option></option>
                         <option value="asc">Ascending</option>
                         <option value="desc">Descending</option>
@@ -318,8 +408,8 @@
             },
 
             template: `
-                <div>
-                    <label>
+                <div class="card">
+                    <label class="m-bottom-6">
                         Where
                     </label>
                     
@@ -338,8 +428,8 @@
             },
 
             template: `
-                <div>
-                    <label>
+                <div class="card">
+                    <label class="m-bottom-6">
                         Group by
                     </label>
 
@@ -354,9 +444,8 @@
                     >
                     </input-select>
 
-                    <br>
-
                     <button
+                        class="btn btn-secondary btn-sm"
                         v-if="!value.value"
                         v-on:click="value.value = getAttributeName(0)"
                         type="button"
@@ -365,6 +454,7 @@
                     </button>
 
                     <button
+                        class="btn btn-secondary btn-sm"
                         v-if="value.value"
                         v-on:click="value.value = ''"
                         type="button"
@@ -386,14 +476,10 @@
             },
 
             template: `
-                <div>
-                    <label>
+                <div class="card">
+                    <label class="m-bottom-6">
                         Join with
                     </label>
-
-                    <em v-if="values.length === 0">
-                        none
-                    </em>
 
                     <input-ordered-select v-bind="{
                         values,
@@ -432,20 +518,24 @@
                         </input-select>
                     </div>
 
-                    <button
-                        v-on:click="push"
-                        type="button"
-                    >
-                        Add
-                    </button>
+                    <div class="m-top-3">
+                        <button
+                            class="btn btn-secondary btn-sm m-right-3"
+                            v-on:click="push"
+                            type="button"
+                        >
+                            Add
+                        </button>
 
-                    <button
-                        v-on:click="pop"
-                        v-if="values.length > 0"
-                        type="button"
-                    >
-                        Remove
-                    </button>
+                        <button
+                            class="btn btn-secondary btn-sm m-right-3"
+                            v-on:click="pop"
+                            v-if="values.length > 0"
+                            type="button"
+                        >
+                            Remove
+                        </button>
+                    </div>
                 </div>
             `,
         });
@@ -459,7 +549,7 @@
             },
 
             template: `
-                <select v-model="value.value">
+                <select class="m-bottom-3" v-model="value.value">
                     <option
                         v-for="index in getCount()"
                         v-bind:value="getName(index - 1)"
@@ -589,16 +679,17 @@
                     />
 
                     <input
+                        class="input-inline"
                         v-if="lhsIsNumber && comparisonOperator"
                         v-model.number="comparisonOperator[0]"
                         type="number"
-                        placeholder="Number"
                     />
 
                     <input
+                        class="input-inline"
                         v-if="!lhsIsNumber && comparisonOperator"
                         v-model="comparisonOperator[0]"
-                        placeholder="Text"
+                        type="text"
                         list="autocomplete-columns"
                     />
 
@@ -611,66 +702,75 @@
                     >
                     </input-boolean-expression>
 
-                    <!-- Comparison Operators -->
-                    <em v-if="value.$eq">Equal</em>
-                    <em v-else-if="value.$ne">Not Equal</em>
-                    <em v-else-if="value.$gt">Greater Than</em>
-                    <em v-else-if="value.$gte">Greater Than Or Equal</em>
-                    <em v-else-if="value.$lt">Less Than</em>
-                    <em v-else-if="value.$lte">Less Than Or Equal</em>
-                    <em v-else-if="value.$like">Like (regex)</em>
-                    
-                    <!-- Logical Operators -->
-                    <em v-else-if="value.$and">And</em>
-                    <em v-else-if="value.$or">Or</em>
-                    <em v-else-if="value.$not">Not</em>
-                    <em v-else-if="value.$nor">Nor</em>
+                    <div class="query--where-expression">
+                        <!-- Comparison Operators -->
+                        <em v-if="value.$eq">Equal</em>
+                        <em v-else-if="value.$ne">Not Equal</em>
+                        <em v-else-if="value.$gt">Greater Than</em>
+                        <em v-else-if="value.$gte">Greater Than Or Equal</em>
+                        <em v-else-if="value.$lt">Less Than</em>
+                        <em v-else-if="value.$lte">Less Than Or Equal</em>
+                        <em v-else-if="value.$like">Like (regex)</em>
+                        
+                        <!-- Logical Operators -->
+                        <em v-else-if="value.$and">And</em>
+                        <em v-else-if="value.$or">Or</em>
+                        <em v-else-if="value.$not">Not</em>
+                        <em v-else-if="value.$nor">Nor</em>
 
-                    <!-- Empty Leaf Node -->
-                    <div v-else>
-                        <select v-model="operator">
-                            <option></option>
-                            <option value="$eq">Equal</option>
-                            <option value="$ne">Not Equal</option>
-                            <option value="$gt">Greater Than</option>
-                            <option value="$gte">Greater Than Or Equal</option>
-                            <option value="$lt">Less Than</option>
-                            <option value="$lte">Less Than Or Equal</option>
-                            <option value="$like">Like (regex)</option>
-                            <option value="$and">And</option>
-                            <option value="$or">Or</option>
-                            <option value="$not">Not</option>
-                            <option value="$nor">Nor</option>
-                        </select>
+                        <!-- Empty Leaf Node -->
+                        <div
+                            v-else
+                            class="query--where-expression-add"
+                        >
+                            <select class="input-inline" v-model="operator">
+                                <option></option>
+                                <option value="$eq">Equal</option>
+                                <option value="$ne">Not Equal</option>
+                                <option value="$gt">Greater Than</option>
+                                <option value="$gte">Greater Than Or Equal</option>
+                                <option value="$lt">Less Than</option>
+                                <option value="$lte">Less Than Or Equal</option>
+                                <option value="$like">Like (regex)</option>
+                                <option value="$and">And</option>
+                                <option value="$or">Or</option>
+                                <option value="$not">Not</option>
+                                <option value="$nor">Nor</option>
+                            </select>
+
+                            <button
+                                class="btn btn-primary btn-sm m-left-3"
+                                v-if="operator"
+                                v-on:click="add()"
+                                type="button"
+                            >
+                                Add
+                            </button>
+                        </div>
+
                         <button
-                            v-if="operator"
-                            v-on:click="add()"
+                            class="query--where-expression-remove btn btn-secondary btn-sm m-left-3"
+                            v-if="comparisonOperator || logicalOperator"
+                            v-on:click="remove()"
                             type="button"
                         >
-                            Add
+                            Remove
                         </button>
                     </div>
 
-                    <button
-                        v-if="comparisonOperator || logicalOperator"
-                        v-on:click="remove()"
-                        type="button"
-                    >
-                        Remove
-                    </button>
-
                     <input
+                        class="input-inline"
                         v-if="!rhsIsNumber && comparisonOperator && comparisonOperator.length > 1"
                         v-model="comparisonOperator[1]"
-                        placeholder="Text"
+                        type="text"
                         list="autocomplete-columns"
                     />
 
                     <input
+                        class="input-inline"
                         v-if="rhsIsNumber && comparisonOperator && comparisonOperator.length > 1"
                         v-model.number="comparisonOperator[1]"
                         type="number"
-                        placeholder="Number"
                     />
 
                     <input
