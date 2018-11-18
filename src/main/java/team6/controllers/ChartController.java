@@ -21,11 +21,11 @@ public class ChartController {
 	@Autowired
 	private ChartRepository chartRepository;
 
-	@GetMapping("/charts")
+	@GetMapping("/reports/charts")
 	public String readAllView(Model model) {
 		Iterable<Chart> charts = chartRepository.findAll(); 
         model.addAttribute("charts", charts);
-		return "charts/read-list";
+		return "/reports/charts/read-list";
 	}
 
 	@GetMapping("/charts/{id}")
@@ -34,38 +34,38 @@ public class ChartController {
             Long chartId = Long.parseLong(id);
             Optional<Chart> chart = chartRepository.findById(chartId);
             model.addAttribute("organization", chart.get());
-            return "charts/read-single";
+            return "/reports/charts/read-single";
 
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
 	}
 
-	@GetMapping("/charts/create")
+	@GetMapping("/reports/charts/create")
 	public String createView() {
-		return "/charts/create";
+		return "/reports/charts/create";
 	}
 
-	@PostMapping("/charts")
+	@PostMapping("/reports/charts")
 	public String create() {
-		return "redirect:/charts";
+		return "redirect:/reports/charts";
 	}
 
-	@GetMapping("/charts/{id}/update")
+	@GetMapping("/reports/charts/{id}/update")
 	public String updateIdView(Model model, @PathVariable String id) {
 		try {
             Long chartId = Long.parseLong(id);
             Optional<Chart> chart = chartRepository.findById(chartId);
             model.addAttribute("organization", chart.get());
-            return "/charts/update";
+            return "/reports/charts/update";
 
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
 	}
 
-	@PostMapping("/charts/{id}")
+	@PostMapping("/reports/charts/{id}")
 	public String update(Model model, @PathVariable String id, @ModelAttribute Chart chart) {
-		return "redirect:/charts/{id}";
+		return "redirect:/reports/charts/{id}";
 	}
 }

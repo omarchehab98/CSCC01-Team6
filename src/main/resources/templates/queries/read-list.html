@@ -1,48 +1,94 @@
 <!DOCTYPE HTML>
-
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Queries</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <title>TEQ LIP</title>
 </head>
-
 <body>
-  <div>
-    <a href="/">Home</a>
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+
+  <style>
+  .queries--header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #c8d6e5;
+  }
+
+  .queries--item-name {
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .queries--item-name:hover {
+    text-decoration: underline;
+  }
+
+  .queries--item-actions {
+    text-align: right;
+  }
+
+  .queries--item-execute {
+    visibility: hidden;
+  }
+
+  .queries--table tbody tr:hover .queries--item-execute {
+    visibility: initial;
+  }
+  </style>
+
+  <div class="breadcrumbs">
+    &nbsp;
   </div>
 
-  <h1>Queries</h1>
+  <main class="container">
+    <header class="queries--header">
+      <h1>Queries</h1>
 
-  <div>
-    <a href="/queries/create">Create</a>
-  </div>
+      <div style="flex-grow: 1;"></div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Template</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
+      <a
+        class="btn btn-primary"
+        href="/queries/create"
+      >
+        Create Query
+      </a>
+    </header>
 
-      <tr th:each="query : ${queries}">
-        <td th:text="${query.id}"></td>
-        <td th:text="${query.name}"></td>
-        <td th:text="${query.template}"></td>
-        <td>
-          <a th:href="${query.getRoute()}">Execute</a>
-          
-          &nbsp;
-          
-          <a th:href="@{'/queries/' + ${query.id}}">View</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="table-container">
+      <table class="queries--table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>iCare Template</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr th:each="query : ${queries}">
+            <td>
+              <a
+                class="queries--item-name"
+                th:href="@{'/queries/' + ${query.id}}"
+                th:text="${query.name}"
+              >
+              </a>
+            </td>
+            <td th:text="${query.template}"></td>
+            <td class="queries--item-actions">
+              <a
+                class="queries--item-execute btn btn-secondary btn-sm"
+                th:href="${query.getRoute()}"
+              >
+                Execute
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </body>
 
 </html>

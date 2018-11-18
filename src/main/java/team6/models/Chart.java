@@ -13,6 +13,7 @@ public class Chart {
 	private Long id;
 	private String name;
 	private String type;
+	// private 
 
 	public Long getId() {
 		return id;

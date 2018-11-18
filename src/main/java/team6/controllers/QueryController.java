@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +77,16 @@ public class QueryController {
         queryRepository.save(query);
         model.addAttribute("query", query);
         return "redirect:/queries/{id}";
+    }
+
+    @DeleteMapping("/queries/{id}")
+    public String deleteById(@PathVariable String id) {
+        try {
+            queryRepository.deleteById(Long.parseLong(id));
+            return "redirect:/queries";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new QueryNotFoundException();
+        }
     }
 
     private void populateUpsertViewAttributes(Model model, Query query) {

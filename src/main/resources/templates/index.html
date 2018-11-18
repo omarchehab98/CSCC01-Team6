@@ -2,26 +2,474 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>TEQLIP</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:replace="../fragments/head.html"></th:block>
+    <title>TEQ LIP</title>
 </head>
+<body style="background: #ebf0f5;">
+    <th:block th:replace="../fragments/navigation.html"></th:block>
 
-<body>
-    <h1>TEQLIP</h1>
+    <style>
+    /* Home */
+    
+    .home {
+        width: 100%;
+    }
 
-    <a href="/organizations">Organizations</a>
+    /* Home Header */
+    
+    .home--header {
+        background: #ffffff;
+        border-bottom: 2px solid #c8d6e5;
+        padding: 0.75rem;
+    }
 
-    <br>
+    .home--header-heading {
+        margin: 2rem 0;
+    }
 
-    <a href="/templates">Templates</a>
+    /* Home Body */
+    
+    .home--body {
+        background: #ebf0f5;
+    }
 
-    <br>
+    /* Home Card */
 
-    <a href="/queries">Queries</a>
+    .home--card {
+        background: #ffffff;
+        display: flex;
+        width: 100%;
+        padding: 1rem;
+        border-radius: .1875rem;
+        box-shadow: 0 1px 5px 0 rgba(45,62,80,.12);
+        position: relative;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
 
-    <br>
+    /* Home Links */
 
-    <a href="/charts">Charts</a>
+    .home--links {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .home--links-item {
+        width: 0;
+        flex-grow: 1;
+        padding: 0 1rem;
+        text-align: center;
+    }
+
+    .home--links-item-heading {
+        font-size: 2rem;
+        margin: 1.25rem 0;
+    }
+
+    .home--links-item a {
+        display: inline-block;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .home--links-item i {
+        font-size: 5rem;
+        transition: 0.32s transform;
+        margin-bottom: 1.25rem;
+    }
+
+    .home--links-item a:hover i {
+        transform: scale(1.16);
+    }
+
+    .home--links-item p {
+        text-align: left;
+    }
+
+    /* Home Tasks */
+
+    /* Home Task Checkmark */
+
+    .home--task-check {
+        color: #8395a7;
+        font-size: 2rem;
+        padding: 0 1rem;
+    }
+
+    [data-iscomplete] .home--task-check {
+        color: #10ac84;
+    }
+
+    /* Home Task Body */
+
+    .home--task-body {
+        flex-grow: 1;
+        padding: 0 1rem;
+    }
+
+    .home--task-body-heading {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    [data-iscomplete] .home--task-body-heading {
+        text-decoration: line-through;
+    }
+
+    /* Home Task Action */
+
+    .home--task-action {
+        display: flex;
+        border-top: 1px dashed #c8d6e5;
+    }
+
+    .home--task-action-description {
+        margin-left: 2rem;
+        flex-grow: 1;
+    }
+
+    .home--task-action-description-heading {
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    [data-iscomplete] .home--task-action-description-heading {
+        text-decoration: line-through;
+    }
+    
+    .home--task-action-button {
+        padding-top: 2rem;
+    }
+
+    /* Home Task Action Show/Hide */
+
+    .home--task-body-toggleactionvisibility,
+    .home--task-body-showactionvisibility,
+    .home--task-body-hideactionvisibility {
+        display: none;
+    }
+
+    [data-iscomplete] .home--task-body-showactionvisibility,
+    [data-iscomplete] .home--task-body-hideactionvisibility {
+        display: none;
+        cursor: pointer;
+        text-align: center;
+        color: #2e86de;
+    }
+
+    [data-iscomplete] .home--task-body-showactionvisibility:hover,
+    [data-iscomplete] .home--task-body-hideactionvisibility:hover {
+        color: #1e6dbb;
+        text-decoration: underline;
+    }
+
+    [data-iscomplete] .home--task-body-showactionvisibility,
+    [data-iscomplete] .home--task-body-hideactionvisibility {
+        display: block;
+    }
+
+    [data-iscomplete] .home--task-body-toggleactionvisibility {
+        display: none;
+    }
+
+    .home--task-body-showactionvisibility {
+        padding-top: 1rem;
+        border-top: 1px dashed #c8d6e5;
+    }
+
+    [data-iscomplete] .home--task-action {
+        display: none;
+    }
+
+    [data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-action {
+        display: flex;
+    }
+
+    [data-iscomplete] .home--task-body-hideactionvisibility {
+        display: none;
+    }
+
+    [data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-showactionvisibility {
+        display: none;
+    }
+
+    [data-iscomplete] .home--task-body-toggleactionvisibility:checked ~ .home--task-body-hideactionvisibility {
+        display: block;
+    }
+    </style>
+
+    <main class="home">
+        <header class="home--header">
+            <div class="container">
+                <h1 class="home--header-heading">
+                    Getting started with TEQ LIP
+                </h1>
+            </div>
+        </header>
+
+        <div class="home--body">
+            <section class="home--card home--links container">
+                <div class="home--links-item">
+                    <a href="/organizations">
+                        <h3 class="home--links-item-heading">
+                            Partners
+                        </h3>
+
+                        <i class="fal fa-handshake-alt"></i>
+                    </a>
+                </div>
+
+                <div class="home--links-item">
+                    <a href="/templates">
+                        <h3 class="home--links-item-heading">
+                            Data
+                        </h3>
+
+                        <i class="fal fa-archive"></i>
+                    </a>
+                </div>
+
+                <div class="home--links-item">
+                    <a href="/queries">
+                        <h3 class="home--links-item-heading">
+                            Queries
+                        </h3>
+                        
+                        <i class="fal fa-bolt"></i>
+                    </a>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${organizations.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Add a Partner Organization
+                    </h3>
+
+                    <blockquote
+                        cite="https://scarboroughlip.com/home"
+                        style="margin: 0;"
+                    >
+                        <p>
+                            TEQ LIP is a community-based partnership project that
+                            involves diverse service providers, stakeholders and
+                            newcomers in the planning and development of
+                            collaborative and innovative solutions to enhance
+                            newcomer settlement in Scarborough while promoting
+                            efficient use of resources.
+                        </p>
+                    </blockquote>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Invite your first Partner Organization
+                            </h4>
+
+                            <p>
+                                Allow them to upload their data to the system.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                href="/organizations/create"
+                            >
+                                Add Partner
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-0"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${clientProfiles.size() > 0 && nars.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Upload iCare sheet data
+                    </h3>
+
+                    <p>
+                        At the end of every month, each organization
+                        exports their data from their data management system
+                        in the form of one or more iCare template. These
+                        templates are then submitted to the government and
+                        are necessary for the organization to receive
+                        funding.
+                    </p>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-1"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div
+                        class="home--task-action"
+                        th:attr="data-iscomplete=${clientProfiles.size() > 0 ? 'true' : null}"
+                    >
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Upload your first Client Profile sheet
+                            </h4>
+
+                            <p>
+                                Typically filled out by a front desk staff/receptionist
+                                when a client first seeks settlement services.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
+                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}"
+                            >
+                                Upload Sheet
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="home--task-action"
+                        th:attr="data-iscomplete=${nars.size() > 0 ? 'true' : null}"
+                    >
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Upload your first Needs Assesment &amp; Referral Service sheet
+                            </h4>
+
+                            <p>
+                                Typically filled out by a settlement worker when
+                                a client seeks referrals for settlement services.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
+                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}"
+                            >
+                                Upload Sheet
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-1"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-1"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${queries.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Add a query
+                    </h3>
+
+                    <p>
+                        Typically created by a data analyst when metrics and
+                        reports are seeked. Queries can be as simple as finding
+                        a specific client or as complex as counting clients
+                        that match a condition.
+                    </p>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-2"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Create your first query
+                            </h4>
+
+                            <p>
+                                Aggregate and analyze data in the system.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                href="/queries/create"
+                            >
+                                Add Query
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-2"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-2"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+        </div>
+    </main>
 </body>
 
 </html>
