@@ -5,7 +5,7 @@
     <th:block th:replace="../fragments/head.html"></th:block>
     <title>TEQ LIP</title>
 </head>
-<body class="body-color">
+<body style="background: #ebf0f5;">
     <th:block th:replace="../fragments/navigation.html"></th:block>
 
     <style>
@@ -31,6 +31,20 @@
     
     .home--body {
         background: #ebf0f5;
+    }
+
+    /* Home Card */
+
+    .home--card {
+        background: #ffffff;
+        display: flex;
+        width: 100%;
+        padding: 1rem;
+        border-radius: .1875rem;
+        box-shadow: 0 1px 5px 0 rgba(45,62,80,.12);
+        position: relative;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
 
     /* Home Links */
@@ -73,10 +87,6 @@
     }
 
     /* Home Tasks */
-
-    .home--task {
-        display: flex;
-    }
 
     /* Home Task Checkmark */
 
@@ -198,7 +208,7 @@
         </header>
 
         <div class="home--body">
-            <section class="home--links container card">
+            <section class="home--card home--links container">
                 <div class="home--links-item">
                     <a href="/organizations">
                         <h3 class="home--links-item-heading">
@@ -231,7 +241,7 @@
             </section>
 
             <section
-                class="home--task container card"
+                class="home--card home--task container"
                 th:attr="data-iscomplete=${organizations.size() > 0 ? 'true' : null}"
             >
                 <div class="home--task-check">
@@ -301,7 +311,7 @@
             </section>
 
             <section
-                class="home--task container card"
+                class="home--card home--task container"
                 th:attr="data-iscomplete=${clientProfiles.size() > 0 && nars.size() > 0 ? 'true' : null}"
             >
                 <div class="home--task-check">
@@ -397,7 +407,7 @@
             </section>
 
             <section
-                class="home--task container card"
+                class="home--card home--task container"
                 th:attr="data-iscomplete=${queries.size() > 0 ? 'true' : null}"
             >
                 <div class="home--task-check">
