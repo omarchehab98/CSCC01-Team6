@@ -4,19 +4,70 @@
 
 <head>
   <title th:text="@{${organization.name} + ' • Organization'}"></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 
 <body>
-  <div>
+  <style>
+    .partner--header{
+      display: flex;
+      align-items: center;
+    }
+    select:required:invalid {
+      color: gray;
+    }
+    option[value=""][disabled] {
+      display: none;
+    }
+
+    .spaced{
+      padding-top:3%;
+    }
+
+    .template-btn-list{
+      display:inline-flex;
+    }
+    .template-btn-list a{
+      margin: 1%;
+      /* margin-right: 0; */
+    }
+    .template-btn{
+      color:dodgerblue;
+      background-color: #ffffff;
+      transition-duration: 0.2s;
+    }
+    .template-btn:hover{
+      color:#ffffff;
+      background-color: dodgerblue;
+    }
+  </style>
+
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+  <div class="breadcrumbs">
+      &nbsp;
+  </div>
+
+  <div class="container">
       <a href="/">Home</a>
 
       •
 
-      <a href="/organizations">Organizations</a>
+      <a href="/organizations">Partners</a>
   </div>
+  <main class="container">
+      <header class="partner--header">
+          <h1 th:text="${organization.name}"></h1>
+      
+          <div style="flex-grow: 1;"></div>
+      
+          <a 
+            th:href="@{'/organizations/' + ${organization.id} + '/update'}"
+            class="btn btn-primary">
+            Edit
+          </a>
+
+        </header>
   
-  <h1 th:text="${organization.name}"></h1>
 
   <table>
     <thead>
@@ -29,7 +80,6 @@
         <th>Postal Code</th>
         <th>Street Address</th>
         <th>Apartment</th>
-        <th></th>
       </tr>
     </thead>
 
@@ -43,37 +93,55 @@
         <td th:text="${organization.postalCode}"></td>
         <td th:text="${organization.thoroughfare}"></td>
         <td th:text="${organization.premise}"></td>
-        <td>
-          <a th:href="@{'/organizations/' + ${organization.id} + '/update'}">
-            Edit
-          </a>
-        </td>
       </tr>
     </tbody>
   </table>
 
-  <a th:href="@{'/templates/NARs?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}">NARs Templates</a>
+  <div style="flex-grow: 1;"> <br/> </div>
 
+  <h3>
+    <span th:text="${organization.name}"></span>'s Templates:
+  </h3>
+
+  <div class="template-btn-list">
+      <a 
+      th:href="@{'/templates/NARs?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >NARs Templates</a>
+    
+      <!-- ADD REST OF TEMPLATE TYPES -->  
+  </div>
+  
   <div>
     <form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
       <input type="hidden" name="organizationId" th:value="${organization.id}" />
       
-			<table>
-        <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+			
+        <div class="spaced">
+          <p>Upload a new Template:</p>
+          <input type="file" name="file"/>
+        </div>
         
-        <tr><td></td><td><select name="templateType">
-          <option value="NARs" selected>NARs</option>
-          <option value="clientProfile">Client Profile</option>
-          <option value="employment">Employment</option>
-          <option value="languageTraining">Language Training</option>
-          <option value="communityConnections">Community Connections</option>
-        </select></td></tr>
+        <div>
+          <select required name="templateType">
+            <option value="" disabled selected>Select the template type</option>
+            <option value="NARs" selected>NARs</option>
+            <option value="clientProfile">Client Profile</option>
+            <option value="employment">Employment</option>
+            <option value="languageTraining">Language Training</option>
+            <option value="communityConnections">Community Connections</option>
+          </select>
+        </div>
 
-        <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
+        <div>
+          <input type="submit" value="Upload" />
+        </div>
+			
 		</form>
   </div>
   
+  <div class="spaced"></div>
+</main>
 </body>
 
 </html>
