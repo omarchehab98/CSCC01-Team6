@@ -17,7 +17,7 @@ public class Query {
 	private String name;
 	private String template;
 	private String queryString;
-	@OneToMany(mappedBy = "queries", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "query", cascade = CascadeType.ALL)
 	private Set<ChartQuery> chartQueries;
 
 	public Query() {}
@@ -60,14 +60,6 @@ public class Query {
 		this.queryString = queryString;
 	}
 	
-	public Set<ChartQuery> getChartQueries() {
-		return chartQueries;
-	}
-
-	public void setChartQueries(Set<ChartQuery> chartQueries) {
-		this.chartQueries = chartQueries;
-	}
-
 	public String getRoute() {
 		return String.format(
 			"/templates/%s?%s",
