@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import team6.repositories.QueryRepository;
 import team6.models.Query;
@@ -55,4 +56,10 @@ public class ChartController {
 
         return "reports/create-chart";
     }
+
+    @PostMapping("/charts")
+    public String create() {
+        return "redirect:/charts";
+    }
+
 }
