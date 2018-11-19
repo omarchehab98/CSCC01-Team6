@@ -46,4 +46,11 @@ public class ChartController {
 	model.addAttribute("sourceLabels", sourceLabels);
         return "reports/chart";
     }
+
+    @GetMapping("/charts/create")
+    public String createView(Model model) {
+	Iterable<Query> queries = queryRepository.findAll(); 
+        model.addAttribute("queries", queries);
+        return "reports/create-chart";
+    }
 }
