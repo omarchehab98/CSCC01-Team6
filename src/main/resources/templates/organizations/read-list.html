@@ -3,9 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-j8y0ITrvFafF4EkV1mPW0BKm6dp3c+J9Fky22Man50Ofxo2wNe5pT1oZejDH9/Dt" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+    <th:block th:replace="../fragments/head.html"></th:block>
     <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet"> 
     <title>Organizations</title>
 </head>
@@ -16,7 +14,7 @@
   body{
     padding:0;
     margin:0;
-    background-color: #ebf0f5;
+    background-color: #ffffff;
   }
   .headTop{
     display: flex;
@@ -45,88 +43,65 @@
     position: inherit;
   }
 
-  #createLink{  
-    padding-left: 5%;
-    padding-top: 3%;
-    font-size: 120%;
-  }
-  #createLinkAnchor:hover{
-    color:#c8d6e5;
-    background-color: #2e86de;
-  }
-  #createLinkAnchor{
-    color:#2e86de;
-    transition-duration: 0.1s;
-    padding:0.2%;
-    
-  }
   .wholeTable{
-    padding-top: 1%;
-    padding-left: 5%;
-    width:100%;
+    visibility: initial;
   }
+
   a{
-    color: blue;
+    color: orange;
     text-decoration: none;
+  }
+  a:hover{
+    color:darkorange;
   }
   a:visited{
     text-decoration: none;
   }
   table > thead{
     background-color:#8395a7;
-    font-size: 120%;
+    font-size: 100%;
     font-family: 'lato';
     
-  }
-  table{
-    width:90%;
   }
 
   .organizationRow:nth-child(2n){
     background-color:#BBC9D8
   }
   .organizationRow td{
-    text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
-  /* Navigation Link */
 
-.navigation--link {
-    color: #c8d6e5;
-    font-weight: lighter;
-    text-decoration: none;
-    padding: 10px 16px;
+  .partners--header {
     display: flex;
     align-items: center;
-    font-size: 1.16rem;
-}
-
-.navigation--link:hover {
-    color: #c8d6e5;
-    background: #3c4958;
-    text-decoration: none;
-}
-
-.navigation--link i {
-    width: 40px;
-    text-align: center;
-}
-
-.navigation--link span {
-    flex-grow: 1;
-}
+    border-bottom: 1px solid #c8d6e5;
+  }
+  tr:hover{
+    filter:contrast(90%);
+  }
   </style>
 
-  <nav class="headTop">
-    <a class="navigation--link" href="/"><i class="far fa-home"></i>home</a>
-    <span id = "titley">Partners</span>
-  </nav>
+<th:block th:replace="../fragments/navigation.html"></th:block>
 
-  <div id = "createLink">
-      <a id= "createLinkAnchor" href="/organizations/create"><i class="far fa-plus-circle"></i> Create</a>
-  </div>
+<div class="breadcrumbs">
+    &nbsp;
+</div>
 
-<div class = "wholeTable">
+<main class="container">
+  <header class="partners--header">
+    <h1>Partners</h1>
+
+    <div style="flex-grow: 1;"></div>
+
+    <a
+      class="btn btn-primary"
+      href="/organizations/create"
+    >
+      Add Partner
+    </a>
+  </header>
+
+<div class = "wholeTable table-container">
   <table>
     <thead id="tableHead">
       <tr>
@@ -161,6 +136,7 @@
     </tbody>
   </table>
 </div>
+</main>
 </body>
 
 </html>
