@@ -17,7 +17,7 @@ public class Query {
 	private String name;
 	private String template;
 	private String queryString;
-	@OneToMany(mappedBy = "queries", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "query", cascade = CascadeType.ALL)
 	private Set<ChartQuery> chartQueries;
 
 	public Query() {}

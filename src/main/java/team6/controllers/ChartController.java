@@ -21,8 +21,7 @@ public class ChartController {
 	@Autowired
 	private QueryRepository queryRepository;
 
-
-	@PostMapping("/charts")
+	@GetMapping("/charts")
 	public String readAllView(Model model) {
 		Iterable<Chart> charts = chartRepository.findAll(); 
         	model.addAttribute("charts", charts);

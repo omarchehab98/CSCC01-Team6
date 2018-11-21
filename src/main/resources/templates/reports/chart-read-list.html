@@ -10,29 +10,31 @@
 <body>
   <div>
     <a href="/">Home</a>
-    &bull;
-    <a href="/templates">Templates</a>
   </div>
 
-  <h1 th:text="Char"></h1>
+  <h1 th:text="Charts"></h1>
 
-  <table th:each="rows : ${groupsOfRows}">
+  <table>
     <thead>
       <tr>
-        <th th:each="friendlyName : ${friendlyNames}">
-          <span th:text="${friendlyName}"></span>
-        </th>
+        <th>ID</th>
+        <th>Name</th>
+	<th></th>
       </tr>
     </thead>
     <tbody>
-      <tr th:each="row : ${rows}">
-        <td th:each="attribute : ${attributes}">
-          <span th:text="${row[__${attribute.entityIndex}__].__${attribute.name}__}"></span>
+
+      <tr th:each="chart : ${charts}">
+        <td th:text="${chart.id}"></td>
+        <td th:text="${chart.name}"></td>
+        <td>
+          <a th:href="@{'/charts/' + ${chart.id} + '/embed/'}">
+            View
+          </a>
         </td>
       </tr>
     </tbody>
   </table>
-  <span th:text="${select}"></span>
 </body>
 
 </html>
