@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="Charts"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+    <a href="/">Home</a>
+    &bull;
+    <a href="/templates">Templates</a>
+  </div>
+
+  <h1 th:text="Char"></h1>
+
+  <table th:each="rows : ${groupsOfRows}">
+    <thead>
+      <tr>
+        <th th:each="friendlyName : ${friendlyNames}">
+          <span th:text="${friendlyName}"></span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="row : ${rows}">
+        <td th:each="attribute : ${attributes}">
+          <span th:text="${row[__${attribute.entityIndex}__].__${attribute.name}__}"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <span th:text="${select}"></span>
+</body>
+
+</html>

@@ -8,16 +8,29 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import team6.repositories.ChartRepository;
+import team6.models.Chart;
+
 import team6.repositories.QueryRepository;
 import team6.models.Query;
 
 @Controller
 public class ChartController {
 	@Autowired
+	private ChartRepository chartRepository;
+	@Autowired
 	private QueryRepository queryRepository;
+
+
+	@PostMapping("/charts")
+	public String readAllView(Model model) {
+		Iterable<Chart> charts = chartRepository.findAll(); 
+        	model.addAttribute("charts", charts);
+        	return "reports/chart-read-list";
+	}
 	
-    @GetMapping("/charts/{id}/embed")
-    public String readAllView(Model model) {
+    	@GetMapping("/charts/{id}/embed")
+    	public String readSingleView(Model model) {
 		// Type for the chart, must be one of Bar, Line, or Pie
 		String type = "Bar";
 
@@ -37,12 +50,11 @@ public class ChartController {
 		model.addAttribute("labels", labels);
 		model.addAttribute("data", data);
 		model.addAttribute("sourceLabels", sourceLabels);
-        return "reports/chart";
-    }
+        	return "reports/chart";
+    	}
 
-    @GetMapping("/charts/create")
-    public String createView(Model model) {
-
+    	@GetMapping("/charts/create")
+   	public String createView(Model model) {
 		// Convert queries to JSON
 		Iterable<Query> queries = queryRepository.findAll();
 		JSONArray queriesJSON = new JSONArray();
@@ -54,12 +66,11 @@ public class ChartController {
 		}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 
-        return "reports/create-chart";
-    }
+        	return "reports/create-chart";
+    	}
 
-    @PostMapping("/charts")
-    public String create() {
-        return "redirect:/charts";
-    }
-
+   	@PostMapping("/charts")
+    	public String create() {
+        	return "redirect:/charts";
+    	}
 }

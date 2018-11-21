@@ -29,7 +29,7 @@ public class QueryController {
     @GetMapping("/queries")
     public String readAllView(Model model) {
         Iterable<Query> queries = queryRepository.findAll(); 
-        model.addAttribute("queries", queries);
+        model.addAttribute("queries", query);
         return "queries/read-list";
     }
     
