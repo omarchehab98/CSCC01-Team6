@@ -1,5 +1,5 @@
 Dayde = D,Omar = O,Jacob = J,Chedy = Cs,Chengrong = Cz,,,,
-Sprint Velocity: 20 story points per sprint,,,,Nov 14,Nov 15,Nov 16,Nov 17,Nov 18
+Sprint Velocity: 25 story points per sprint,,,,Nov 14,Nov 15,Nov 16,Nov 17,Nov 18
 User Story,Task,Dependencies,Story Points,1,2,3,4,5
 1,1,,1,,,,,
 1,2,1,1,,,,,
@@ -47,11 +47,11 @@ User Story,Task,Dependencies,Story Points,1,2,3,4,5
 9,44,,2,,,,,
 --,Testing,,--,,,,,
 --,Styling,,--,,,,Cs:4,
-12,45,,?,,J:1,J:4,J:4,J:8
-12,46,,?,,,D:2,D:2,D:3
-12,47,,?,,,,,
-12,48,,?,,,,Cs:3,
-12,49,,?,,,,,
-12,50,,?,,,,,
+12,45,,4,,J:1,J:4,J:4,J:8
+12,46,,6,,,D:2,D:2,D:3
+12,47,,4,,,,,
+12,48,,3,,,,Cs:3,
+12,49,,3,,,,,
+12,50,,3,,,,,
 9,51,,6,,O:8,,,
-11,52,,,,,,O:1,
+11,52,,1,,,,O:1,
