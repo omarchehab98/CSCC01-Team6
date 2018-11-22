@@ -1,9 +1,13 @@
 package team6.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Query {
@@ -13,6 +17,8 @@ public class Query {
 	private String name;
 	private String template;
 	private String queryString;
+	@OneToMany(mappedBy = "query", cascade = CascadeType.ALL)
+	private Set<ChartQuery> chartQueries;
 
 	public Query() {}
 	

@@ -293,6 +293,9 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
     <script type="text/javascript" src="/js/json-loader.js"></script>
+    <script type="text/javascript" src="/js/components/input-datalist.js"></script>
+    <script type="text/javascript" src="/js/components/input-select.js"></script>
+    <script type="text/javascript" src="/js/components/input-ordered-select.js"></script>
 
     <script type="text/javascript">
         Vue.component('query-select-parameter', {
@@ -470,92 +473,6 @@
                     }">
                     </input-ordered-select>
                 </div>
-            `,
-        });
-
-        Vue.component('input-ordered-select', {
-            props: {
-                values: Array,
-                push: Function,
-                pop: Function,
-                getCount: Function,
-                getName: Function,
-                getValue: Function,
-            },
-
-            template: `
-                <div>
-                    <div v-for="value in values">
-                        <input-select
-                            v-bind="{
-                                value,
-                                getCount,
-                                getName,
-                                getValue,
-                            }"
-                        >
-                        </input-select>
-                    </div>
-
-                    <div class="m-top-3">
-                        <button
-                            class="btn btn-secondary btn-sm m-right-3"
-                            v-on:click="push"
-                            type="button"
-                        >
-                            Add
-                        </button>
-
-                        <button
-                            class="btn btn-secondary btn-sm m-right-3"
-                            v-on:click="pop"
-                            v-if="values.length > 0"
-                            type="button"
-                        >
-                            Remove
-                        </button>
-                    </div>
-                </div>
-            `,
-        });
-
-        Vue.component('input-select', {
-            props: {
-                value: Object,
-                getCount: Function,
-                getName: Function,
-                getValue: Function,
-            },
-
-            template: `
-                <select class="m-bottom-3" v-model="value.value">
-                    <option
-                        v-for="index in getCount()"
-                        v-bind:value="getName(index - 1)"
-                    >
-                        {{ getValue(index - 1) }}
-                    </option>
-                </select>
-            `,
-        });
-
-        Vue.component('input-datalist', {
-            props: {
-                id: String,
-                getCount: Function,
-                getName: Function,
-                getValue: Function,
-            },
-
-            template: `
-                <datalist v-bind:id="id">
-                    <option
-                        v-for="index in getCount()"
-                        v-bind:value="getName(index - 1)"
-                    >
-                        {{ getValue(index - 1) }}
-                    </option>
-                </datalist>
             `,
         });
 
