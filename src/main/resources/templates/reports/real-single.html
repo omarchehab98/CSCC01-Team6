@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title th:text="@{${report.name} + ' • Report'}"></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+      <a href="/">Home</a>
+
+      •
+
+      <a href="/Reports">Reports</a>
+  </div>
+  
+  <h1 th:text="${report.name}"></h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Body</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td th:text="${report.id}"></td>
+        <td th:text="${report.name}"></td>
+        <td th:text="${report.body}"></td>
+        <td>
+          <a th:href="@{'/reports/' + ${report.id} + '/update'}">
+            Edit
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+</body>
+
+</html>
