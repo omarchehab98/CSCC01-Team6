@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import team6.repositories.ChartQueryRepository;
 import team6.repositories.ChartRepository;
 import team6.repositories.QueryRepository;
 import team6.throwables.ChartNotFoundException;
+import team6.throwables.OrganizationNotFoundException;
 import team6.throwables.QueryNotFoundException;
 import team6.util.JSONStringHelper;
 import team6.models.Chart;
@@ -40,24 +42,41 @@ public class ChartController {
     public String readAllView(Model model) {
         Iterable<Chart> charts = chartRepository.findAll();
         model.addAttribute("charts", charts);
-        return "reports/charts/read-list";
+        return "reports/chart-read-list";
     }
 
-	@GetMapping("/charts/{id}")
+	@GetMapping("/charts/{id}/embed")
     public String readByIdView(@PathVariable String id, Model model) {
         try {
             Long chartId = Long.parseLong(id);
             Optional<Chart> chart = chartRepository.findById(chartId);
-            model.addAttribute("chart", chart.get());
-            return "reports/charts/read-single.html";
+            addChartAttributes(model, chart.get());
+            // model.addAttribute("chart", chart.get());
+            return "reports/chart";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
     }
-	
+
+	private void addChartAttributes(Model model, Chart chart) {
+		String name = chart.getName();
+		String type =  "bar"; /* chart.getType(); */
+		// got to parse these.
+		String[] labels = {"yep", "yep", "yep"};
+		// set arbitrary for now
+		int[][] datasets = {{1, 2, 3},{4, 4, 4}};
+		String[] sourceLabels = {};
+		
+		model.addAttribute("name", name);
+		model.addAttribute("type", type);
+		model.addAttribute("labels", labels);
+		model.addAttribute("datasets", datasets);
+		model.addAttribute("sourceLabels", sourceLabels);
+	} 
+
 	/*
 	@GetMapping("/charts/{id}/embed")
-    public String readAllView(Model model) {
+    public String readSingleView(Model model) {
 		// Type for the chart, must be one of Bar, Line, or Pie
 		String type = "Bar";
 
@@ -79,7 +98,8 @@ public class ChartController {
 		model.addAttribute("sourceLabels", sourceLabels);
         return "reports/chart";
     }
-	*/
+    */
+	
 
     @GetMapping("/charts/create")
     public String createView(Model model) {
@@ -100,16 +120,28 @@ public class ChartController {
         return "reports/create-chart";
     }
 
-    @PostMapping("reports/charts")
-    public String create(Model model, @ModelAttribute Chart chart, @ModelAttribute Query[] queries) {
-    	makeChartQueries(model, chart, queries);
+    @PostMapping("/charts")
+    public String create(@ModelAttribute Chart chart , @ModelAttribute String queries) {
+    	System.out.println(queries);
+    	System.out.println("Here");
+    	// makeChartQueries(model, chart, queries);
     	chartRepository.save(chart);
-    	return "redirect:reports/charts";
+    	return "redirect:/charts";
     }
 
-    private void makeChartQueries(Model model, Chart chart, Query[] queries) {
-    	for (Query query : queries) {
+    /*
+    private void makeChartQueries(Model model, Chart chart, String[] queries) {
+    	for (String id : queries) {
     		ChartQuery chartQuery = new ChartQuery();
+    		// System.out.println(id.toString());
+    		
+    		/*
+    		Long queryId = Long.parseLong(id);
+            Optional<Query> optionalQuery = queryRepository.findById(queryId);
+            Query query = optionalQuery.get();
+            */
+    		
+            /*
     		chartQuery.setChart(chart);
     		chartQuery.setQuery(query);
 
@@ -120,13 +152,31 @@ public class ChartController {
     		Set<ChartQuery> chartQueryQuery = query.getChartQueries();
     		chartQueryQuery.add(chartQuery);
     		query.setChartQueries(chartQueryQuery);
+    		*/
 
+    		/*
     		model.addAttribute("chartQuery", chartQuery);
     		chartQueryRepository.save(chartQuery);
     	}
     }
+    */
+    
 
-    @GetMapping("reports/charts/{id}/update")
+    /*
+     * To manage test populations.
+     */
+    @DeleteMapping("/charts/{id}/embed")
+    public String deleteById(@PathVariable String id) {
+        try {
+            chartRepository.deleteById(Long.parseLong(id));
+            return "redirect:/charts";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new OrganizationNotFoundException();
+        }
+    }
+
+    /*
+    @GetMapping("/charts/{id}/update")
     public String updateByIdView(@PathVariable String id, Model model) {
         try {
             Long chartId = Long.parseLong(id);
@@ -138,14 +188,16 @@ public class ChartController {
         }
     }
 
-    @PostMapping("reports/charts/{id}")
+    @PostMapping("/charts/{id}")
     public String updateById(Model model, @ModelAttribute Chart chart, @PathVariable String id) {
         chartRepository.save(chart);
         model.addAttribute("chart", chart);
         return "redirect:reports/charts/{id}";
     }
+    */
 
-    @GetMapping("reports/charts/{id}")
+    /*
+    @GetMapping("/charts/{id}")
     public JSONArray chartDatasetsAndLabels(Model model, @PathVariable String id) {
     	try {
             Long chartId = Long.parseLong(id);
@@ -176,4 +228,5 @@ public class ChartController {
     	}
     	return new JSONArray();
     }
+    */
 }

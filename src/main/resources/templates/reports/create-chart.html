@@ -13,12 +13,12 @@
         <a href="/organizations">Organizations</a>
     </div>
     
-    <form action="#" th:action="@{/charts}" method="post">
+    <form action="#" th:action="@{/charts}" th:object="${chart}" method="post">
         <h1>Create Chart</h1>
     	<label>
             Chart Name*
             <br />
-            <input type="text" required />
+            <input type="text" th:field="*{name}" required />
         </label>
 
         <div id="chartQueries">
