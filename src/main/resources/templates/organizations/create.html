@@ -2,17 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create • Organization</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 <body>
-    <div>
-        <a href="/">Home</a>
+    <th:block th:replace="../fragments/partnerStyles.html"></th:block>
 
-        •
-    
-        <a href="/organizations">Organizations</a>
-    </div>
-    
+    <th:block th:replace="../fragments/navigation.html"></th:block>
+
+<div class="breadcrumbs">
+    &nbsp;
+</div>
+
+    <div class="container">
+    <a href="/organizations">Back</a>
     <form action="#" th:action="@{/organizations}" th:object="${organization}" method="post">
         <h1>Create Organization</h1>
     	<label>
@@ -57,8 +59,11 @@
             <input type="text" th:field="*{premise}" />
         </label>
         <br />
-        <input type="submit" value="Submit" />
-        <input type="reset" value="Reset" />
+        <input class="formBtn" type="submit" value="Submit" />
+        <input class="formBtn" type="reset" value="Reset" />
     </form>
+</div>
+<div class="spaced"></div>
+
 </body>
 </html>
