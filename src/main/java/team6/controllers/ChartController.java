@@ -68,6 +68,23 @@ public class ChartController {
         	return "reports/create-chart";
     	}
 
+    	@GetMapping("/charts/{id}/update")
+   	public String updateView(Model model) {
+		// Convert queries to JSON
+		Iterable<Query> queries = queryRepository.findAll();
+		JSONArray queriesJSON = new JSONArray();
+		for (Query query : queries) {
+			JSONObject queryJSON = new JSONObject();
+			queryJSON.put("id", query.getId());
+			queryJSON.put("name", query.getName());
+			queriesJSON.put(queryJSON);
+		}
+		model.addAttribute("queriesJSON", queriesJSON.toString());
+
+        	return "reports/create-chart";
+    	}
+
+
    	@PostMapping("/charts")
     	public String create() {
         	return "redirect:/charts";
