@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import team6.repositories.ChartQueryRepository;
 import team6.repositories.ChartRepository;
@@ -59,18 +60,19 @@ public class ChartController {
     }
 
 	private void addChartAttributes(Model model, Chart chart) {
-		String name = chart.getName();
-		String type =  "bar"; /* chart.getType(); */
-		// got to parse these.
-		String[] labels = {"yep", "yep", "yep"};
-		// set arbitrary for now
-		int[][] datasets = {{1, 2, 3},{4, 4, 4}};
-		String[] sourceLabels = {};
+		// String name = chart.getName();
+		// String type =  chart.getType();
 		
-		model.addAttribute("name", name);
+		// got to parse these. Set arbitrary for now
+		String type = "Bar";
+		String[] labels = {"yep", "yep", "yep"};
+		int[][] data = {{1, 2, 3},{4, 4, 4}};
+		String[] sourceLabels = {"help", "help"};
+		
+		// model.addAttribute("name", name);
 		model.addAttribute("type", type);
 		model.addAttribute("labels", labels);
-		model.addAttribute("datasets", datasets);
+		model.addAttribute("data", data);
 		model.addAttribute("sourceLabels", sourceLabels);
 	} 
 
@@ -121,27 +123,22 @@ public class ChartController {
     }
 
     @PostMapping("/charts")
-    public String create(@ModelAttribute Chart chart , @ModelAttribute String queries) {
-    	System.out.println(queries);
-    	System.out.println("Here");
-    	// makeChartQueries(model, chart, queries);
+    public String create(@ModelAttribute Chart chart , @RequestParam String queries, Model model) {
+    	makeChartQueries(model, chart, queries);
     	chartRepository.save(chart);
     	return "redirect:/charts";
     }
 
-    /*
-    private void makeChartQueries(Model model, Chart chart, String[] queries) {
-    	for (String id : queries) {
+    
+    private void makeChartQueries(Model model, Chart chart, String queries) {
+    	for (String id : queries.split(",")) {
     		ChartQuery chartQuery = new ChartQuery();
-    		// System.out.println(id.toString());
+    		System.out.println(id);
     		
-    		/*
     		Long queryId = Long.parseLong(id);
             Optional<Query> optionalQuery = queryRepository.findById(queryId);
             Query query = optionalQuery.get();
-            */
     		
-            /*
     		chartQuery.setChart(chart);
     		chartQuery.setQuery(query);
 
@@ -152,14 +149,13 @@ public class ChartController {
     		Set<ChartQuery> chartQueryQuery = query.getChartQueries();
     		chartQueryQuery.add(chartQuery);
     		query.setChartQueries(chartQueryQuery);
-    		*/
 
-    		/*
-    		model.addAttribute("chartQuery", chartQuery);
+    		// model.addAttribute("chartQuery", chartQuery);
     		chartQueryRepository.save(chartQuery);
     	}
     }
-    */
+    
+
     
 
     /*
