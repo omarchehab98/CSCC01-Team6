@@ -60,6 +60,14 @@ public class Query {
 		this.queryString = queryString;
 	}
 	
+	public Set<ChartQuery> getChartQueries() {
+		return chartQueries;
+	}
+
+	public void setChartQueries(Set<ChartQuery> chartQueries) {
+		this.chartQueries = chartQueries;
+	}
+
 	public String getRoute() {
 		return String.format(
 			"/templates/%s?%s",

@@ -1,9 +1,9 @@
 package team6.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import team6.models.Chart;
 
-public interface ChartRepository extends JpaRepository<Chart, Long> {
+public interface ChartRepository extends CrudRepository<Chart, Long> {
 
 }
