@@ -79,12 +79,12 @@ public class ChartController {
 		Set<ChartQuery> chartQueries = chart.getChartQueries();
 
 		for (ChartQuery chartQuery : chartQueries) {
-    		Query query = chartQuery.getQuery();
-    		Matcher matcher = pattern.matcher(query.getQueryString());
-    		if(!matcher.find()) {
-    			throw new IllegalArgumentException();
+    			Query query = chartQuery.getQuery();
+    			Matcher matcher = pattern.matcher(query.getQueryString());
+    			if(!matcher.find()) {
+    				throw new IllegalArgumentException();
+    			}
     		}
-    	}
 	}
 
     @GetMapping("/charts/create")
