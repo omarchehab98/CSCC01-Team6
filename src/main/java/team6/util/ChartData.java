@@ -7,9 +7,12 @@ public class ChartData {
 	private Integer[][] datasetList;
 	private String[] sourceList;
 
+	public ChartData() {}
+
+
 	public ChartData(String[] labelList, Integer[][] datasetList, String[] sourceList) {
 		this.labelList = labelList;
 		this.datasetList = datasetList;
-		this.sourceList = sourcelist;
+		this.sourceList = sourceList;
 	}
 }
