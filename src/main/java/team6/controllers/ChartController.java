@@ -151,7 +151,7 @@ public class ChartController {
         chartRepository.save(chart);
         model.addAttribute("chart", chart);
         populateChartQueries(model, chart, queries);
-        return "redirect:reports/chart";
+        return "redirect:/charts/{id}/embed";
     }
 
     private void populateChartQueries(Model model, Chart chart, String queries) {

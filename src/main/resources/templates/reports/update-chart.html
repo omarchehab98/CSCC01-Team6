@@ -13,7 +13,7 @@
         <a href="/organizations">Organizations</a>
     </div>
     
-    <form action="#" th:action="@{/charts}" th:object="${chart}" method="post">
+    <form action="#" th:action="@{'/charts/' + ${chart.id} + '/embed/'}" th:object="${chart}" method="post">
         <h1>Update Chart</h1>
     	<label>
             Chart Name*
