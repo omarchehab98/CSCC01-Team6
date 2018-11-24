@@ -57,6 +57,12 @@
         type="application/json">
     </script>
 
+    <script
+        th:data-key="chartQueries"
+        th:utext="${chartQueriesJSON}"
+        type="application/json">
+    </script>
+
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     
@@ -103,7 +109,7 @@
             
             data: {
                 ...data,
-                selectedQueries: [],
+                selectedQueries: data.chartQueries.map(x => ({ value: x.id })),
             },
 
             methods: {

@@ -129,8 +129,17 @@ public class ChartController {
 		
 		try {
             Long chartId = Long.parseLong(id);
-            Optional<Chart> chart = chartRepository.findById(chartId);
-            model.addAttribute("chart", chart.get());
+            Chart chart = chartRepository.findById(chartId).get();
+            model.addAttribute("chart", chart);
+			JSONArray chartQueriesJSON = new JSONArray();
+			for (ChartQuery chartQuery : chart.getChartQueries()) {
+				Query query = chartQuery.getQuery();
+				JSONObject queryJSON = new JSONObject();
+				queryJSON.put("id", query.getId());
+				queryJSON.put("name", query.getName());
+				chartQueriesJSON.put(queryJSON);
+			}
+			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
             return "reports/update-chart";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
