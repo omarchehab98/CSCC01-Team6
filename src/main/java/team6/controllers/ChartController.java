@@ -40,7 +40,7 @@ public class ChartController {
     public String readAllView(Model model) {
         Iterable<Chart> charts = chartRepository.findAll();
         model.addAttribute("charts", charts);
-        return "reports/chart-read-list";
+        return "charts/read-list";
     }
 
 	@GetMapping("/charts/{id}/embed")
@@ -49,7 +49,7 @@ public class ChartController {
             Long chartId = Long.parseLong(id);
             Optional<Chart> chart = chartRepository.findById(chartId);
             addChartAttributes(model, chart.get());
-            return "reports/chart";
+            return "charts/chart";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
@@ -103,7 +103,7 @@ public class ChartController {
 
 		model.addAttribute("chart", new Chart());
 
-        return "reports/create-chart";
+        return "charts/create";
     }
 
     @PostMapping("/charts")
@@ -113,7 +113,7 @@ public class ChartController {
     	return "redirect:/charts";
     }
 
-    @GetMapping("/charts/{id}/embed/update")
+    @GetMapping("/charts/{id}/update")
    	public String updateView(Model model, @PathVariable String id) {
 
 		// Convert queries to JSON
@@ -140,7 +140,7 @@ public class ChartController {
 				chartQueriesJSON.put(queryJSON);
 			}
 			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
-            return "reports/update-chart";
+            return "charts/update";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
@@ -182,7 +182,7 @@ public class ChartController {
     /*
      * To manage test populations.
      */
-    @DeleteMapping("/charts/{id}/embed")
+    @DeleteMapping("/charts/{id}/")
     public String deleteById(@PathVariable String id) {
         try {
             chartRepository.deleteById(Long.parseLong(id));
