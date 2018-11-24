@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Reports</title>
+</head>
+
+<body>
+  <div id = "createLink">
+      <a id= "createLinkAnchor" href="/reports/create"><i class="far fa-plus-circle"></i> Create</a>
+  </div>
+
+<div class = "wholeTable">
+  <table>
+    <thead id="tableHead">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="reportRow" th:each="report : ${reports}">
+        <td th:text="${report.id}"></td>
+        <td th:text="${report.name}"></td>
+        <td>
+          <a th:href="@{'/reports/' + ${reports.id}}">
+            View
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>

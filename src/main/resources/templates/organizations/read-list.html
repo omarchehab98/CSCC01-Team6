@@ -16,68 +16,15 @@
     margin:0;
     background-color: #ffffff;
   }
-  .headTop{
-    display: flex;
-    color:powderblue;
-    background-color: #222f3e;
-    border-top: 4px solid #ff9f43;
-    margin:0;
-    padding:5px;
-    width:100%;
-    text-align: left;
-    vertical-align: middle;
-    font-family: 'arimo', sans-serif;
-    font-size: 250%;
-  }
-  .fa-home{
-    color:#ebf0f5;
-    float: left;
-    padding-left: 1%;
-    padding-right: 1%;
-    transition-duration: 0.3s;
-  }
-  .fa-home:hover{
-    padding-right: 1%;
-    font-size:110%;
-    color: #341f97;
-    position: inherit;
-  }
-
-  .wholeTable{
-    visibility: initial;
-  }
-
-  a{
-    color: blue;
-    text-decoration: none;
-  }
-  a:visited{
-    text-decoration: none;
-  }
-  table > thead{
-    background-color:#8395a7;
-    font-size: 100%;
-    font-family: 'lato';
-    
-  }
-
-  .organizationRow:nth-child(2n){
-    background-color:#BBC9D8
-  }
-  .organizationRow td{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
 
   .partners--header {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #c8d6e5;
   }
-  tr:hover{
-    filter:contrast(90%);
-  }
   </style>
 
+<th:block th:replace="../fragments/tableStyle.html"></th:block>
 <th:block th:replace="../fragments/navigation.html"></th:block>
 
 <div class="breadcrumbs">
@@ -115,7 +62,7 @@
     </thead>
     <tbody>
 
-      <tr class="organizationRow" th:each="organization : ${organizations}">
+      <tr class="-Row" th:each="organization : ${organizations}">
         <td th:text="${organization.id}"></td>
         <td th:text="${organization.name}"></td>
         <td th:text="${organization.country}"></td>

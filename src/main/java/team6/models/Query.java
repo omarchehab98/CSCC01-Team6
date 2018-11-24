@@ -59,11 +59,11 @@ public class Query {
 	public void setQueryString(String queryString) {
 		this.queryString = queryString;
 	}
-	
+
 	public Set<ChartQuery> getChartQueries() {
 		return chartQueries;
 	}
-
+	
 	public void setChartQueries(Set<ChartQuery> chartQueries) {
 		this.chartQueries = chartQueries;
 	}
