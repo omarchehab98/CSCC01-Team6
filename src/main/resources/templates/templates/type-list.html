@@ -4,24 +4,53 @@
 
 <head>
   <title>Templates</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 
 <body>
-  <div>
-    <a href="/">Home</a>
+  <style>
+    .templates-header{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #c8d6e5;
+    }
+    .template-btn{
+      color:dodgerblue;
+      background-color: #ffffff;
+      transition-duration: 0.2s;
+      text-align: center;
+      margin-right: 1%;
+    }
+    .template-btn:hover{
+      color:#ffffff;
+      background-color: dodgerblue;
+    }
+    .btn-list{
+      padding-top: 3%;
+    }
+  </style>
+
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+  <div class="breadcrumbs">
+      &nbsp;
   </div>
 
-  <h1>Templates</h1>
+  <div class="container">
+  <header class="templates-header">
+    <h1>Templates</h1>
+  </header>
 
-  <ul>
-    <li><a href="/templates/NARs">NARs</a></li>
-    <li><a href="/templates/clientProfile">Client Profiles</a></li>
-  </ul>
+  <div class="btn-list">
+    <a class="btn template-btn" href="/templates/NARs">NARs</a>
+    <a class="btn template-btn" href="/templates/clientProfile">Client Profiles</a>
+    <!-- Add Rest of templates -->
+  </div>
 
   <div>
     <p data-th-utext="${#strings.replace(#strings.escapeXml(file),'&#10;','&lt;br&gt;')}"></p>
   </div>
+
+</div>
 </body>
 
 </html>
