@@ -9,9 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,20 +31,25 @@ public class ReportController{
     private ReportRepository reportRepository;
 
     @PostMapping("/reports")
-    public String createReport(Model model){
-        //todo after the tinyMCE gets implemented
-        return "/";
+    public String createReport(@ModelAttribute Report report){
+    	reportRepository.save(report);
+        return "redirect:/reports";
     }
 
-    @PostMapping("/reports/update")
-    public String createReport(){
-        //todo after the tinyMCE gets implemented
-        return "/";
+    @PostMapping("/reports/${report.id}")
+    public String saveUpdateReport(Model model, @ModelAttribute Report report){
+    		Report re = reportRepository.findById(report.getId()).get();
+    		re.setBody(report.getBody());
+    		re.setName(report.getName());
+    		model.addAttribute("report", re);
+
+        return "redirect:/reports";
     }
     
     @GetMapping("/reports")
     public String readAllReports(Model model) {
-    	model.addAttribute("reports", reportRepository.findAll());
+    	Iterable<Report> reports = reportRepository.findAll();
+    	model.addAttribute("reports", reports);
 		return "reports/read-list";
     }
     
@@ -50,8 +58,8 @@ public class ReportController{
     	try {
     		Long repId = Long.parseLong(id);
     		Optional<Report> rep = reportRepository.findById(repId);
-    		model.addAttribute("report", rep);
-    		return "report/read-single";
+    		model.addAttribute("report", rep.get());
+    		return "reports/read-single";
     	} catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ReportNotFoundException();
         }
@@ -71,6 +79,16 @@ public class ReportController{
             Optional<Report> rep = reportRepository.findById(repId);
             model.addAttribute("report", rep.get());
             return "reports/update";
+        } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
+            throw new ReportNotFoundException();
+        }
+    }
+    
+    @DeleteMapping("/reports/{id}")
+    public String deleteById(@PathVariable String id) {
+        try {
+            reportRepository.deleteById(Long.parseLong(id));
+            return "redirect:/reports";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ReportNotFoundException();
         }
