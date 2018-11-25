@@ -31,8 +31,7 @@
       display:inline-flex;
     }
     .template-btn-list a{
-      margin: 1%;
-      /* margin-right: 0; */
+      margin:2px;
     }
     .template-btn{
       color:dodgerblue;
@@ -113,6 +112,15 @@
       th:href="@{'/templates/communityConnections?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >Community Connections Templates</a>
+      <a 
+      th:href="@{'/templates/employment?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >Employment Templates</a>
+      <a 
+      th:href="@{'/templates/languageTraining?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >Language Training</a>
+      
     
       <!-- ADD REST OF TEMPLATE TYPES -->  
   </div>
