@@ -2,17 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Update Chart</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 <body>
-    <div>
-        <a href="/">Home</a>
+        <th:block th:replace="../fragments/navigation.html"></th:block>
+        <th:block th:replace="../fragments/partnerStyles.html"></th:block>
+    
+    <style>
+    label{
+        width:100%;
+    }
+    </style>
 
-        •
-    
-        <a href="/organizations">Organizations</a>
+    <div class="breadcrumbs">
+        &nbsp;
     </div>
-    
+
+    <div class="container">
     <form action="#" th:action="@{'/charts/' + ${chart.id} + '/embed/'}" th:object="${chart}" method="post">
         <h1>Update Chart</h1>
     	<label>
@@ -32,6 +38,7 @@
                 <option value="line">Line</option>
 	    </select>
         </label>
+        <div class="spaced"></div>
 
         <div id="chartQueries">
             <chart-queries
@@ -46,9 +53,11 @@
             >
             </chart-queries>
         </div>
+
+        <div class="spaced"></div>
         <input type="hidden" name="chartQueries" th:value="${queries}" />
-	<input type="submit" value="Submit" />
-        <input type="reset" value="Reset" />
+	<input class="btn" type="submit" value="Submit" />
+        <input class="btn" type="reset" value="Reset" />
     </form>
 
     <script
@@ -135,5 +144,9 @@
             },
         });
     </script>
+    
+    <div class="spaced"></div>
+    
+    </div>
 </body>
 </html>

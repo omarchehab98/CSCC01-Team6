@@ -4,17 +4,53 @@
 
 <head>
   <title th:text="Charts"></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 
 <body>
-  <div>
-    <a href="/">Home</a>
+
+  <style>
+  .headerText{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #c8d6e5;
+    }
+  .charts--table tbody tr:hover .charts--item-execute {
+    visibility: initial;
+    }
+
+  .charts--item-actions {
+    text-align: right;
+  }
+
+  .charts--item-execute {
+    visibility: hidden;
+  }
+  </style>
+
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+  <!-- <th:block th:replace="../fragments/tableStyle.html"></th:block> -->
+  <div class="breadcrumbs">
+    &nbsp;
   </div>
 
-  <h1 th:text="Charts"></h1>
+  <main class="container">
+    <header class="headerText">
+      <h1 th:text="Charts"></h1>
+      
+      <div style="flex-grow: 1;"></div>
 
-  <table>
+      <a
+        class="btn btn-primary"
+        href="/charts/create"
+      >
+        Create Chart
+      </a>
+    </header>
+
+
+  <div class="table-container">
+  <table class="charts--table">
     <thead>
       <tr>
         <th>ID</th>
@@ -27,7 +63,7 @@
 
       <tr th:each="chart : ${charts}">
         <td th:text="${chart.id}"></td>
-        <td th:text="${chart.name}"></td>
+        <td class = "charts--item-name" th:text="${chart.name}"></td>
         <td>
           <a th:href="@{'/charts/' + ${chart.id} + '/embed/'}">
             View
@@ -42,6 +78,8 @@
       </tr>
     </tbody>
   </table>
+</div>
+</main>
 </body>
 
 </html>

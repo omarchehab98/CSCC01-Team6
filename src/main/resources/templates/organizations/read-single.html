@@ -38,6 +38,7 @@
       color:dodgerblue;
       background-color: #ffffff;
       transition-duration: 0.2s;
+      text-align:center;
     }
     .template-btn:hover{
       color:#ffffff;
@@ -104,6 +105,14 @@
       th:href="@{'/templates/NARs?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >NARs Templates</a>
+      <a 
+      th:href="@{'/templates/clientProfile?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >Client Profile Templates</a>
+      <a 
+      th:href="@{'/templates/communityConnections?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >Community Connections Templates</a>
     
       <!-- ADD REST OF TEMPLATE TYPES -->  
   </div>
@@ -113,10 +122,11 @@
       <input type="hidden" name="organizationId" th:value="${organization.id}" />
       
 			
-        <div class="spaced">
+        <div class="spaced"></div>
+            <div class="spaced">
           <p>Upload a new Template:</p>
           <input type="file" name="file"/>
-        </div>
+        
         
         <div>
           <select required name="templateType">
