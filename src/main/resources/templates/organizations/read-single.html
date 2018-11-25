@@ -43,6 +43,11 @@
       color:#ffffff;
       background-color: dodgerblue;
     }
+    .upload-btn{
+      margin-top:1%;
+      background-color:#222f3e;
+      color:white;
+    }
   </style>
 
   <th:block th:replace="../fragments/navigation.html"></th:block>
@@ -113,7 +118,7 @@
       class="btn template-btn"
       >Community Connections Templates</a>
   </div>
-  
+
   <div class="template-btn-list">
       <a 
       th:href="@{'/templates/employment?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
@@ -134,12 +139,13 @@
       <input type="hidden" name="organizationId" th:value="${organization.id}" />
 			
         <div class="spaced"></div>
-            <div class="spaced">
+          
+        <div class="spaced">  
           <p>Upload a new Template:</p>
           <input type="file" name="file"/>
+
         
-        
-        <div>
+        <div> Select Template Type:
           <select required name="templateType">
             <option value="" disabled selected>Select the template type</option>
             <option value="NARs" selected>NARs</option>
@@ -152,7 +158,7 @@
         </div>
 
         <div>
-          <input type="submit" value="Upload" />
+          <input class = "btn upload-btn"type="submit" value="Upload" />
         </div>
             
         </form>
