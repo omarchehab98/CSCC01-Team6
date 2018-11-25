@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="Charts"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+  <div>
+    <a href="/">Home</a>
+  </div>
+
+  <h1 th:text="Charts"></h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+	<th></th>
+	<th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr th:each="chart : ${charts}">
+        <td th:text="${chart.id}"></td>
+        <td th:text="${chart.name}"></td>
+        <td>
+          <a th:href="@{'/charts/' + ${chart.id} + '/embed/'}">
+            View
+          </a>
+        </td>
+	<td>
+          <a th:href="@{'/charts/' + ${chart.id} + '/update/'}">
+            Update
+          </a>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

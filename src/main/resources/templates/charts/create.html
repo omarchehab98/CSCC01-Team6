@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create • Organization</title>
+    <title>Create Chart</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -13,12 +13,24 @@
         <a href="/organizations">Organizations</a>
     </div>
     
-    <form action="#" th:action="@{/charts}" method="post">
+    <form action="#" th:action="@{/charts}" th:object="${chart}" method="post">
         <h1>Create Chart</h1>
     	<label>
             Chart Name*
             <br />
-            <input type="text" required />
+            <input type="text" th:field="*{name}" required />
+        </label>
+
+	<br/>
+
+	<label>
+            Chart Type*
+            <br />
+	    <select name="list" id="typelist" th:field="*{type}">
+      	        <option value="bar">Bar</option>
+      	        <option value="pie">Pie</option>
+                <option value="line">Line</option>
+	    </select>
         </label>
 
         <div id="chartQueries">
@@ -34,6 +46,9 @@
             >
             </chart-queries>
         </div>
+        <input type="hidden" name="chartQueries" th:value="${queries}" />
+	<input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
     </form>
 
     <script
