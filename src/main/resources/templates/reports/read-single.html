@@ -38,8 +38,8 @@
       </tr>
     </tbody>
   </table>
-  <div><p th:text="${report.body}"></p></div>
-  
-</body>
 
+  <div th:utext="body: + ${report.body}">test</div>
+
+</body>
 </html>

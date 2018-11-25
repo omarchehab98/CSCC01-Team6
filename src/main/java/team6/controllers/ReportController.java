@@ -36,14 +36,12 @@ public class ReportController{
         return "redirect:/reports";
     }
 
-    @PostMapping("/reports/${report.id}")
-    public String saveUpdateReport(Model model, @ModelAttribute Report report){
-    		Report re = reportRepository.findById(report.getId()).get();
-    		re.setBody(report.getBody());
-    		re.setName(report.getName());
-    		model.addAttribute("report", re);
+    @PostMapping("/reports/{id}")
+    public String saveUpdateReport(Model model, @ModelAttribute Report report){	
+    	reportRepository.save(report);
+    	model.addAttribute("report", report);
 
-        return "redirect:/reports";
+        return "redirect:/reports/{id}";
     }
     
     @GetMapping("/reports")
