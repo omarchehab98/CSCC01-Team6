@@ -31,8 +31,7 @@
       display:inline-flex;
     }
     .template-btn-list a{
-      margin: 1%;
-      /* margin-right: 0; */
+      margin:2px;
     }
     .template-btn{
       color:dodgerblue;
@@ -113,14 +112,26 @@
       th:href="@{'/templates/communityConnections?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >Community Connections Templates</a>
-    
-      <!-- ADD REST OF TEMPLATE TYPES -->  
+  </div>
+  
+  <div class="template-btn-list">
+      <a 
+      th:href="@{'/templates/employment?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >Employment Templates</a>
+      <a 
+      th:href="@{'/templates/informationAndOrientation?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >information And Orientation</a>
+      <a 
+      th:href="@{'/templates/languageTraining?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      class="btn template-btn"
+      >Language Training</a>
   </div>
   
   <div>
     <form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
       <input type="hidden" name="organizationId" th:value="${organization.id}" />
-      
 			
         <div class="spaced"></div>
             <div class="spaced">
@@ -136,14 +147,15 @@
             <option value="employment">Employment</option>
             <option value="languageTraining">Language Training</option>
             <option value="communityConnections">Community Connections</option>
+            <option value="informationAndOrientation">Information and Orientation</option>
           </select>
         </div>
 
         <div>
           <input type="submit" value="Upload" />
         </div>
-			
-		</form>
+            
+        </form>
   </div>
   
   <div class="spaced"></div>

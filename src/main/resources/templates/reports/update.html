@@ -19,7 +19,7 @@
         <a href="/reports">Reports</a>
     </div>
 	<h1>Update Report</h1>
-	<form action="#" th:action="@{/reports}" th:object="${report}" method="post">
+	<form action="#" th:action="@{'/reports/' + ${report.id}}" th:object="${report}" method="post">
 		<label>
             Report Name*
             <br />
@@ -28,8 +28,20 @@
 
     	<textarea id="mytextarea" th:field="*{body}"></textarea>
   	
-   	<input type="submit" value="Submit" />
+   	<input type="submit" value="Update" />
     <input type="reset" value="Reset" />
+    <button class = "formBtn delBtn" type="button" th:onclick="@{'deleteReport(' + ${report.id} + ')'}">
+          Delete
+    </button>
+        <script type="text/javascript">
+          async function deleteReport(id) {
+            const yes = confirm("Are you sure you want to delete the report? You cannot undo this action.");
+            if (yes) {
+              await fetch(`/reports/${id}`, { method: "DELETE" });
+              window.location = '/reports';
+            }
+          }
+        </script>
   	</form>
 
 </body>
