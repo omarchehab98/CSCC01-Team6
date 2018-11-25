@@ -92,14 +92,16 @@ public class ChartController {
     public String createView(Model model) {
 
 		// Convert queries to JSON
-		Iterable<Query> queries = queryRepository.findAll();
-		JSONArray queriesJSON = new JSONArray();
-		for (Query query : queries) {
-			JSONObject queryJSON = new JSONObject();
-			queryJSON.put("id", query.getId());
-			queryJSON.put("name", query.getName());
-			queriesJSON.put(queryJSON);
-		}
+    	Iterable<Query> queries = queryRepository.findAll();
+    	JSONArray queriesJSON = new JSONArray();
+    	for (Query query : queries) {
+    		if (containsGroupByParameter(query)) {
+				JSONObject queryJSON = new JSONObject();
+				queryJSON.put("id", query.getId());
+				queryJSON.put("name", query.getName());
+				queriesJSON.put(queryJSON);
+    		}
+    	}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 
 		model.addAttribute("chart", new Chart());
@@ -118,14 +120,16 @@ public class ChartController {
    	public String updateView(Model model, @PathVariable String id) {
 
 		// Convert queries to JSON
-		Iterable<Query> queries = queryRepository.findAll();
-		JSONArray queriesJSON = new JSONArray();
-		for (Query query : queries) {
-			JSONObject queryJSON = new JSONObject();
-			queryJSON.put("id", query.getId());
-			queryJSON.put("name", query.getName());
-			queriesJSON.put(queryJSON);
-		}
+    	Iterable<Query> queries = queryRepository.findAll();
+    	JSONArray queriesJSON = new JSONArray();
+    	for (Query query : queries) {
+    		if (containsGroupByParameter(query)) {
+				JSONObject queryJSON = new JSONObject();
+				queryJSON.put("id", query.getId());
+				queryJSON.put("name", query.getName());
+				queriesJSON.put(queryJSON);
+    		}
+    	}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 		
 		try {
@@ -136,10 +140,12 @@ public class ChartController {
 			JSONArray chartQueriesJSON = new JSONArray();
 			for (ChartQuery chartQuery : chart.getChartQueries()) {
 				Query query = chartQuery.getQuery();
-				JSONObject queryJSON = new JSONObject();
-				queryJSON.put("id", query.getId());
-				queryJSON.put("name", query.getName());
-				chartQueriesJSON.put(queryJSON);
+				if (containsGroupByParameter(query)) {
+					JSONObject queryJSON = new JSONObject();
+					queryJSON.put("id", query.getId());
+					queryJSON.put("name", query.getName());
+					chartQueriesJSON.put(queryJSON);
+				}
 			}
 			
 			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
@@ -147,6 +153,12 @@ public class ChartController {
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
+    }
+
+    private boolean containsGroupByParameter(Query query) {
+    	Pattern pattern = Pattern.compile("group=(\\w*)");
+    	Matcher matcher = pattern.matcher(query.getQueryString());
+    	return matcher.find();
     }
 
     @PostMapping("/charts/{id}/embed")
