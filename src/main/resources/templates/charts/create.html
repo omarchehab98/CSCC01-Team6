@@ -1,25 +1,43 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create • Organization</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Create Chart</title>
+    <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 <body>
-    <div>
-        <a href="/">Home</a>
+    <th:block th:replace="../fragments/partnerStyles.html"></th:block>
+    <style>
 
-        •
-    
-        <a href="/organizations">Organizations</a>
-    </div>
-    
+    </style>
+
+        <th:block th:replace="../fragments/navigation.html"></th:block>
+        
+    <div class="container">
     <form action="#" th:action="@{/charts}" th:object="${chart}" method="post">
+        <div class="breadcrumbs">
+                &nbsp;
+            </div>
+                    
         <h1>Create Chart</h1>
+
     	<label>
             Chart Name*
             <br />
             <input type="text" th:field="*{name}" required />
         </label>
+
+	<br/>
+
+	<label>
+            Chart Type*
+            <br />
+	    <select name="list" id="typelist" th:field="*{type}">
+      	        <option value="bar">Bar</option>
+      	        <option value="pie">Pie</option>
+                <option value="line">Line</option>
+	    </select>
+        </label>
+        <div class="spaced"></div>
 
         <div id="chartQueries">
             <chart-queries
@@ -34,9 +52,10 @@
             >
             </chart-queries>
         </div>
+        <div class="spaced"></div>
         <input type="hidden" name="chartQueries" th:value="${queries}" />
-	<input type="submit" value="Submit" />
-        <input type="reset" value="Reset" />
+	<input class="btn" type="submit" value="Submit" />
+        <input class="btn" type="reset" value="Reset" />
     </form>
 
     <script
@@ -117,5 +136,6 @@
             },
         });
     </script>
+    </div><!-- end container div-->
 </body>
 </html>
