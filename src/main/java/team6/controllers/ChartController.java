@@ -1,6 +1,7 @@
 package team6.controllers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -91,14 +92,16 @@ public class ChartController {
     public String createView(Model model) {
 
 		// Convert queries to JSON
-		Iterable<Query> queries = queryRepository.findAll();
-		JSONArray queriesJSON = new JSONArray();
-		for (Query query : queries) {
-			JSONObject queryJSON = new JSONObject();
-			queryJSON.put("id", query.getId());
-			queryJSON.put("name", query.getName());
-			queriesJSON.put(queryJSON);
-		}
+    	Iterable<Query> queries = queryRepository.findAll();
+    	JSONArray queriesJSON = new JSONArray();
+    	for (Query query : queries) {
+    		if (containsGroupByParameter(query)) {
+				JSONObject queryJSON = new JSONObject();
+				queryJSON.put("id", query.getId());
+				queryJSON.put("name", query.getName());
+				queriesJSON.put(queryJSON);
+    		}
+    	}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 
 		model.addAttribute("chart", new Chart());
@@ -117,28 +120,34 @@ public class ChartController {
    	public String updateView(Model model, @PathVariable String id) {
 
 		// Convert queries to JSON
-		Iterable<Query> queries = queryRepository.findAll();
-		JSONArray queriesJSON = new JSONArray();
-		for (Query query : queries) {
-			JSONObject queryJSON = new JSONObject();
-			queryJSON.put("id", query.getId());
-			queryJSON.put("name", query.getName());
-			queriesJSON.put(queryJSON);
-		}
+    	Iterable<Query> queries = queryRepository.findAll();
+    	JSONArray queriesJSON = new JSONArray();
+    	for (Query query : queries) {
+    		if (containsGroupByParameter(query)) {
+				JSONObject queryJSON = new JSONObject();
+				queryJSON.put("id", query.getId());
+				queryJSON.put("name", query.getName());
+				queriesJSON.put(queryJSON);
+    		}
+    	}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 		
 		try {
             Long chartId = Long.parseLong(id);
             Chart chart = chartRepository.findById(chartId).get();
             model.addAttribute("chart", chart);
+
 			JSONArray chartQueriesJSON = new JSONArray();
 			for (ChartQuery chartQuery : chart.getChartQueries()) {
 				Query query = chartQuery.getQuery();
-				JSONObject queryJSON = new JSONObject();
-				queryJSON.put("id", query.getId());
-				queryJSON.put("name", query.getName());
-				chartQueriesJSON.put(queryJSON);
+				if (containsGroupByParameter(query)) {
+					JSONObject queryJSON = new JSONObject();
+					queryJSON.put("id", query.getId());
+					queryJSON.put("name", query.getName());
+					chartQueriesJSON.put(queryJSON);
+				}
 			}
+			
 			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
             return "charts/update";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
@@ -146,12 +155,48 @@ public class ChartController {
         }
     }
 
+    private boolean containsGroupByParameter(Query query) {
+    	Pattern pattern = Pattern.compile("group=(\\w*)");
+    	Matcher matcher = pattern.matcher(query.getQueryString());
+    	return matcher.find();
+    }
+
     @PostMapping("/charts/{id}/embed")
     public String updateById(Model model, @ModelAttribute Chart chart, @PathVariable String id, @RequestParam String queries) {
         chartRepository.save(chart);
         model.addAttribute("chart", chart);
-        populateChartQueries(model, chart, queries);
+        updateChartQueries(model, chart, queries);
         return "redirect:/charts/{id}/embed";
+    }
+
+    private void updateChartQueries(Model model, Chart chart, String queries) {
+    	Set<ChartQuery> newChartQueries = new HashSet<ChartQuery>();
+    	Set<ChartQuery> chartQueries = chart.getChartQueries();
+    	chartQueries.clear();
+    	chart.setChartQueries(chartQueries);
+    	
+    	deleteChartQueriesForChart(model, chart);
+    	
+    	for (String id : queries.split(",")) {
+    		ChartQuery chartQuery = new ChartQuery();
+    		
+    		Long queryId = Long.parseLong(id);
+            Optional<Query> optionalQuery = queryRepository.findById(queryId);
+            Query query = optionalQuery.get();
+    		
+    		chartQuery.setChart(chart);
+    		chartQuery.setQuery(query);
+
+    		newChartQueries.add(chartQuery);
+
+    		Set<ChartQuery> chartQueryQuery = query.getChartQueries();
+    		chartQueryQuery.add(chartQuery);
+    		query.setChartQueries(chartQueryQuery);
+
+    		chartQueryRepository.save(chartQuery);
+    	}
+    	
+    	chart.setChartQueries(newChartQueries);
     }
 
     private void populateChartQueries(Model model, Chart chart, String queries) {
@@ -168,7 +213,9 @@ public class ChartController {
     		chartQuery.setQuery(query);
 
     		chartQueriesChart.add(chartQuery);
+
     		Set<ChartQuery> chartQueryQuery = query.getChartQueries();
+    		
     		chartQueryQuery.add(chartQuery);
     		query.setChartQueries(chartQueryQuery);
 
@@ -177,6 +224,18 @@ public class ChartController {
     	}
 
     	chart.setChartQueries(chartQueriesChart);
+    }
+
+    private void deleteChartQueriesForChart(Model model, Chart chart) {
+    	List<ChartQuery> chartQueries = chartQueryRepository.findAll();
+    	for (ChartQuery chartQuery : chartQueries) {
+    		if (chartQuery.getChart().getId() == chart.getId()) {
+    			chartQuery.getChart().getChartQueries().remove(chartQuery);
+    			chartQuery.getQuery().getChartQueries().remove(chartQuery);
+    			chartQueryRepository.deleteById(chartQuery.getId());
+    			System.out.println("Yep");
+    		}
+    	}
     }
 
     /*
