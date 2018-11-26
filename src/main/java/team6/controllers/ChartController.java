@@ -123,12 +123,12 @@ public class ChartController {
 			JSONArray chartQueriesJSON = new JSONArray();
 			for (ChartQuery chartQuery : chart.getChartQueries()) {
 				Query query = chartQuery.getQuery();
-				// if (containsGroupByParameter(query)) {
+				if (containsGroupByParameter(query)) {
 					JSONObject queryJSON = new JSONObject();
 					queryJSON.put("id", query.getId());
 					queryJSON.put("name", query.getName());
 					chartQueriesJSON.put(queryJSON);
-				// }
+				}
 			}
 			
 			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
