@@ -39,7 +39,9 @@ public class Query {
 	}
 	
 	public String getName() {
-		return this.name;
+		return this.name != null && this.name.length() > 0
+			? this.name
+			: "Untitled query";
 	}
 	
 	public void setName(String name) {
