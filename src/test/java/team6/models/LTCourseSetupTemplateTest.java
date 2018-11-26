@@ -17,7 +17,7 @@ import team6.repositories.LTCourseSetupTemplateRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class LTCourseSetUpTemplateTest {
+public class LTCourseSetupTemplateTest {
 	@Autowired
     private TestEntityManager entityManager;
 	@Autowired
