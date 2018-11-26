@@ -238,6 +238,26 @@
                         <i class="fal fa-bolt"></i>
                     </a>
                 </div>
+
+                <div class="home--links-item">
+                    <a href="/charts">
+                        <h3 class="home--links-item-heading">
+                            Charts
+                        </h3>
+                        
+                        <i class="fal fa-chart-bar"></i>
+                    </a>
+                </div>
+
+                <div class="home--links-item">
+                    <a href="/reports">
+                        <h3 class="home--links-item-heading">
+                            Reports
+                        </h3>
+                        
+                        <i class="fal fa-file-chart-pie"></i>
+                    </a>
+                </div>
             </section>
 
             <section
@@ -416,7 +436,7 @@
 
                 <div class="home--task-body">
                     <h3 class="home--task-body-heading">
-                        Add a query
+                        Add a Query
                     </h3>
 
                     <p>
@@ -462,6 +482,129 @@
 
                     <label
                         for="home--task-body-toggleactionvisibility-2"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${charts.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Add a Chart
+                    </h3>
+
+                    <p>
+                        Create a bar, line, or pie chart diagram to visualize
+                        a query. With charts, you will be able to deeply
+                        analyze trends and anomalies.
+                    </p>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-3"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Create your first chart
+                            </h4>
+
+                            <p>
+                                Visual represent a query as a chart.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                href="/charts/create"
+                            >
+                                Add Chart
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-3"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-3"
+                        class="home--task-body-hideactionvisibility"
+                    >
+                        Hide completed tasks
+                    </label>
+                </div>
+            </section>
+
+            <section
+                class="home--card home--task container"
+                th:attr="data-iscomplete=${reports.size() > 0 ? 'true' : null}"
+            >
+                <div class="home--task-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="home--task-body">
+                    <h3 class="home--task-body-heading">
+                        Add a Report
+                    </h3>
+
+                    <p>
+                        Write a professional report, add multiple charts into
+                        the document, and comment about the findings.
+                    </p>
+
+                    <input
+                        id="home--task-body-toggleactionvisibility-4"
+                        class="home--task-body-toggleactionvisibility"
+                        type="checkbox"
+                    >
+
+                    <div class="home--task-action">
+                        <div class="home--task-action-description">
+                            <h4 class="home--task-action-description-heading">
+                                Create your first report
+                            </h4>
+
+                            <p>
+                                Combine multiple charts into a single report.
+                            </p>
+                        </div>
+
+                        <div class="home--task-action-button">
+                            <a
+                                class="btn btn-sm btn-secondary"
+                                href="/reports/create"
+                            >
+                                Add Report
+                            </a>
+                        </div>
+                    </div>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-4"
+                        class="home--task-body-showactionvisibility"
+                    >
+                        Show completed tasks
+                    </label>
+
+                    <label
+                        for="home--task-body-toggleactionvisibility-4"
                         class="home--task-body-hideactionvisibility"
                     >
                         Hide completed tasks
