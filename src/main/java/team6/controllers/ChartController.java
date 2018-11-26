@@ -1,16 +1,22 @@
 package team6.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,16 +26,50 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import team6.repositories.ChartQueryRepository;
-import team6.repositories.ChartRepository;
-import team6.repositories.QueryRepository;
-import team6.throwables.ChartNotFoundException;
+import team6.factories.TemplateFactoryWrapper;
 import team6.models.Chart;
 import team6.models.ChartQuery;
 import team6.models.Query;
+import team6.models.Template;
+import team6.repositories.ChartQueryRepository;
+import team6.repositories.ChartRepository;
+import team6.repositories.ClientProfileTemplateRepository;
+import team6.repositories.CommunityConnectionsTemplateRepository;
+import team6.repositories.EmploymentTemplateRepository;
+import team6.repositories.InformationAndOrientationTemplateRepository;
+import team6.repositories.LTClientEnrolTemplateRepository;
+import team6.repositories.LTClientExitTemplateRepository;
+import team6.repositories.LTCourseSetupTemplateRepository;
+import team6.repositories.NARsTemplateRepository;
+import team6.repositories.QueryRepository;
+import team6.throwables.ChartNotFoundException;
+import team6.util.AttributeResolver;
+import team6.util.TemplateQuery;
+import team6.util.parameters.GroupParameter;
+import team6.util.parameters.JoinParameter;
+import team6.util.parameters.SelectParameter;
+import team6.util.parameters.SortParameter;
+import team6.util.parameters.WhereParameter;
 
 @Controller
 public class ChartController {
+    @Autowired
+    private NARsTemplateRepository narsTemplateRepository;
+    @Autowired
+    private ClientProfileTemplateRepository clientProfileTemplateRepository;
+    @Autowired
+    private CommunityConnectionsTemplateRepository communityConnectionsTemplateRepository;
+    @Autowired
+    private EmploymentTemplateRepository employmentTemplateRepository;
+    @Autowired
+    private InformationAndOrientationTemplateRepository informationAndOrientationTemplateRepository;
+    @Autowired
+    private LTClientEnrolTemplateRepository ltClientEnrolTemplateRepository;
+    @Autowired
+    private LTCourseSetupTemplateRepository ltCourseSetupTemplateRepository;
+    @Autowired
+	private LTClientExitTemplateRepository ltClientExitTemplateRepository;
+	
 	@Autowired
 	private QueryRepository queryRepository;
 	@Autowired
@@ -57,18 +97,83 @@ public class ChartController {
     }
 
 	private void addChartAttributes(Model model, Chart chart) {
-		// got to parse these. Set arbitrary for now
-		String name = chart.getName();
-		String type = chart.getType();
-		String[] labels = {"Yep","Yep","Yep"};
-		int[][] data = {{1,2,3},{4,5,6}};
-		String[] sourceLabels = {"x", "y"};
+		List<String> sourceLabels = new ArrayList<>();
+		List<TemplateQuery.Table> tables = new ArrayList<>();
+		List<Integer[]> data = new ArrayList<>();
+		List<String> labels = new ArrayList<>();
+
+		for (ChartQuery chartQuery : chart.getChartQueries()) {
+			Query query = chartQuery.getQuery();
+			Optional<String> sort = Optional.empty();
+			Optional<String> sortDirection = Optional.empty();
+			Optional<String> join = Optional.empty();
+			Optional<String> select = Optional.empty();
+			Optional<String> where = Optional.empty();
+			Optional<String> group = Optional.empty();
+			String[] keyValuePairs = query.getQueryString().split("&");
+			for (String keyValuePairStr : keyValuePairs) {
+				String[] keyValuePair = keyValuePairStr.split("=");
+				String key = keyValuePair[0];
+				String value = keyValuePair[1];
+				switch (key) {
+					case "sort":
+						sort = Optional.of(value);
+						break;
+					case "sortDirection":
+						sortDirection = Optional.of(value);
+						break;
+					case "join":
+						join = Optional.of(value);
+						break;
+					case "select":
+						select = Optional.of(value);
+						break;
+					case "where":
+						where = Optional.of(value);
+						break;
+					case "group":
+						group = Optional.of(value);
+						break;
+				}
+			}
+
+			String groupBy = GroupParameter.parse(group.orElse(null));
+
+			Template template = new TemplateFactoryWrapper()
+				.build(query.getTemplate(), new HashMap<>(), null);
+			List<String> attributeNames = template.getAttributeNames();
+			List<String> friendlyNames = template.getFriendlyNames();
+			TemplateQuery.Table table = new TemplateQuery(
+				template.getClass().getSimpleName(),
+				template.getAttributeToFriendlyNameMap(),
+				attributeNames,
+				friendlyNames,
+				getEntityNameToRepositoryMap()
+			)
+				.execute(
+					SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc")),
+					JoinParameter.parse(join.orElse(null)),
+					SelectParameter.parse(select.orElse(null)),
+					WhereParameter.parse(where.orElse(null)),
+					groupBy
+				);
+
+			sourceLabels.add(query.getName());
+			tables.add(table);
+			List<Integer> rowData = new ArrayList<>();
+			for (List<List<Object>> row : table.data) {
+				rowData.add(row.size());
+				System.out.println(row.get(0).get(0));
+				labels.add((String) AttributeResolver.get(groupBy, row.get(0).get(0)));
+			}
+			data.add(rowData.toArray(new Integer[rowData.size()]));
+		}
 		
-		model.addAttribute("name", name);
-		model.addAttribute("type", type);
-		model.addAttribute("labels", labels);
-		model.addAttribute("data", data);
-		model.addAttribute("sourceLabels", sourceLabels);
+		model.addAttribute("name", chart.getName());
+		model.addAttribute("type", chart.getType());
+		model.addAttribute("labels", labels.toArray());
+		model.addAttribute("data", data.toArray());
+		model.addAttribute("sourceLabels", sourceLabels.toArray());
 	} 
 
     @GetMapping("/charts/create")
@@ -237,4 +342,17 @@ public class ChartController {
             throw new ChartNotFoundException();
         }
     }
+
+	public Map<String, JpaRepository> getEntityNameToRepositoryMap() {
+		Map<String, JpaRepository> map = new HashMap<>();
+		map.put("ClientProfileTemplate", clientProfileTemplateRepository);
+		map.put("NARsTemplate", narsTemplateRepository);
+		map.put("CommunityConnectionsTemplate", communityConnectionsTemplateRepository);
+		map.put("EmploymentTemplate", employmentTemplateRepository);
+		map.put("InformationAndOrientationTemplate", informationAndOrientationTemplateRepository);
+		map.put("LTClientEnrolTemplate", ltClientEnrolTemplateRepository);
+		map.put("LTCourseSetupTemplate", ltCourseSetupTemplateRepository);
+		map.put("LTClientExitTemplate", ltClientExitTemplateRepository);
+		return map;
+	}
 }

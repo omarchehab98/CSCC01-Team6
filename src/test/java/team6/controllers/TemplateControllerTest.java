@@ -76,10 +76,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/NARs"),
+				restTemplate.exchange(createURL("/templates/NARsTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/NARs");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/NARsTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -89,10 +89,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/clientProfile"),
+				restTemplate.exchange(createURL("/templates/ClientProfileTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/clientProfile");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/ClientProfileTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -102,10 +102,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/communityConnections"),
+				restTemplate.exchange(createURL("/templates/CommunityConnectionsTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/communityConnections");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/CommunityConnectionsTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -115,10 +115,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/employment"),
+				restTemplate.exchange(createURL("/templates/EmploymentTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/employment");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/EmploymentTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -128,10 +128,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/informationAndOrientation"),
+				restTemplate.exchange(createURL("/templates/InformationAndOrientationTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/informationAndOrientation");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/InformationAndOrientationTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -141,10 +141,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/ltClientEnrol"),
+				restTemplate.exchange(createURL("/templates/LTClientEnrolTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/ltClientEnrol");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/LTClientEnrolTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -154,10 +154,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/ltCourseSetup"),
+				restTemplate.exchange(createURL("/templates/LTCourseSetupTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/ltCourseSetup");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/LTCourseSetupTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -167,10 +167,10 @@ public class TemplateControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates/ltClientExit"),
+				restTemplate.exchange(createURL("/templates/LTClientExitTemplate"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllTemplateView(port, "/ltClientExit");
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/LTClientExitTemplate");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -178,26 +178,21 @@ public class TemplateControllerTest {
 	@Test
 	public void testGetRepo() throws IllegalTemplateException {
 		assertEquals(narsTemplateRepository,
-				templateController.getRepo("NARs"));
+				templateController.getEntityNameToRepositoryMap().get("NARsTemplate"));
 		assertEquals(clientProfileTemplateRepository, 
-				templateController.getRepo("clientProfile"));
+				templateController.getEntityNameToRepositoryMap().get("ClientProfileTemplate"));
 		assertEquals(communityConnectionsTemplateRepository, 
-				templateController.getRepo("communityConnections"));
+				templateController.getEntityNameToRepositoryMap().get("CommunityConnectionsTemplate"));
 		assertEquals(employmentTemplateRepository,
-				templateController.getRepo("employment"));
+				templateController.getEntityNameToRepositoryMap().get("EmploymentTemplate"));
 		assertEquals(informationAndOrientationTemplateRepository, 
-				templateController.getRepo("informationAndOrientation"));
+				templateController.getEntityNameToRepositoryMap().get("InformationAndOrientationTemplate"));
 		assertEquals(ltClientEnrolTemplateRepository, 
-				templateController.getRepo("ltClientEnrol"));
+				templateController.getEntityNameToRepositoryMap().get("LTClientEnrolTemplate"));
 		assertEquals(ltCourseSetupTemplateRepository,
-				templateController.getRepo("ltCourseSetup"));
+				templateController.getEntityNameToRepositoryMap().get("LTCourseSetupTemplate"));
 		assertEquals(ltClientExitTemplateRepository, 
-				templateController.getRepo("ltClientExit"));
-	}
-
-	@Test(expected = IllegalTemplateException.class)
-	public void testGetRepoException() throws IllegalTemplateException {
-		templateController.getRepo("");
+				templateController.getEntityNameToRepositoryMap().get("LTClientExitTemplate"));
 	}
 
 	private String createURL(String uri) {

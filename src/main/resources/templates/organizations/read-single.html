@@ -106,38 +106,38 @@
 
   <div class="template-btn-list">
       <a 
-      th:href="@{'/templates/NARs?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/NARsTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >NARs Templates</a>
       <a 
-      th:href="@{'/templates/clientProfile?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/ClientProfileTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >Client Profile Templates</a>
       <a 
-      th:href="@{'/templates/communityConnections?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/CommunityConnectionsTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >Community Connections Templates</a>
       <a 
-      th:href="@{'/templates/employment?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/EmploymentTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >Employment Templates</a>
   </div>
 
   <div class="template-btn-list">
       <a 
-      th:href="@{'/templates/informationAndOrientation?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/InformationAndOrientationTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >Information And Orientation</a>
       <a 
-      th:href="@{'/templates/ltClientEnrol?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/LTClientEnrolTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >LT Client Enrol</a>
       <a 
-      th:href="@{'/templates/ltCourseSetup?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/LTCourseSetupTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >LT Course Setup</a>
       <a 
-      th:href="@{'/templates/ltClientExit?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+      th:href="@{'/templates/LTClientExitTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
       class="btn template-btn"
       >LT Client Exit</a>
 
@@ -157,14 +157,14 @@
         <div> Select Template Type:
           <select required name="templateType">
             <option value="" disabled selected>Select the template type</option>
-            <option value="NARs" selected>NARs</option>
-            <option value="clientProfile">Client Profile</option>
-            <option value="employment">Employment</option>
-            <option value="ltClientEnrol">LT Client Enrol</option>
-	    <option value="ltCourseSetup">LT Course Setup</option>
-            <option value="ltClientExit">LT Client Exit</option>
-            <option value="communityConnections">Community Connections</option>
-            <option value="informationAndOrientation">Information and Orientation</option>
+            <option value="NARsTemplate" selected>NARs</option>
+            <option value="ClientProfileTemplate">Client Profile</option>
+            <option value="EmploymentTemplate">Employment</option>
+            <option value="LTClientEnrolTemplate">LT Client Enrol</option>
+	          <option value="LTCourseSetupTemplate">LT Course Setup</option>
+            <option value="LTClientExitTemplate">LT Client Exit</option>
+            <option value="CommunityConnectionsTemplate">Community Connections</option>
+            <option value="InformationAndOrientationTemplate">Information and Orientation</option>
           </select>
         </div>
 

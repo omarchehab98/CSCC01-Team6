@@ -18,10 +18,16 @@ import team6.util.operators.logical.LogicalOperatorFactory;
 
 public class WhereParameter {
     public static BooleanExpression parse(String where) {
+        if (where == null) {
+            return null;
+        }
         return parse(new JSONObject(where));
     }
 
     public static BooleanExpression parse(JSONObject where) {
+        if (where == null) {
+            return null;
+        }
         for (String operator : LogicalOperatorFactory.getOperators()) {
             String operatorSymbol = "$".concat(operator);
             // Logical Expression

@@ -9,10 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
@@ -43,10 +41,8 @@ import team6.repositories.LTCourseSetupTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
 import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
-import team6.util.AttributeResolver;
-import team6.util.CartesianProduct;
 import team6.util.SheetAdapterWrapper;
-import team6.util.expressions.BooleanExpression;
+import team6.util.TemplateQuery;
 import team6.util.parameters.GroupParameter;
 import team6.util.parameters.JoinParameter;
 import team6.util.parameters.SelectParameter;
@@ -97,7 +93,7 @@ public class TemplateController {
         TemplateFactoryWrapper templateFactoryWrapper = new TemplateFactoryWrapper();
 
         // find which repository is needed to be saved to:
-        CrudRepository templateRepository = getRepo(templateType);
+        CrudRepository templateRepository = getEntityNameToRepositoryMap().get(templateType);
 
         // get the organization for this template:
         Long orgId = Long.parseLong(organizationId);
@@ -126,243 +122,117 @@ public class TemplateController {
     }
     
     
-    @GetMapping("/templates/NARs")
+    @GetMapping("/templates/NARsTemplate")
     public String readAllNARsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Needs Assessment & Referrals");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new NARsTemplate(), narsTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new NARsTemplate());
     }
 
-    @GetMapping("/templates/clientProfile")
+    @GetMapping("/templates/ClientProfileTemplate")
     public String readAllClientProfileView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Client Profiles");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new ClientProfileTemplate(), clientProfileTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new ClientProfileTemplate());
     }
 
-    @GetMapping("/templates/communityConnections")
+    @GetMapping("/templates/CommunityConnectionsTemplate")
     public String readAllCommunityConnectionsView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Community Connections");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new CommunityConnectionsTemplate(), communityConnectionsTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new CommunityConnectionsTemplate());
     }
 
-    @GetMapping("/templates/employment")
+    @GetMapping("/templates/EmploymentTemplate")
     public String readAllEmploymentView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Employment");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new EmploymentTemplate(), employmentTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new EmploymentTemplate());
     }
 
-    @GetMapping("/templates/informationAndOrientation")
+    @GetMapping("/templates/InformationAndOrientationTemplate")
     public String readAllInformationAndOrientationView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "Information and Orientation");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new InformationAndOrientationTemplate(), informationAndOrientationTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new InformationAndOrientationTemplate());
     }
 
-    @GetMapping("/templates/ltClientEnrol")
+    @GetMapping("/templates/LTClientEnrolTemplate")
     public String readAllLTClientEnrolView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "LT Client Enrol");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new LTClientEnrolTemplate(), ltClientEnrolTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new LTClientEnrolTemplate());
     }
 
-    @GetMapping("/templates/ltCourseSetup")
+    @GetMapping("/templates/LTCourseSetupTemplate")
     public String readAllLTCourseSetupView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "LT Course Setup");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new LTCourseSetupTemplate(), ltCourseSetupTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new LTCourseSetupTemplate());
     }
 
-    @GetMapping("/templates/ltClientExit")
+    @GetMapping("/templates/LTClientExitTemplate")
     public String readAllLTClientExitView(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join) throws IllegalTemplateException {
         model.addAttribute("templateName", "LT Client Exit");
-        return templateReadList(model, select, where, sort, sortDirection, group, join, new LTClientExitTemplate(), ltClientExitTemplateRepository);
+        return templateReadList(model, select, where, sort, sortDirection, group, join, new LTClientExitTemplate());
     }
 
     private String templateReadList(Model model, @RequestParam Optional<String> select,
             @RequestParam Optional<String> where, @RequestParam Optional<String> sort,
             @RequestParam Optional<String> sortDirection, @RequestParam Optional<String> group,
             @RequestParam Optional<String> join,
-            Template template, JpaRepository repository) throws IllegalTemplateException {
-        final Sort sortObj = SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc"));
-        final Map<String, String> attributeToFriendlyNameMap = new HashMap<>();
-        final Map<String, Integer> entityNameToIndex = new HashMap<>();
-        List<Attribute> attributes = new ArrayList<>();
+            Template template) throws IllegalTemplateException {
         List<String> attributeNames = template.getAttributeNames();
         List<String> friendlyNames = template.getFriendlyNames();
-        List<List<Object>> joinedRows;
-        entityNameToIndex.put(template.getClass().getSimpleName(), 0);
-        if (join.isPresent()) {
-            final String[] joinEntities = JoinParameter.parse(join.get());
-            List<List<Object>> allRows = new ArrayList<>();
-            allRows.add(repository.findAll(sortObj));
-            int i = 1;
-            for (String entity : joinEntities) {
-                entityNameToIndex.put(entity, i++);
-                final JpaRepository otherRepository = getRepo(entity);
-                final Template otherTemplate = new TemplateFactoryWrapper().build(entity, new HashMap<>(), null);
-                final List<Object> otherRows = otherRepository.findAll();
-                attributeToFriendlyNameMap.putAll(otherTemplate.getAttributeToFriendlyNameMap());
-                List<String> selectAttributes = otherTemplate.getAttributeNames()
-                    .stream()
-                    .map(attributeName -> entity + "." + attributeName)
-                    .collect(Collectors.toList());
-                attributeNames.addAll(selectAttributes);
-                friendlyNames.addAll(otherTemplate.getFriendlyNames());
-                allRows.add(otherRows);
-            }
-            joinedRows = CartesianProduct.evaluate(allRows);
-        } else {
-            final List<Object> rows = repository.findAll(sortObj);
-            joinedRows = rows.stream()
-                .map(row -> {
-                    List<Object> rowInList = new ArrayList<>();
-                    rowInList.add(row);
-                    return rowInList;
-                })
-                .collect(Collectors.toList());
-        }
-        attributeToFriendlyNameMap.putAll(template.getAttributeToFriendlyNameMap());
-        if (select.isPresent()) {
-            attributeNames = SelectParameter.parse(select.get());
-            friendlyNames = attributeNames.stream()
-                .map(attributeName -> attributeToFriendlyNameMap.get(attributeName.replaceFirst("(.+\\.)?", "")))
-                .collect(Collectors.toList());
-        }
+        TemplateQuery.Table table = new TemplateQuery(
+            template.getClass().getSimpleName(),
+            template.getAttributeToFriendlyNameMap(),
+            attributeNames,
+            friendlyNames,
+            getEntityNameToRepositoryMap()
+        )
+            .execute(
+                SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc")),
+                JoinParameter.parse(join.orElse(null)),
+                SelectParameter.parse(select.orElse(null)),
+                WhereParameter.parse(where.orElse(null)),
+                GroupParameter.parse(group.orElse(null))
+            );
 
-        attributes = attributeNames.stream()
-            .map(attributeName -> {
-                final String[] defaultedAttributeName = getEntityAndAttributeName(attributeName, template.getClass().getSimpleName());
-                return new Attribute(entityNameToIndex.get(defaultedAttributeName[0]), defaultedAttributeName[1]);
-            })
-            .collect(Collectors.toList());
-        List<List<Object>> filteredJoinedRows;
-        if (where.isPresent()) {
-            filteredJoinedRows = joinedRows.stream()
-                .filter(joinedRow -> {
-                    final BooleanExpression expression = WhereParameter.parse(where.get());
-                    expression.populateWithObject(joinedRow.get(0));
-                    for (Object object : joinedRow) {
-                        expression.populateWithObject(object, object.getClass().getSimpleName() + ".");
-                    }
-                    return expression.isTrue();
-                })
-                .collect(Collectors.toList());
-        } else {
-            filteredJoinedRows = joinedRows;
-        }
-        List<List<List<Object>>> groupedFilteredJoinedRows;
-        if (group.isPresent()) {
-            final String groupBy = GroupParameter.parse(group.get());
-            final String[] defaultedGroupBy = getEntityAndAttributeName(groupBy, template.getClass().getSimpleName());
-            final HashMap<Object, List<List<Object>>> rowGroupsMap = new HashMap<>();
-            filteredJoinedRows.forEach(row -> {
-                final Object attribute = AttributeResolver.get(defaultedGroupBy[1], row.get(entityNameToIndex.get(defaultedGroupBy[0])));
-                final List<List<Object>> rowGroup = rowGroupsMap.getOrDefault(attribute, new ArrayList<>());
-                rowGroup.add(row);
-                rowGroupsMap.put(attribute, rowGroup);
-            });
-            groupedFilteredJoinedRows = new ArrayList<>(rowGroupsMap.values());
-        } else {
-            List<List<Object>> rowGroup = new ArrayList<>();
-            filteredJoinedRows.forEach(rowGroup::add);
-            groupedFilteredJoinedRows = new ArrayList<>();
-            groupedFilteredJoinedRows.add(rowGroup);
-        }
-        model.addAttribute("attributes", attributes);
+        model.addAttribute("attributes", table.attributes);
         model.addAttribute("friendlyNames", friendlyNames);
-        model.addAttribute("groupsOfRows", groupedFilteredJoinedRows);
+        model.addAttribute("groupsOfRows", table.data);
         return "templates/read-list";
     }
 
-    private String[] getEntityAndAttributeName(String entityAndName, String defaultEntityName) {
-        String[] entityAndNameArr = entityAndName.split("\\.");
-        if (entityAndNameArr.length == 1) {
-            final String entityName = defaultEntityName;
-            final String attributeName = entityAndNameArr[0];
-            return new String[]{entityName, attributeName};
-        } else if (entityAndNameArr.length == 2) {
-            final String entityName = entityAndNameArr[0];
-            final String attributeName = entityAndNameArr[1];
-            return new String[]{entityName, attributeName};
-        } else {
-            throw new IllegalArgumentException();
-        }
+    public Map<String, JpaRepository> getEntityNameToRepositoryMap() {
+        Map<String, JpaRepository> map = new HashMap<>();
+        map.put("ClientProfileTemplate", clientProfileTemplateRepository);
+        map.put("NARsTemplate", narsTemplateRepository);
+        map.put("CommunityConnectionsTemplate", communityConnectionsTemplateRepository);
+        map.put("EmploymentTemplate", employmentTemplateRepository);
+        map.put("InformationAndOrientationTemplate", informationAndOrientationTemplateRepository);
+        map.put("LTClientEnrolTemplate", ltClientEnrolTemplateRepository);
+        map.put("LTCourseSetupTemplate", ltCourseSetupTemplateRepository);
+        map.put("LTClientExitTemplate", ltClientExitTemplateRepository);
+        return map;
     }
 
-    public JpaRepository getRepo(String templateType) throws IllegalTemplateException {
-        switch (templateType) {
-        case "ClientProfileTemplate":
-        case "clientProfile":
-            return clientProfileTemplateRepository;
-        case "NARsTemplate":
-        case "NARs":
-            return narsTemplateRepository;
-        case "CommunityConnectionsTemplate":
-        case "communityConnections":
-        	return communityConnectionsTemplateRepository;
-        case "EmploymentTemplate":
-        case "employment":
-        	return employmentTemplateRepository;
-        case "InformationAndOrientationTemplate":
-        case "informationAndOrientation":
-        	return informationAndOrientationTemplateRepository;
-        case "LTClientEnrolTemplate":
-        case "ltClientEnrol":
-        	return ltClientEnrolTemplateRepository;
-        case "LTCourseSetupTemplate":
-        case "ltCourseSetup":
-        	return ltCourseSetupTemplateRepository;
-        case "LTClientExitTemplate":
-        case "ltClientExit":
-        	return ltClientExitTemplateRepository;
-        }
-        throw new IllegalTemplateException(String.format("invalid template: %s", templateType));
-    }
-
-}
-
-class Attribute {
-    private Integer entityIndex;
-    private String name;
-
-    public Attribute(Integer entityIndex, String name) {
-        this.entityIndex = entityIndex;
-        this.name = name;
-    }
-
-    public Integer getEntityIndex() {
-        return this.entityIndex;
-    }
-
-    public void setEntityIndex(Integer entityIndex) {
-        this.entityIndex = entityIndex;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

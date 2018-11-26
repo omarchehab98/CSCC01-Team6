@@ -21,7 +21,7 @@ public class TemplateFactoryWrapperTest {
 
 		singleEntry.put("preferred_official_language_id", "English");
 
-		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARs", singleEntry, organization);
+		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARsTemplate", singleEntry, organization);
 
 		assertEquals("English", nARsResult.getPreferredOfficialLanguageId());
 	}
@@ -36,7 +36,7 @@ public class TemplateFactoryWrapperTest {
 		multipleEntry.put("update_record_id", "Test2");
 		multipleEntry.put("client_validation_type_id", "Test3");
 
-		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARs", multipleEntry, organization);
+		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARsTemplate", multipleEntry, organization);
 
 		assertEquals("Test1", nARsResult.getProcessingDetails());
 		assertEquals("Test2", nARsResult.getUpdateRecordId());
@@ -53,8 +53,8 @@ public class TemplateFactoryWrapperTest {
 		singleEntryOne.put("preferred_official_language_id", "English");
 		singleEntryTwo.put("street_nme", "Front Street");
 		
-		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARs", singleEntryOne, organization);
-		ClientProfileTemplate clientProfileResult = (ClientProfileTemplate) factoryWrapper.build("clientProfile", singleEntryTwo, organization);
+		NARsTemplate nARsResult = (NARsTemplate) factoryWrapper.build("NARsTemplate", singleEntryOne, organization);
+		ClientProfileTemplate clientProfileResult = (ClientProfileTemplate) factoryWrapper.build("ClientProfileTemplate", singleEntryTwo, organization);
 		
 		assertEquals("English", nARsResult.getPreferredOfficialLanguageId());
 		assertEquals("Front Street", clientProfileResult.getStreetNme());
@@ -75,7 +75,7 @@ public class TemplateFactoryWrapperTest {
 
 		singleEntry.put("", "Test");
 
-		factoryWrapper.build("NARs", singleEntry, organization);
+		factoryWrapper.build("NARsTemplate", singleEntry, organization);
 	}
 
 }
