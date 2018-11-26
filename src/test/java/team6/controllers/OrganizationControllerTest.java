@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,11 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import team6.models.Organization;
 import team6.repositories.OrganizationRepository;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 public class OrganizationControllerTest {
 	@Autowired
 	private OrganizationRepository organizationRepository;
+	@LocalServerPort
+    private int port;
 
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -36,7 +39,7 @@ public class OrganizationControllerTest {
 				restTemplate.exchange(createURL("/organizations"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadListView();
+		String expected = ViewGenerators.getReadListView(port, "/organizations/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -50,7 +53,7 @@ public class OrganizationControllerTest {
 				restTemplate.exchange(createURL("/organizations/" + id),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadSingleView(id);
+		String expected = ViewGenerators.getReadSingleView(port, "/organizations/", id);
 
 		assertEquals(expected, response.getBody());
 	}
@@ -63,7 +66,7 @@ public class OrganizationControllerTest {
 				restTemplate.exchange(createURL("/organizations/create"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getCreateView();
+		String expected = ViewGenerators.getCreateView(port, "/organizations/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -111,7 +114,7 @@ public class OrganizationControllerTest {
 				restTemplate.exchange(createURL("/organizations/" + id + 
 						"/update"), HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getUpdateView(id);
+		String expected = ViewGenerators.getUpdateView(port, "/organizations/", id);
 
 		assertEquals(expected, response.getBody());
 
@@ -135,7 +138,7 @@ public class OrganizationControllerTest {
 	}
 
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 
 }

@@ -157,30 +157,32 @@ public class ChartController {
 
     private void updateChartQueries(Model model, Chart chart, String queries) {
     	Set<ChartQuery> newChartQueries = new HashSet<ChartQuery>();
+    	/*
     	Set<ChartQuery> chartQueries = chart.getChartQueries();
     	chartQueries.clear();
     	chart.setChartQueries(chartQueries);
+    	*/
     	
     	deleteChartQueriesForChart(model, chart);
     	
-    	for (String id : queries.split(",")) {
-    		ChartQuery chartQuery = new ChartQuery();
-    		
-    		Long queryId = Long.parseLong(id);
-            Optional<Query> optionalQuery = queryRepository.findById(queryId);
-            Query query = optionalQuery.get();
-    		
-    		chartQuery.setChart(chart);
-    		chartQuery.setQuery(query);
-
-    		newChartQueries.add(chartQuery);
-
-    		Set<ChartQuery> chartQueryQuery = query.getChartQueries();
-    		chartQueryQuery.add(chartQuery);
-    		query.setChartQueries(chartQueryQuery);
-
-    		chartQueryRepository.save(chartQuery);
-    	}
+	    for (String id : queries.split(",")) {
+	    	ChartQuery chartQuery = new ChartQuery();
+	    	
+	    	Long queryId = Long.parseLong(id);
+	        Optional<Query> optionalQuery = queryRepository.findById(queryId);
+	        Query query = optionalQuery.get();
+	    	
+	    	chartQuery.setChart(chart);
+	    	chartQuery.setQuery(query);
+	
+	    	newChartQueries.add(chartQuery);
+	
+	    	Set<ChartQuery> chartQueryQuery = query.getChartQueries();
+	    	chartQueryQuery.add(chartQuery);
+	    	query.setChartQueries(chartQueryQuery);
+	
+	    	chartQueryRepository.save(chartQuery);
+	    }
     	
     	chart.setChartQueries(newChartQueries);
     }
@@ -208,7 +210,6 @@ public class ChartController {
     		// model.addAttribute("chartQuery", chartQuery);
     		chartQueryRepository.save(chartQuery);
     	}
-
     	chart.setChartQueries(chartQueriesChart);
     }
 

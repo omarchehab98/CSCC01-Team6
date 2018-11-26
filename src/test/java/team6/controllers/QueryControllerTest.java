@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,14 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import team6.models.Query;
-import team6.models.Report;
 import team6.repositories.QueryRepository;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 public class QueryControllerTest {
 	@Autowired
 	private QueryRepository queryRepository;
+	@LocalServerPort
+    private int port;
 
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -37,7 +39,7 @@ public class QueryControllerTest {
 				restTemplate.exchange(createURL("/queries"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllViewQuesries();
+		String expected = ViewGenerators.getReadListView(port, "/queries/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -50,7 +52,7 @@ public class QueryControllerTest {
 				restTemplate.exchange(createURL("/queries/create"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getCreateViewQueries();
+		String expected = ViewGenerators.getCreateView(port, "/queries/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -66,7 +68,7 @@ public class QueryControllerTest {
 				restTemplate.exchange(createURL("/queries/" + id),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadSingleViewQueries(id);
+		String expected = ViewGenerators.getReadSingleView(port, "/queries/", id);
 
 		assertEquals(expected, response.getBody());
 
@@ -99,7 +101,7 @@ public class QueryControllerTest {
 				restTemplate.exchange(createURL("/queries/" + id + 
 						"/update"), HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getUpdateViewReports(id);
+		String expected = ViewGenerators.getUpdateView(port, "/queries/", id);
 
 		assertEquals(expected, response.getBody());
 
@@ -140,6 +142,6 @@ public class QueryControllerTest {
 	}
 
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 }

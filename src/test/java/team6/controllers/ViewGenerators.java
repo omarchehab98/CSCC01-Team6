@@ -12,146 +12,66 @@ public class ViewGenerators {
 
 	public ViewGenerators() {}
 
-	public static String getReadListView() {
+	public static String getReadListView(int port, String controller) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/organizations", 
-						String.class);
+				restTemplate.getForEntity("http://localhost:" + port + 
+						controller, String.class);
 		String res = response.getBody();
 		return 	res;
 	}
 
-	public static String getReadSingleView(String id) {
+	public static String getReadSingleView(int port, String controller, String id) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/organizations/" 
-						+ id, String.class);
+				restTemplate.getForEntity("http://localhost:" + port + 
+						controller  + id, String.class);
 		String res = response.getBody();
 		return res;
 	}
 
-	public static String getCreateView() {
+	public static String getCreateView(int port, String controller) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/organizations/" 
-						+ "create", String.class);
+				restTemplate.getForEntity("http://localhost:" + port + 
+						controller + "/create", String.class);
 		String res = response.getBody();
 		return res;
 	}
 
-	public static String getUpdateView(String id) {
+	public static String getUpdateView(int port, String controller, String id) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/organizations/" 
-						+ id + "/update", String.class);
+				restTemplate.getForEntity("http://localhost:" + port +
+						controller + id + "/update", String.class);
 		String res = response.getBody();
 		return res;
 	}
 
-	public static String getHomeView() {
+	public static String getHomeView(int port) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/", 
+				restTemplate.getForEntity("http://localhost:" + port + "/", 
 						String.class);
 		String res = response.getBody();
 		return res;
 	}
 
-	public static String getReadAllView() {
+	public static String getReadAllTemplateView(int port, String template) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/templates", 
-						String.class);
-		String res = response.getBody();
-		return 	res;
-	}
-
-	public static String getReadAllCommunityConnectionsView() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/templates" 
-						+ "/communityConnections", String.class);
+				restTemplate.getForEntity("http://localhost:" + port + "/templates" 
+						+ template, String.class);
 		String res = response.getBody();
 		return res;
 	}
 
-	public static String getReadAllNARsView() {
+	public static String getReadSingleViewCharts(int port, String id) {
 		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/templates" 
-						+ "/NARs", String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadAllClientProfileView() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/templates" 
-						+ "/clientProfile", String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadAllViewQuesries() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/queries", 
-						String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadSingleViewQueries(String id) {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/queries/" 
-						+ id, String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getCreateViewQueries() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/queries/" 
-						+ "create", String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadListViewReports() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/reports", 
-						String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getCreateViewReports() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/reports/" 
-						+ "create", String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadSingleViewReports(String id) {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/reports/" 
-						+ id, String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getUpdateViewReports(String id) {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/organizations/" 
-						+ id + "/update", String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadListViewCharts() {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/charts", 
-						String.class);
-		String res = response.getBody();
-		return res;
-	}
-
-	public static String getReadSingleViewCharts(String id) {
-		ResponseEntity<String> response = 
-				restTemplate.getForEntity("http://localhost:8080/charts/" 
+				restTemplate.getForEntity("http://localhost:" + port + "/charts/" 
 						+ id + "/embed", String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getUpdateViewCharts(int port, String id) {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:" + port + "/charts/" 
+						+ id + "/update", String.class);
 		String res = response.getBody();
 		return res;
 	}

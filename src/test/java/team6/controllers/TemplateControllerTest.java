@@ -3,48 +3,39 @@ package team6.controllers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.hibernate.sql.Template;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import team6.models.NARsTemplate;
-import team6.models.Organization;
 import team6.repositories.ClientProfileTemplateRepository;
 import team6.repositories.CommunityConnectionsTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
-import team6.repositories.OrganizationRepository;
 import team6.throwables.IllegalTemplateException;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
 public class TemplateControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
-
 	@Autowired
     private NARsTemplateRepository narsTemplateRepository;
     @Autowired
     private ClientProfileTemplateRepository clientProfileTemplateRepository;
     @Autowired
     private CommunityConnectionsTemplateRepository communityConnectionsTemplateRepository;
-    
-    @Autowired
-    private OrganizationRepository organizationRepository;
 
     @Autowired
 	private TemplateController templateController;
+
+    @LocalServerPort
+    private int port;
 
     NARsTemplate narsTemplate = new NARsTemplate();
 
@@ -60,7 +51,7 @@ public class TemplateControllerTest {
 				restTemplate.exchange(createURL("/templates"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllView();
+		String expected = ViewGenerators.getReadListView(port, "/templates/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -73,7 +64,7 @@ public class TemplateControllerTest {
 				restTemplate.exchange(createURL("/templates/NARs"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllNARsView();
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/NARs");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -86,7 +77,7 @@ public class TemplateControllerTest {
 				restTemplate.exchange(createURL("/templates/clientProfile"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllClientProfileView();
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/clientProfile");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -99,7 +90,7 @@ public class TemplateControllerTest {
 				restTemplate.exchange(createURL("/templates/communityConnections"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadAllCommunityConnectionsView();
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/communityConnections");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -135,6 +126,6 @@ public class TemplateControllerTest {
 	}
 
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 }

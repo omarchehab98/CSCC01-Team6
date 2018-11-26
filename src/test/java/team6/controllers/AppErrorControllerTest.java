@@ -5,28 +5,19 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
 public class AppErrorControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
-
 	@Autowired
 	private AppErrorController appErrorController;
+	@LocalServerPort
+    private int port;
 
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -48,6 +39,6 @@ public class AppErrorControllerTest {
 	}
 
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 }

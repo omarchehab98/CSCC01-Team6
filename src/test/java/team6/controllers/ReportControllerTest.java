@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,11 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import team6.models.Report;
 import team6.repositories.ReportRepository;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 public class ReportControllerTest {
 	@Autowired
 	private ReportRepository reportRepository;
+	@LocalServerPort
+    private int port;
 
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -36,7 +39,7 @@ public class ReportControllerTest {
 				restTemplate.exchange(createURL("/reports"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadListViewReports();
+		String expected = ViewGenerators.getReadListView(port, "/reports/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -52,7 +55,7 @@ public class ReportControllerTest {
 				restTemplate.exchange(createURL("/reports/" + id),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadSingleViewReports(id);
+		String expected = ViewGenerators.getReadSingleView(port, "/reports/", id);
 
 		assertEquals(expected, response.getBody());
 
@@ -67,7 +70,7 @@ public class ReportControllerTest {
 				restTemplate.exchange(createURL("/reports/create"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getCreateViewReports();
+		String expected = ViewGenerators.getCreateView(port, "/reports/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -96,7 +99,7 @@ public class ReportControllerTest {
 				restTemplate.exchange(createURL("/reports/" + id + 
 						"/update"), HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getUpdateViewReports(id);
+		String expected = ViewGenerators.getUpdateView(port, "/reports/", id);
 
 		assertEquals(expected, response.getBody());
 
@@ -137,6 +140,6 @@ public class ReportControllerTest {
 	}
 
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 }

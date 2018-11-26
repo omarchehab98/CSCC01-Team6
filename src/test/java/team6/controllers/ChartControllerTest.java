@@ -1,7 +1,7 @@
 package team6.controllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+//import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,11 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import team6.models.Chart;
 import team6.repositories.ChartRepository;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 public class ChartControllerTest {
 	@Autowired
 	private ChartRepository chartRepository;
+	@LocalServerPort
+    private int port;
 
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -36,7 +39,7 @@ public class ChartControllerTest {
 				restTemplate.exchange(createURL("/charts"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadListViewCharts();
+		String expected = ViewGenerators.getReadListView(port, "/charts/");
 
 		assertEquals(expected, response.getBody());
 	}
@@ -52,14 +55,82 @@ public class ChartControllerTest {
 				restTemplate.exchange(createURL("/charts/" + id + "/embed"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadSingleViewCharts(id);
+		String expected = ViewGenerators.getReadSingleViewCharts(port, id);
 
 		assertEquals(expected, response.getBody());
 
 		chartRepository.deleteById(chart.getId());
 	}
 
+	@Test
+	public void testCreateview() {
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/charts/create"),
+				HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getCreateView(port, "/charts/");
+
+		assertEquals(expected, response.getBody());
+	}
+
+	/*
+	@Test
+	public void testCreate() {
+		Chart chart = new Chart();
+		HttpEntity<Chart> entity = new HttpEntity<Chart>(chart, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/charts"),
+				HttpMethod.POST, entity, String.class);
+
+		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
+
+		assertTrue(actual.contains("/charts"));
+	}
+	*/
+
+	@Test
+	public void testUpdateView() {
+		Chart chart = new Chart();
+		chartRepository.save(chart);
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		String id = String.valueOf(chart.getId());
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/charts/" + id + 
+						"/update"), HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getUpdateViewCharts(port, id);
+
+		assertEquals(expected, response.getBody());
+
+		chartRepository.deleteById(chart.getId());
+	}
+
+
+	/*
+	@Test
+	public void testUpdateById() throws Exception {
+		Chart chart = new Chart();
+		chartRepository.save(chart);
+		String id = String.valueOf(chart.getId());
+		HttpEntity<Chart> entity = new HttpEntity<Chart>(chart, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/charts/" + id + "/embed/"),
+				HttpMethod.POST, entity, String.class);
+
+		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
+
+		assertTrue(actual.contains("/charts/" + id + "/embed/"));
+		
+		chartRepository.deleteById(chart.getId());
+	}
+	*/
+
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 }
