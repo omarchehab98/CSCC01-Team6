@@ -3,35 +3,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Reports</title>
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <title>Reports • TEQ LIP</title>
 </head>
 
 <body>
-  <div id = "createLink">
-      <a id= "createLinkAnchor" href="/reports/create"><i class="far fa-plus-circle"></i> Create</a>
+    <th:block th:replace="../fragments/tableStyle.html"></th:block>
+  <style>
+    .reports--header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c8d6e5;
+  }
+  .reports--table{
+    visibility: initial;
+  }
+  </style>
+
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+  
+  <div class="breadcrumbs">
+    &nbsp;
   </div>
 
-<div class = "wholeTable">
-  <table>
-    <thead id="tableHead">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
+  <main class="container">
+    <header class="reports--header">
+      <h1>Reports</h1>
+      <div style="flex-grow: 1;"></div>
+      <a class="btn btn-primary createLinkAnchor" href="/reports/create">Create</a>
+    </header>
 
-      <tr class="reportRow" th:each="report : ${reports}">
-        <td th:text="${report.id}"></td>
-        <td th:text="${report.name}"></td>
-        <td>
-          <a th:href="@{'/reports/' + ${report.id}}">
-            View
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <div class="table-container wholeTable">
+      <table class="reports--table">
+        <thead id="tableHead">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr class="-Row reportRow" th:each="report : ${reports}">
+            <td th:text="${report.id}"></td>
+            <td th:text="${report.name}"></td>
+            <td>
+              <a th:href="@{'/reports/' + ${report.id}}">
+                View
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </body>

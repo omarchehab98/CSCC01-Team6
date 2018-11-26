@@ -3,43 +3,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title th:text="@{${report.name} + ' Report'}"></title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title th:text="@{${report.name} + ' Report'}"></title>
+  <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 
 <body>
-  <div>
-      <a href="/">Home</a>
+  <style>
+    .report-body {
+      border: 1px #c8d6e5 solid;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: 0.2s;
+    }
 
-      •
+    .report-body:hover {
+      border: 1px #98a6b5 solid;
+    }
 
-      <a href="/reports">Reports</a>
+    .spaced {
+      padding-top: 3%;
+    }
+  </style>
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+
+  <div class="breadcrumbs">
+    &nbsp;
   </div>
-  
-  <h1 th:text="${report.name}"></h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-      </tr>
-    </thead>
+  <div class="container">
+    <h1 th:text="${report.name}"></h1>
 
-    <tbody>
-      <tr>
-        <td th:text="${report.id}"></td>
-        <td th:text="${report.name}"></td>
-        <td>
-          <a th:href="@{'/reports/' + ${report.id} + '/update'}">
-            Edit
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
 
-  <p th:utext="${report.body}"></p>
+        <tbody>
+          <tr>
+            <td th:text="${report.id}"></td>
+            <td th:text="${report.name}"></td>
+            <td>
+              <a th:href="@{'/reports/' + ${report.id} + '/update'}">
+                Edit
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+    <p>Report Contents:</p>
+    <div class="container report-body">
+      <p th:utext="${report.body}"></p>
+    </div>
+
+    <div class="spaced"></div>
+  </div>
 </body>
+
 </html>
