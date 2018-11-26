@@ -57,9 +57,6 @@ public class ChartController {
     }
 
 	private void addChartAttributes(Model model, Chart chart) {
-
-		// checkForGroup(chart);
-
 		// got to parse these. Set arbitrary for now
 		String name = chart.getName();
 		String type = chart.getType();
@@ -73,22 +70,6 @@ public class ChartController {
 		model.addAttribute("data", data);
 		model.addAttribute("sourceLabels", sourceLabels);
 	} 
-
-	/*
-	private void checkForGroup(Chart chart) {
-
-		Pattern pattern = Pattern.compile("group=(\\w*)");
-		Set<ChartQuery> chartQueries = chart.getChartQueries();
-
-		for (ChartQuery chartQuery : chartQueries) {
-    			Query query = chartQuery.getQuery();
-    			Matcher matcher = pattern.matcher(query.getQueryString());
-    			if(!matcher.find()) {
-    				throw new IllegalArgumentException();
-    			}
-    		}
-	}
-	*/
 
     @GetMapping("/charts/create")
     public String createView(Model model) {
@@ -158,6 +139,9 @@ public class ChartController {
     }
 
     private boolean containsGroupByParameter(Query query) {
+    	if (query.getQueryString() == null) {
+    		return false;
+    	}
     	Pattern pattern = Pattern.compile("group=(\\w*)");
     	Matcher matcher = pattern.matcher(query.getQueryString());
     	return matcher.find();
