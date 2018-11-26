@@ -32,7 +32,7 @@ public class OrganizationTest {
     }
 
     @Test
-    public void whenFindByName_thenReturnEmployee() {
+    public void whenFindById_thenReturnName() {
         // given
         String name = "Ontario Council of Agencies Serving Immigrants";
         Organization organization = new Organization();

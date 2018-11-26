@@ -13,39 +13,39 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import team6.repositories.QueryRepository;
+import team6.repositories.ChartRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class QueryTest {
+public class ChartTest {
 	@Autowired
     private TestEntityManager entityManager;
-	@Autowired
-	private QueryRepository queryRepository;
+    @Autowired
+    private ChartRepository chartRepository;
 
-	@Test
-    public void queryTest() throws Exception {
-        String name = "English Speakers";
-        Query query = new Query();
-        query.setName(name);
-        assertThat(query.getName(), equalTo(name));
+    @Test
+    public void reportTest() throws Exception {
+        String name = "Speakers Per Language";
+        Chart chart = new Chart();
+        chart.setName(name);
+        assertThat(chart.getName(), equalTo(name));
     }
 
-	@Test
+    @Test
     public void whenFindById_thenReturnName() {
         // given
-		String name = "English Speakers";
-        Query query = new Query();
-        query.setName(name);
-        entityManager.persist(query);
+    	String name = "Speakers Per Language";
+        Chart chart = new Chart();
+        chart.setName(name);
+        entityManager.persist(chart);
         entityManager.flush();
     
         // when
-        Optional<Query> found = queryRepository.findById(query.getId());
+        Optional<Chart> found = chartRepository.findById(chart.getId());
 
         // then
         assertTrue(found.isPresent());
         assertThat(found.get().getName(),
-            equalTo(query.getName()));
+            equalTo(chart.getName()));
     }
 }

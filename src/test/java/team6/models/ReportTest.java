@@ -32,7 +32,7 @@ public class ReportTest {
     }
 
     @Test
-    public void whenFindByName_thenReturnEmployee() {
+    public void whenFindById_thenReturnName() {
         // given
     	String name = "number of enlish speakers by id";
         Report report = new Report();
