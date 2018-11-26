@@ -140,12 +140,12 @@ public class ChartController {
 			JSONArray chartQueriesJSON = new JSONArray();
 			for (ChartQuery chartQuery : chart.getChartQueries()) {
 				Query query = chartQuery.getQuery();
-				if (containsGroupByParameter(query)) {
+				// if (containsGroupByParameter(query)) {
 					JSONObject queryJSON = new JSONObject();
 					queryJSON.put("id", query.getId());
 					queryJSON.put("name", query.getName());
 					chartQueriesJSON.put(queryJSON);
-				}
+				// }
 			}
 			
 			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
@@ -156,6 +156,9 @@ public class ChartController {
     }
 
     private boolean containsGroupByParameter(Query query) {
+    	if (query.getQueryString() == null) {
+    		return false;
+    	}
     	Pattern pattern = Pattern.compile("group=(\\w*)");
     	Matcher matcher = pattern.matcher(query.getQueryString());
     	return matcher.find();
