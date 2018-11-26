@@ -24,7 +24,7 @@ public class ChartTest {
     private ChartRepository chartRepository;
 
     @Test
-    public void reportTest() throws Exception {
+    public void chartTest() throws Exception {
         String name = "Speakers Per Language";
         Chart chart = new Chart();
         chart.setName(name);
