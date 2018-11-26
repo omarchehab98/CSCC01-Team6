@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -15,23 +14,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import team6.models.Report;
 import team6.repositories.ReportRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
-
 public class ReportControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private ReportController reportController;
-
 	@Autowired
 	private ReportRepository reportRepository;
 
@@ -40,7 +29,7 @@ public class ReportControllerTest {
 	HttpHeaders headers = new HttpHeaders();
 
 	@Test
-	public void testReadAllView() {
+	public void testReadAllReports() {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
@@ -52,19 +41,99 @@ public class ReportControllerTest {
 		assertEquals(expected, response.getBody());
 	}
 
-	
+	@Test
+	public void testReadByIdView() throws Exception {
+		Report report = new Report();
+		reportRepository.save(report);
+		String id = String.valueOf(report.getId());
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/reports/" + id),
+				HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getReadSingleViewReports(id);
+
+		assertEquals(expected, response.getBody());
+
+		reportRepository.deleteById(report.getId());
+	}
 
 	@Test
-	public void testCreateView() {
+	public void testCreateSingleReport() {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
 				restTemplate.exchange(createURL("/reports/create"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getCreateView();
+		String expected = ViewGenerators.getCreateViewReports();
 
 		assertEquals(expected, response.getBody());
+	}
+
+	@Test
+	public void testCreate() {
+		Report report = new Report();
+		HttpEntity<Report> entity = new HttpEntity<Report>(report, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/reports"),
+				HttpMethod.POST, entity, String.class);
+
+		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
+
+		assertTrue(actual.contains("/reports"));
+	}
+
+	public void testUpdateReport() {
+		Report report = new Report();
+		reportRepository.save(report);
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		String id = String.valueOf(report.getId());
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/reports/" + id + 
+						"/update"), HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getUpdateViewReports(id);
+
+		assertEquals(expected, response.getBody());
+
+		reportRepository.deleteById(report.getId());
+	}
+
+	@Test
+	public void testSaveUpdateReport() throws Exception {
+		Report report = new Report();
+		reportRepository.save(report);
+		HttpEntity<Report> entity = new HttpEntity<Report>(report, headers);
+		String id = String.valueOf(report.getId());
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/reports/" + id),
+				HttpMethod.POST, entity, String.class);
+
+		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
+
+		assertTrue(actual.contains("/reports/" + id));
+		
+		reportRepository.deleteById(report.getId());
+	}
+
+	public void testDeleteById() throws Exception {
+		Report report = new Report();
+		reportRepository.save(report);
+		HttpEntity<Report> entity = new HttpEntity<Report>(report, headers);
+		String id = String.valueOf(report.getId());
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/reports/" + id),
+				HttpMethod.DELETE, entity, String.class);
+
+		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
+
+		assertFalse(actual.contains("/reports/" + id));
 	}
 
 	private String createURL(String uri) {

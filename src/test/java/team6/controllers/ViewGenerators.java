@@ -107,4 +107,28 @@ public class ViewGenerators {
 		String res = response.getBody();
 		return res;
 	}
+
+	public static String getCreateViewReports() {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/reports/" 
+						+ "create", String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getReadSingleViewReports(String id) {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/reports/" 
+						+ id, String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getUpdateViewReports(String id) {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/organizations/" 
+						+ id + "/update", String.class);
+		String res = response.getBody();
+		return res;
+	}
 }
