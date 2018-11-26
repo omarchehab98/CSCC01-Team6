@@ -46,8 +46,10 @@ public class OrganizationControllerTest {
 
 	@Test
 	public void testReadByIdView() throws Exception {
+		Organization organization = new Organization();
+		organizationRepository.save(organization);
+		String id = String.valueOf(organization.getId());
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-		String id = "5";
 
 		ResponseEntity<String> response = 
 				restTemplate.exchange(createURL("/organizations/" + id),
@@ -56,6 +58,8 @@ public class OrganizationControllerTest {
 		String expected = ViewGenerators.getReadSingleView(port, "/organizations/", id);
 
 		assertEquals(expected, response.getBody());
+
+		organizationRepository.deleteById(organization.getId());
 	}
 
 	@Test
