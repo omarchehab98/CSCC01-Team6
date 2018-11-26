@@ -29,6 +29,9 @@ public class Organization {
 
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
 	private Set<ClientProfileTemplate> clientProfileTemplate;
+	
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+	private Set<CommunityConnectionsTemplate> communityConnectionsTemplate;
 
 	public Organization() {
 	}
@@ -171,6 +174,14 @@ public class Organization {
 
 	public void setClientProfileTemplate(Set<ClientProfileTemplate> clientProfileTemplate) {
 		this.clientProfileTemplate = clientProfileTemplate;
+	}
+
+	public Set<CommunityConnectionsTemplate> getCommunityConnectionsTemplate() {
+		return this.communityConnectionsTemplate;
+	}
+
+	public void setCommunityConnectionsTemplate(Set<CommunityConnectionsTemplate> communityConnectionsTemplate) {
+		this.communityConnectionsTemplate = communityConnectionsTemplate;
 	}
 
 	@Override

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:replace="../fragments/head.html"></th:block>
+</head>
+
+<body>
+  <style>
+    .spaced{
+          padding-top:3%;
+        }
+        .btn-submit{
+          background-color: #54a0ff;
+          color: white;
+        }
+        .btn-submit:hover{
+          background-color: #65b1ff;
+        }
+      </style>
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+  <th:block th:replace="../fragments/partnerStyles.html"></th:block>
+
+  <div class="breadcrumbs">
+    &nbsp;
+  </div>
+
+  <div class="container">
+    <h1>Update Report</h1>
+
+    <form action="#" th:action="@{'/reports/' + ${report.id}}" th:object="${report}" method="post">
+      <label>
+        Report Name*
+        <br />
+        <input type="text" th:field="*{name}" required />
+      </label>
+
+      <div class="spaced"></div>
+
+      <textarea id="mytextarea" th:field="*{body}"></textarea>
+
+      <div class="spaced"></div>
+
+      <input class="btn btn-submit" type="submit" value="Update" />
+      <input class="btn btn-primary" type="reset" value="Reset" />
+      <button class="btn delBtn" type="button" th:onclick="@{'deleteReport(' + ${report.id} + ')'}">
+        Delete
+      </button>
+      <script type="text/javascript">
+        async function deleteReport(id) {
+          const yes = confirm("Are you sure you want to delete the report? You cannot undo this action.");
+          if (yes) {
+            await fetch(`/reports/${id}`, { method: "DELETE" });
+            window.location = '/reports';
+          }
+        }
+      </script>
+    </form>
+
+    <div class="spaced"></div>  
+  </div>
+
+  <script
+    th:data-key="charts"
+    th:utext="${chartsJSON}"
+    type="application/json">
+  </script>
+
+  <script type="text/javascript" src="/js/json-loader.js"></script>
+  
+  <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+  <script src="/js/tinymce/embed-chart-plugin.js"></script>
+  <script>
+    registerEmbedChartPlugin(data.charts);
+    tinymce.init({
+      selector: '#mytextarea',
+      plugins: 'embed-chart',
+    });
+  </script>
+</body>
+
+</html>

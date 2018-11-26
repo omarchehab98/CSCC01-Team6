@@ -1,0 +1,96 @@
+<style>
+/* Navigation */
+.navigation {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    background: #222f3e;
+    border-top: 4px solid #ff9f43;
+    height: 60px;
+}
+
+body {
+    margin-top: 60px;
+}
+
+/* Navigation Link */
+
+.navigation--link {
+    color: #c8d6e5;
+    font-weight: lighter;
+    text-decoration: none;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    font-size: 1.16rem;
+}
+
+.navigation--link:hover {
+    color: #c8d6e5;
+    background: #3c4958;
+    text-decoration: none;
+}
+
+.navigation--link i {
+    width: 40px;
+    text-align: center;
+}
+
+.navigation--link span {
+    flex-grow: 1;
+}
+
+</style>
+<nav class="navigation">
+    <a
+        class="navigation--link"
+        href="/"
+    >
+        <i class="fas fa-home"></i>
+
+        <span>Home</span>
+    </a>
+
+    <a
+        class="navigation--link"
+        href="/organizations"
+    >
+        <i class="fas fa-handshake-alt"></i>
+
+        <span>Partners</span>
+    </a>
+    <a
+        class="navigation--link"
+        href="/templates"
+    >
+        <i class="fas fa-archive"></i>
+
+        <span>Data</span>
+    </a>
+    <a
+        class="navigation--link"
+        href="/queries"
+    >
+        <i class="fas fa-bolt"></i>
+
+        <span>Queries</span>
+    </a>
+    <a
+        class="navigation--link"
+        href="/charts"
+    >
+        <i class="fas fa-chart-bar"></i>
+
+        <span>Charts</span>
+    </a>
+    <a
+        class="navigation--link"
+        href="/reports"
+    >
+        <i class="fas fa-file-chart-pie"></i>
+
+        <span>Reports</span>
+    </a>
+</nav>

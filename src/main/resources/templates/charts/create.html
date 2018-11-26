@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Chart</title>
+    <th:block th:replace="../fragments/head.html"></th:block>
+</head>
+<body>
+    <th:block th:replace="../fragments/partnerStyles.html"></th:block>
+    <style>
+
+    </style>
+
+        <th:block th:replace="../fragments/navigation.html"></th:block>
+        
+    <div class="container">
+    <form action="#" th:action="@{/charts}" th:object="${chart}" method="post">
+        <div class="breadcrumbs">
+                &nbsp;
+            </div>
+                    
+        <h1>Create Chart</h1>
+
+    	<label>
+            Chart Name*
+            <br />
+            <input type="text" th:field="*{name}" required />
+        </label>
+
+	<br/>
+
+	<label>
+            Chart Type*
+            <br />
+	    <select name="list" id="typelist" th:field="*{type}">
+      	        <option value="bar">Bar</option>
+      	        <option value="pie">Pie</option>
+                <option value="line">Line</option>
+	    </select>
+        </label>
+        <div class="spaced"></div>
+
+        <div id="chartQueries">
+            <chart-queries
+                v-bind="{
+                    values: selectedQueries,
+                    push: pushQuery,
+                    pop: popQuery,
+                    getQueryCount,
+                    getQueryId,
+                    getQueryName,
+                }"
+            >
+            </chart-queries>
+        </div>
+        <div class="spaced"></div>
+        <input type="hidden" name="chartQueries" th:value="${queries}" />
+	<input class="btn" type="submit" value="Submit" />
+        <input class="btn" type="reset" value="Reset" />
+    </form>
+
+    <script
+        th:data-key="queries"
+        th:utext="${queriesJSON}"
+        type="application/json">
+    </script>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script type="text/javascript" src="/js/json-loader.js"></script>
+    <script type="text/javascript" src="/js/components/input-select.js"></script>
+    <script type="text/javascript" src="/js/components/input-ordered-select.js"></script>
+
+    <script>
+        Vue.component('chart-queries', {
+            props: {
+                values: Array,
+                push: Function,
+                pop: Function,
+                getQueryCount: Function,
+                getQueryId: Function,
+                getQueryName: Function,
+            },
+
+            template: `
+                <div>
+                    <label>
+                        Queries
+                    </label>
+
+                    <input-ordered-select v-bind="{
+                        name: 'queries',
+                        values,
+                        push,
+                        pop,
+                        getCount: getQueryCount,
+                        getName: getQueryId,
+                        getValue: getQueryName,
+                    }">
+                    </input-ordered-select>
+                </div>
+            `,
+        });
+
+        const app = new Vue({
+            el: '#chartQueries',
+            
+            data: {
+                ...data,
+                selectedQueries: [],
+            },
+
+            methods: {
+                pushQuery() {
+                    this.selectedQueries.push({value: this.getQueryId(0)});
+                },
+
+                popQuery() {
+                    this.selectedQueries.pop();
+                },
+                
+                getQueryCount() {
+                    return this.queries.length;
+                },
+
+                getQueryId(index) {
+                    return this.queries[index].id;
+                },
+
+                getQueryName(index) {
+                    return this.queries[index].name;
+                },
+            },
+        });
+    </script>
+    </div><!-- end container div-->
+</body>
+</html>

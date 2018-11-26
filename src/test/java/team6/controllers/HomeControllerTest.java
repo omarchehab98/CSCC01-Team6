@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,16 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class HomeControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private HomeController homeController;
+	@LocalServerPort
+    private int port;
 
 	TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -38,13 +35,13 @@ public class HomeControllerTest {
 				restTemplate.exchange(createURL("/"), HttpMethod.GET, entity, 
 						String.class);
 
-		String expected = ViewGenerators.getHomeView();
+		String expected = ViewGenerators.getHomeView(port);
 
 		assertEquals(expected, response.getBody());
 	}
 
 	private String createURL(String uri) {
-		return "http://localhost:8080" + uri;
+		return "http://localhost:" + port + uri;
 	}
 
 }

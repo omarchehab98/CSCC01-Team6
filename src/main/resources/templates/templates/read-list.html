@@ -4,18 +4,28 @@
 
 <head>
   <title th:text="${templateName}"></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 
 <body>
-  <div>
-    <a href="/">Home</a>
-    &bull;
-    <a href="/templates">Templates</a>
-  </div>
+  <style>
+    table{
+      font-size: 75%;
+      margin-bottom: 5%;
+    }
+  </style>
 
+<th:block th:replace="../fragments/tableStyle.html"></th:block>
+
+<th:block th:replace="../fragments/navigation.html"></th:block>
+<div class="breadcrumbs">
+    &nbsp;
+</div>
+
+  <div class="container">
   <h1 th:text="${templateName}"></h1>
 
+  <div class="wholeTable table-container">
   <table th:each="rows : ${groupsOfRows}">
     <thead>
       <tr>
@@ -25,14 +35,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr th:each="row : ${rows}">
+      <tr class="-Row" th:each="row : ${rows}">
         <td th:each="attribute : ${attributes}">
           <span th:text="${row[__${attribute.entityIndex}__].__${attribute.name}__}"></span>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
   <span th:text="${select}"></span>
+
+</div>
 </body>
 
 </html>

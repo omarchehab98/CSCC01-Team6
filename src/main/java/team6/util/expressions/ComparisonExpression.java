@@ -59,4 +59,8 @@ public class ComparisonExpression extends BooleanExpression {
             }
         }
     }
+
+    public BooleanExpression clone() {
+        return new ComparisonExpression(operator, lhs, rhs);
+    }
 }

@@ -1,0 +1,832 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <title><th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP</title>
+</head>
+<body class="body-color">
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+
+  <style>
+    .query--header {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border-bottom: 1px solid #c8d6e5;
+    }
+
+    .query--meta {
+        display: flex;
+    }
+
+    .query--meta-column {
+        margin: 1.25rem;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    .query--builder-tabs {
+        text-align: right;
+    }
+
+    .query--where-expression {
+        display: inline-block;
+        line-height: 3;
+    }
+
+    .query--where-expression-add {
+        display: flex;
+        align-items: center;
+    }
+
+    .query--where-expression-remove {
+        display: none;
+    }
+
+    .query--where-expression:hover .query--where-expression-remove {
+        display: initial;
+    }
+  </style>
+
+  <div class="breadcrumbs">
+    <a
+      class="fal fa-chevron-left"
+      href="/queries"
+    ></a>
+
+    <a href="/queries">Queries</a>
+
+    <span th:if="${!isCreate}">•</span>
+
+    <a
+        th:if="${!isCreate}"
+        th:href="@{'/queries/' + ${query.id}}"
+        th:text="${query.name}"
+    ></a>
+  </div>
+
+  <main>
+    <header class="query--header">
+        <div class="container">
+            <h1 th:if="${isCreate}">Create Query</h1>
+            <h1 th:if="${!isCreate}" th:text="${query.name}"></h1>
+        </div>
+    </header>
+
+    <form
+        class="container"
+        th:action="${isCreate} ? @{/queries} : @{'/queries/' + ${query.id}}"
+        th:object="${query}"
+        method="post"
+    >
+        <!-- Vue.js is initialized here -->
+        <div id="queryForm">
+            <div class="card query--meta">
+                <label class="query--meta-column m-left-0">
+                    Query Name*
+                    <br />
+                    <input type="text" th:field="*{name}" required />
+                </label>
+
+                <label class="query--meta-column m-right-0">
+                    Template*
+                    <br />
+                    <select 
+                        id="template"
+                        name="template"
+                        v-model="template"
+                        required
+                    >
+                        <option></option>
+                        <option value="NARsTemplate">NARs</option>
+                        <option value="ClientProfileTemplate">Client Profiles</option>
+                    </select>
+                </label>
+            </div>
+        
+            <!-- Query Editor -->
+            <div v-if="template">
+                <div class="query--builder-tabs">
+                    <button
+                        v-bind:class="{
+                            btn: true,
+                            'btn-primary': !isEditingQueryString,
+                            'btn-secondary': isEditingQueryString,
+                            'btn-sm': true,
+                            'm-left-3': true,
+                        }"
+                        v-on:click="setIsEditingQueryString(false)"
+                        type="button"
+                    >
+                        Visual
+                    </button>
+
+                    <button
+                        v-bind:class="{
+                            btn: true,
+                            'btn-primary': isEditingQueryString,
+                            'btn-secondary': !isEditingQueryString,
+                            'btn-sm': true,
+                            'm-left-3': true,
+                        }"
+                        v-on:click="setIsEditingQueryString(true)"
+                        type="button"
+                    >
+                        Code
+                    </button>
+                </div>
+
+                <!-- Visual Tab -->
+                <div v-bind:style="{ display: (!isEditingQueryString ? 'block' : 'none') }">
+                    <query-select-parameter
+                        v-bind="{
+                            values: parameterSelect,
+                            push: pushParameterSelect,
+                            pop: popParameterSelect,
+                            getAttributeCount,
+                            getAttributeName,
+                            getAttributeFriendlyName,
+                        }"
+                    >
+                    </query-select-parameter>
+                    
+                    <query-sort-parameter
+                        v-bind="{
+                            values: parameterSort,
+                            push: pushParameterSort,
+                            pop: popParameterSort,
+                            getAttributeCount,
+                            getAttributeName,
+                            getAttributeFriendlyName,
+                        }"
+                    >
+                    </query-sort-parameter>
+
+                    <query-sort-direction-parameter
+                        v-bind="{
+                            value: parameterSortDirection,
+                        }"
+                        v-if="parameterSort.length > 0"
+                    >
+                    </query-sort-direction-parameter>
+
+                    <query-where-parameter
+                        v-bind="{
+                            value: parameterWhere,
+                        }"
+                    >
+                    </query-where-parameter>
+
+                    <query-group-parameter
+                        v-bind="{
+                            value: parameterGroup,
+                            getAttributeCount,
+                            getAttributeName,
+                            getAttributeFriendlyName,
+                        }"
+                    >
+                    </query-group-parameter>
+
+                    <query-join-parameter
+                        v-bind="{
+                            values: parameterJoin,
+                            push: pushParameterJoin,
+                            pop: popParameterJoin,
+                            getTemplateCount,
+                            getTemplateName,
+                            getTemplateFriendlyName,
+                        }"
+                    >
+                    </query-join-parameter>
+                </div>
+
+                <!-- Code Tab -->
+                <div
+                    class="card"
+                    v-bind:style="{ display: (isEditingQueryString ? 'block' : 'none') }"
+                >
+                    <label>
+                        Query String
+                        
+                        <br />
+
+                        <textarea
+                            id="queryString"
+                            name="queryString"
+                            v-model="queryStringComputed"
+                            style="
+                                resize: vertical;
+                                min-height: 80px;
+                                height: 120px;
+                            "
+                        >
+                        </textarea>
+                    </label>
+                </div>
+            </div>
+
+            <input-datalist
+                v-bind="{
+                    id: 'autocomplete-columns',
+                    getCount: getAttributeCount,
+                    getName: (index) => '$' + getAttributeName(index) + '$',
+                    getValue: getAttributeFriendlyName,
+                }"
+            >
+            </input-datalist>
+        </div>
+
+        <div>
+            <input
+                class="btn btn-primary m-bottom-6"
+                type="submit"
+                value="Submit"
+            />
+        </div>
+    </form>
+
+    <!-- Data given to JavaScript by Spring -->
+
+    <script
+        th:data-key="template"
+        th:utext="${templateJSON}"
+        type="application/json">
+    </script>
+
+    <script
+        th:data-key="queryString"
+        th:utext="${queryStringJSON}"
+        type="application/json">
+    </script>
+
+    <script
+        th:data-key="templateNames"
+        th:utext="${templateNamesJSON}"
+        type="application/json">
+    </script>
+    
+    <script
+        th:data-key="templateNames"
+        th:utext="${templateNamesJSON}"
+        type="application/json">
+    </script>
+    
+    <script
+        th:each="template : ${templateNames}"
+        th:data-key="@{${template} + 'AttributeNames'}"
+        th:utext="${__@{${template} + 'AttributeNamesJSON'}__}"
+        type="application/json">
+    </script>
+
+    <script
+        th:each="template : ${templateNames}"
+        th:data-key="@{${template} + 'FriendlyNames'}"
+        th:utext="${__@{${template} + 'FriendlyNamesJSON'}__}"
+        type="application/json">
+    </script>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script type="text/javascript" src="/js/json-loader.js"></script>
+    <script type="text/javascript" src="/js/components/input-datalist.js"></script>
+    <script type="text/javascript" src="/js/components/input-select.js"></script>
+    <script type="text/javascript" src="/js/components/input-ordered-select.js"></script>
+
+    <script type="text/javascript">
+        Vue.component('query-select-parameter', {
+            props: {
+                values: Array,
+                push: Function,
+                pop: Function,
+                getAttributeCount: Function,
+                getAttributeName: Function,
+                getAttributeFriendlyName: Function,
+            },
+
+            template: `
+                <div class="card">
+                    <label class="m-bottom-6">
+                        Select
+                    </label>
+
+                    <em v-if="values.length === 0">
+                        all columns
+                    </em>
+
+                    <input-ordered-select v-bind="{
+                        values,
+                        push,
+                        pop,
+                        getCount: getAttributeCount,
+                        getName: getAttributeName,
+                        getValue: getAttributeFriendlyName,
+                    }">
+                    </input-ordered-select>
+                </div>
+            `,
+        });
+
+        Vue.component('query-sort-parameter', {
+            props: {
+                values: Array,
+                push: Function,
+                pop: Function,
+                getAttributeCount: Function,
+                getAttributeName: Function,
+                getAttributeFriendlyName: Function,
+            },
+
+            template: `
+                <div class="card">
+                    <label class="m-bottom-6">
+                        Sort by
+                    </label>
+
+                    <em v-if="values.length === 0">
+                        id ascending
+                    </em>
+
+                    <input-ordered-select v-bind="{
+                        values,
+                        push,
+                        pop,
+                        getCount: getAttributeCount,
+                        getName: getAttributeName,
+                        getValue: getAttributeFriendlyName,
+                    }">
+                    </input-ordered-select>
+                </div>
+            `,
+        });
+
+        Vue.component('query-sort-direction-parameter', {
+            props: {
+                value: Object,
+            },
+
+            template: `
+                <div class="card">
+                    <label class="m-top-3">
+                        Sort Direction
+                    </label>
+
+                    <select class="input-inline" v-model="value.value">
+                        <option></option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            `,
+        });
+        
+        Vue.component('query-where-parameter', {
+            props: {
+                value: Object,
+            },
+
+            template: `
+                <div class="card">
+                    <label class="m-bottom-6">
+                        Where
+                    </label>
+                    
+                    <input-boolean-expression v-bind="{ value }">
+                    </input-boolean-expression>
+                </div>
+            `,
+        });
+
+        Vue.component('query-group-parameter', {
+            props: {
+                value: Object,
+                getAttributeCount: Function,
+                getAttributeName: Function,
+                getAttributeFriendlyName: Function,
+            },
+
+            template: `
+                <div class="card">
+                    <label class="m-bottom-6">
+                        Group by
+                    </label>
+
+                    <input-select
+                        v-if="value.value"
+                        v-bind="{
+                            value,
+                            getCount: getAttributeCount,
+                            getName: getAttributeName,
+                            getValue: getAttributeFriendlyName,
+                        }"
+                    >
+                    </input-select>
+
+                    <button
+                        class="btn btn-secondary btn-sm"
+                        v-if="!value.value"
+                        v-on:click="value.value = getAttributeName(0)"
+                        type="button"
+                    >
+                        Add
+                    </button>
+
+                    <button
+                        class="btn btn-secondary btn-sm"
+                        v-if="value.value"
+                        v-on:click="value.value = ''"
+                        type="button"
+                    >
+                        Remove
+                    </button>
+                </div>
+            `,
+        });
+
+        Vue.component('query-join-parameter', {
+            props: {
+                values: Array,
+                push: Function,
+                pop: Function,
+                getTemplateCount: Function,
+                getTemplateName: Function,
+                getTemplateFriendlyName: Function,
+            },
+
+            template: `
+                <div class="card">
+                    <label class="m-bottom-6">
+                        Join with
+                    </label>
+
+                    <input-ordered-select v-bind="{
+                        values,
+                        push,
+                        pop,
+                        getCount: getTemplateCount,
+                        getName: getTemplateName,
+                        getValue: getTemplateFriendlyName,
+                    }">
+                    </input-ordered-select>
+                </div>
+            `,
+        });
+
+        Vue.component('input-boolean-expression', {
+            props: {
+                value: Object,
+                depth: {
+                    type: Number,
+                    default: 0,
+                },
+            },
+
+            data() {
+                return {
+                    operator: '',
+                    lhsIsNumber: false,
+                    rhsIsNumber: false,
+                };
+            },
+
+            computed: {
+                comparisonOperator() {
+                    return this.value.$eq ||
+                        this.value.$ne ||
+                        this.value.$gt ||
+                        this.value.$gte ||
+                        this.value.$lt ||
+                        this.value.$lte ||
+                        this.value.$like;
+                },
+
+                logicalOperator() {
+                    return this.value.$and ||
+                        this.value.$or ||
+                        this.value.$not ||
+                        this.value.$nor;
+                },
+            },
+
+            created() {
+                if (this.comparisonOperator) {
+                    this.lhsIsNumber = typeof this.comparisonOperator[0] === 'number';
+                    this.rhsIsNumber = typeof this.comparisonOperator[1] === 'number';
+                }
+            },
+
+            watch: {
+                lhsIsNumber() {
+                    if (this.comparisonOperator && (typeof this.comparisonOperator[0] === 'number' ^ this.lhsIsNumber)) {
+                        Vue.set(this.comparisonOperator, 0, this.lhsIsNumber ? 0 : "");
+                    }
+                },
+
+                rhsIsNumber() {
+                    if (this.comparisonOperator && (typeof this.comparisonOperator[1] === 'number' ^ this.rhsIsNumber)) {
+                        Vue.set(this.comparisonOperator, 1, this.rhsIsNumber ? 0 : "");
+                    }
+                },
+            },
+
+            methods: {
+                add() {
+                    switch (this.operator) {
+                        case "$eq":
+                        case "$ne":
+                        case "$gt":
+                        case "$gte":
+                        case "$lt":
+                        case "$lte":
+                        case "$like":
+                            Vue.set(this.value, this.operator, ["", ""]);
+                            break;
+
+                        case "$and":
+                        case "$or":
+                        case "$nor":
+                            Vue.set(this.value, this.operator, [{}, {}]);
+                            break;
+
+                        case "$not":
+                            Vue.set(this.value, this.operator, [{}]);
+                            break;
+                    }
+                },
+
+                remove() {
+                    Object.keys(this.value)
+                        .map(key => {
+                            this.value[key] = undefined;
+                        });
+                },
+            },
+            
+            template: `
+                <div v-bind:style="{ 'margin-left': (depth * 30) + 'px' }">
+                    <input
+                        v-if="comparisonOperator"
+                        v-model="lhsIsNumber"
+                        type="checkbox"
+                    />
+
+                    <input
+                        class="input-inline"
+                        v-if="lhsIsNumber && comparisonOperator"
+                        v-model.number="comparisonOperator[0]"
+                        type="number"
+                    />
+
+                    <input
+                        class="input-inline"
+                        v-if="!lhsIsNumber && comparisonOperator"
+                        v-model="comparisonOperator[0]"
+                        type="text"
+                        list="autocomplete-columns"
+                    />
+
+                    <input-boolean-expression
+                        v-if="logicalOperator && logicalOperator.length > 1"
+                        v-bind="{
+                            value: logicalOperator[0],
+                            depth: depth + 1,
+                        }"
+                    >
+                    </input-boolean-expression>
+
+                    <div class="query--where-expression">
+                        <!-- Comparison Operators -->
+                        <em v-if="value.$eq">Equal</em>
+                        <em v-else-if="value.$ne">Not Equal</em>
+                        <em v-else-if="value.$gt">Greater Than</em>
+                        <em v-else-if="value.$gte">Greater Than Or Equal</em>
+                        <em v-else-if="value.$lt">Less Than</em>
+                        <em v-else-if="value.$lte">Less Than Or Equal</em>
+                        <em v-else-if="value.$like">Like (regex)</em>
+                        
+                        <!-- Logical Operators -->
+                        <em v-else-if="value.$and">And</em>
+                        <em v-else-if="value.$or">Or</em>
+                        <em v-else-if="value.$not">Not</em>
+                        <em v-else-if="value.$nor">Nor</em>
+
+                        <!-- Empty Leaf Node -->
+                        <div
+                            v-else
+                            class="query--where-expression-add"
+                        >
+                            <select class="input-inline" v-model="operator">
+                                <option></option>
+                                <option value="$eq">Equal</option>
+                                <option value="$ne">Not Equal</option>
+                                <option value="$gt">Greater Than</option>
+                                <option value="$gte">Greater Than Or Equal</option>
+                                <option value="$lt">Less Than</option>
+                                <option value="$lte">Less Than Or Equal</option>
+                                <option value="$like">Like (regex)</option>
+                                <option value="$and">And</option>
+                                <option value="$or">Or</option>
+                                <option value="$not">Not</option>
+                                <option value="$nor">Nor</option>
+                            </select>
+
+                            <button
+                                class="btn btn-primary btn-sm m-left-3"
+                                v-if="operator"
+                                v-on:click="add()"
+                                type="button"
+                            >
+                                Add
+                            </button>
+                        </div>
+
+                        <button
+                            class="query--where-expression-remove btn btn-secondary btn-sm m-left-3"
+                            v-if="comparisonOperator || logicalOperator"
+                            v-on:click="remove()"
+                            type="button"
+                        >
+                            Remove
+                        </button>
+                    </div>
+
+                    <input
+                        class="input-inline"
+                        v-if="!rhsIsNumber && comparisonOperator && comparisonOperator.length > 1"
+                        v-model="comparisonOperator[1]"
+                        type="text"
+                        list="autocomplete-columns"
+                    />
+
+                    <input
+                        class="input-inline"
+                        v-if="rhsIsNumber && comparisonOperator && comparisonOperator.length > 1"
+                        v-model.number="comparisonOperator[1]"
+                        type="number"
+                    />
+
+                    <input
+                        v-if="comparisonOperator && comparisonOperator.length > 1"
+                        v-model="rhsIsNumber"
+                        type="checkbox"
+                    />
+
+                    <input-boolean-expression
+                        v-if="logicalOperator && logicalOperator.length > 1"
+                        v-bind="{
+                            value: logicalOperator[1],
+                            depth: depth + 1,
+                        }"
+                    >
+                    </input-boolean-expression>
+
+                    <input-boolean-expression
+                        v-if="logicalOperator && logicalOperator.length === 1"
+                        v-bind="{
+                            value: logicalOperator[0],
+                            depth: depth + 1,
+                        }"
+                    >
+                    </input-boolean-expression>
+                </div>
+            `,
+        })
+
+        function computeParametersFromQueryString(queryString) {
+            const {
+                select,
+                sort,
+                sortDirection,
+                where,
+                group,
+                join,
+            } = (queryString || '')
+                .split('&')
+                .map((param) => param.split('=').map(decodeURIComponent))
+                .reduce((result, [ key, value ]) => ({
+                    ...result,
+                    [key]: value,
+                }), {});
+            const result = {
+                parameterSelect: (select || '').split(',').map(value => ({ value })),
+                parameterSort: (sort || '').split(',').map(value => ({ value })),
+                parameterSortDirection: { value: sortDirection || '' },
+                parameterWhere: JSON.parse(where || '{}'),
+                parameterGroup: { value: group || ''},
+                parameterJoin: (join || '').split(',').map(value => ({ value })),
+            };
+            if (result.parameterSelect[0].value === '') {
+                result.parameterSelect = [];
+            }
+            if (result.parameterSort[0].value === '') {
+                result.parameterSort = [];
+            }
+            if (result.parameterJoin[0].value === '') {
+                result.parameterJoin = [];
+            }
+            return result;
+        }
+
+        const app = new Vue({
+            el: '#queryForm',
+            
+            data: {
+                ...data,
+                ...computeParametersFromQueryString(data.queryString),
+                isEditingQueryString: false,
+            },
+
+            computed: {
+                queryStringComputed: {
+                    get() {
+                        const queryString = [];
+                        const select = this.parameterSelect.map(({ value }) => value).join(',');
+                        if (select) {
+                            queryString.push(`select=${encodeURIComponent(select)}`);
+                        }
+                        const sort = this.parameterSort.map(({ value }) => value).join(',');
+                        if (sort) {
+                            queryString.push(`sort=${encodeURIComponent(sort)}`);
+                            const sortDirection = this.parameterSortDirection.value;
+                            if (sortDirection) {
+                                queryString.push(`sortDirection=${encodeURIComponent(sortDirection)}`);
+                            }
+                        }
+                        const where = JSON.stringify(this.parameterWhere);
+                        if (where.length > 2) {
+                            queryString.push(`where=${encodeURIComponent(where)}`);
+                        }
+                        const group = this.parameterGroup.value;
+                        if (group) {
+                            queryString.push(`group=${encodeURIComponent(group)}`);
+                        }
+                        const join = this.parameterJoin.map(({ value }) => value).join(',');
+                        if (join) {
+                            queryString.push(`join=${encodeURIComponent(join)}`);
+                        }
+                        return queryString.join('&');
+                    },
+                }
+            },
+
+            methods: {
+                setIsEditingQueryString(isEditingQueryString) {
+                    this.isEditingQueryString = isEditingQueryString;
+                },
+
+                pushParameterSelect() {
+                    this.parameterSelect.push({value: this.getAttributeName(0)});
+                },
+
+                popParameterSelect() {
+                    this.parameterSelect.pop();
+                },
+                
+                pushParameterSort() {
+                    this.parameterSort.push({value: this.getAttributeName(0)});
+                },
+
+                popParameterSort() {
+                    this.parameterSort.pop();
+                },
+                
+                pushParameterJoin() {
+                    this.parameterJoin.push({value: this.getTemplateName(0)});
+                },
+
+                popParameterJoin() {
+                    this.parameterJoin.pop();
+                },
+                
+                getAttributeCount() {
+                    return this[this.template + 'AttributeNames'].length;
+                },
+
+                getAttributeName(index) {
+                    return this[this.template + 'AttributeNames'][index];
+                },
+
+                getAttributeFriendlyName(index) {
+                    return this[this.template + 'FriendlyNames'][index];
+                },
+                
+                getTemplateCount() {
+                    return this.templateNames.length;
+                },
+
+                getTemplateName(index) {
+                    return this.templateNames[index];
+                },
+
+                getTemplateFriendlyName(index) {
+                    return this.templateNames[index];
+                },
+            },
+        });
+    </script>
+</body>
+</html>

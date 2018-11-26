@@ -2,24 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="@{'Update • ' + ${organization.name} + ' • Organization'}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:replace="../fragments/head.html"></th:block>
 </head>
 <body>
-    <div>
-        <a href="/">Home</a>
 
-        •
+<th:block th:replace="../fragments/partnerStyles.html"></th:block>
 
-        <a href="/organizations">Organizations</a>
+<th:block th:replace="../fragments/navigation.html"></th:block>
 
-        •
+<div class="breadcrumbs">
+        &nbsp;
+    </div>
 
+    <div class="container">
         <a
             th:href="@{'/organizations/' + ${organization.id}}"
-            th:text="${organization.name}"
-        ></a>
+            
+        >Back</a>
     </div>
     
+    <div class="container">
     <form action="#" th:action="@{'/organizations/' + ${organization.id}}" th:object="${organization}" method="post">
         <h1 th:text="${organization.name}"></h1>
     	<label>
@@ -64,11 +66,11 @@
             <input type="text" th:field="*{premise}" />
         </label>
         <br />
-        <input type="submit" value="Submit" />
+        <input class = "formBtn" type="submit" value="Submit" />
         
-        <input type="reset" value="Reset" />
+        <input class = "formBtn" type="reset" value="Reset" />
 
-        <button type="button" th:onclick="@{'deleteOrganization(' + ${organization.id} + ')'}">
+        <button class = "formBtn delBtn" type="button" th:onclick="@{'deleteOrganization(' + ${organization.id} + ')'}">
           Delete
         </button>
         <script type="text/javascript">
@@ -83,5 +85,7 @@
           }
         </script>
     </form>
+    </div>
+    <div class="spaced"></div>
 </body>
 </html>

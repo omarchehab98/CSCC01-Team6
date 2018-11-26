@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="Charts"></title>
+  <th:block th:replace="../fragments/head.html"></th:block>
+</head>
+
+<body>
+
+  <style>
+  .headerText{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #c8d6e5;
+    }
+  .charts--table tbody tr:hover .charts--item-execute {
+    visibility: initial;
+    }
+
+  .charts--item-actions {
+    text-align: right;
+  }
+
+  .charts--item-execute {
+    visibility: hidden;
+  }
+  </style>
+
+  <th:block th:replace="../fragments/navigation.html"></th:block>
+  <!-- <th:block th:replace="../fragments/tableStyle.html"></th:block> -->
+  <div class="breadcrumbs">
+    &nbsp;
+  </div>
+
+  <main class="container">
+    <header class="headerText">
+      <h1 th:text="Charts"></h1>
+      
+      <div style="flex-grow: 1;"></div>
+
+      <a
+        class="btn btn-primary"
+        href="/charts/create"
+      >
+        Create Chart
+      </a>
+    </header>
+
+
+  <div class="table-container">
+  <table class="charts--table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+	<th></th>
+	<th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr th:each="chart : ${charts}">
+        <td th:text="${chart.id}"></td>
+        <td class = "charts--item-name" th:text="${chart.name}"></td>
+        <td>
+          <a th:href="@{'/charts/' + ${chart.id} + '/embed/'}">
+            View
+          </a>
+        </td>
+	<td>
+          <a th:href="@{'/charts/' + ${chart.id} + '/update/'}">
+            Update
+          </a>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+</main>
+</body>
+
+</html>

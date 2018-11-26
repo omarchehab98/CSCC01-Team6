@@ -40,4 +40,6 @@ public abstract class BooleanExpression {
     public BooleanExpression populateWithObject(Object object) {
         return this.populateWithObject(object, "");
     }
+
+    public abstract BooleanExpression clone();
 }

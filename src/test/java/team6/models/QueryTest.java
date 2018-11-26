@@ -27,16 +27,16 @@ public class QueryTest {
     public void queryTest() throws Exception {
         String name = "English Speakers";
         Query query = new Query();
-        query.setQueryName(name);
-        assertThat(query.getQueryName(), equalTo(name));
+        query.setName(name);
+        assertThat(query.getName(), equalTo(name));
     }
 
 	@Test
-    public void whenFindByName_thenReturnEmployee() {
+    public void whenFindById_thenReturnName() {
         // given
 		String name = "English Speakers";
         Query query = new Query();
-        query.setQueryName(name);
+        query.setName(name);
         entityManager.persist(query);
         entityManager.flush();
     
@@ -45,7 +45,7 @@ public class QueryTest {
 
         // then
         assertTrue(found.isPresent());
-        assertThat(found.get().getQueryName(),
-            equalTo(query.getQueryName()));
+        assertThat(found.get().getName(),
+            equalTo(query.getName()));
     }
 }
