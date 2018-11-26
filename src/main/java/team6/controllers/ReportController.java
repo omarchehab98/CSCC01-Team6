@@ -2,11 +2,10 @@ package team6.controllers;
 
 import java.util.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,21 +13,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import team6.repositories.ReportRepository;
-import team6.throwables.OrganizationNotFoundException;
-import team6.throwables.ReportNotFoundException;
-import team6.models.Organization;
+import team6.models.Chart;
 import team6.models.Report;
+import team6.repositories.ChartRepository;
+import team6.repositories.ReportRepository;
+import team6.throwables.ReportNotFoundException;
 
 @Controller
 public class ReportController{
 
     @Autowired
     private ReportRepository reportRepository;
+    @Autowired
+    private ChartRepository chartRepository;
 
     @PostMapping("/reports")
     public String createReport(@ModelAttribute Report report){
@@ -66,7 +64,8 @@ public class ReportController{
     
     @GetMapping("/reports/create")
     public String createSingleReport(Model model) {
-    	model.addAttribute("report", new Report());
+        model.addAttribute("report", new Report());
+        populateChartsAttribute(model);
     	return "reports/create";
     }
 
@@ -76,6 +75,7 @@ public class ReportController{
             Long repId = Long.parseLong(id);
             Optional<Report> rep = reportRepository.findById(repId);
             model.addAttribute("report", rep.get());
+            populateChartsAttribute(model);
             return "reports/update";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ReportNotFoundException();
@@ -90,5 +90,16 @@ public class ReportController{
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ReportNotFoundException();
         }
+    }
+
+    private void populateChartsAttribute(Model model) {
+        JSONArray charts = new JSONArray();
+        for (Chart chart : chartRepository.findAll()) {
+            JSONObject chartObj = new JSONObject();
+            chartObj.put("id", chart.getId());
+            chartObj.put("name", chart.getName());
+            charts.put(chartObj);
+        }
+        model.addAttribute("chartsJSON", charts.toString());
     }
 }

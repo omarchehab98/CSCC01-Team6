@@ -163,7 +163,6 @@ public class ChartController {
 			List<Integer> rowData = new ArrayList<>();
 			for (List<List<Object>> row : table.data) {
 				rowData.add(row.size());
-				System.out.println(row.get(0).get(0));
 				labels.add((String) AttributeResolver.get(groupBy, row.get(0).get(0)));
 			}
 			data.add(rowData.toArray(new Integer[rowData.size()]));

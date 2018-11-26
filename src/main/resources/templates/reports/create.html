@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
   <th:block th:replace="../fragments/head.html"></th:block>
-  <script>
-  tinymce.init({
-    selector: '#mytextarea'
-  });
-  </script>
 </head>
 
 <body>
@@ -52,5 +46,22 @@
     </form>
   </div>
 
+  <script
+    th:data-key="charts"
+    th:utext="${chartsJSON}"
+    type="application/json">
+  </script>
+
+  <script type="text/javascript" src="/js/json-loader.js"></script>
+  
+  <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+  <script src="/js/tinymce/embed-chart-plugin.js"></script>
+  <script>
+    registerEmbedChartPlugin(data.charts);
+    tinymce.init({
+      selector: '#mytextarea',
+      plugins: 'embed-chart',
+    });
+  </script>
 </body>
 </html>
