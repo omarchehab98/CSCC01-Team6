@@ -58,7 +58,7 @@ public class ChartController {
 
 	private void addChartAttributes(Model model, Chart chart) {
 
-		checkForGroup(chart);
+		// checkForGroup(chart);
 
 		// got to parse these. Set arbitrary for now
 		String name = chart.getName();
@@ -74,6 +74,7 @@ public class ChartController {
 		model.addAttribute("sourceLabels", sourceLabels);
 	} 
 
+	/*
 	private void checkForGroup(Chart chart) {
 
 		Pattern pattern = Pattern.compile("group=(\\w*)");
@@ -87,6 +88,7 @@ public class ChartController {
     			}
     		}
 	}
+	*/
 
     @GetMapping("/charts/create")
     public String createView(Model model) {

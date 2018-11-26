@@ -92,6 +92,14 @@ public class ViewGenerators {
 		return res;
 	}
 
+	public static String getReadSingleViewQueries(String id) {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/queries/" 
+						+ id, String.class);
+		String res = response.getBody();
+		return res;
+	}
+
 	public static String getCreateViewQueries() {
 		ResponseEntity<String> response = 
 				restTemplate.getForEntity("http://localhost:8080/queries/" 
@@ -128,6 +136,22 @@ public class ViewGenerators {
 		ResponseEntity<String> response = 
 				restTemplate.getForEntity("http://localhost:8080/organizations/" 
 						+ id + "/update", String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getReadListViewCharts() {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/charts", 
+						String.class);
+		String res = response.getBody();
+		return res;
+	}
+
+	public static String getReadSingleViewCharts(String id) {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/charts/" 
+						+ id + "/embed", String.class);
 		String res = response.getBody();
 		return res;
 	}
