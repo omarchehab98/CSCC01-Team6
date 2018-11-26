@@ -31,7 +31,9 @@ public class Report {
 	}
 	
 	public String getName() {
-		return this.name;
+		return this.name != null && this.name.length() > 0
+			? this.name
+			: "Untitled report";
 	}
 	
 	public void setName(String name) {
