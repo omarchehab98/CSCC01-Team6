@@ -32,7 +32,6 @@ public class ChartQueryTest {
         Optional<ChartQuery> found = chartQueryRepository.findById(chartQuery.getId());
 
         assertTrue(found.isPresent());
-        assertThat(found.get().getId(),
-            equalTo(chartQuery.getId()));
+        assertThat(found.get().getId(), equalTo(chartQuery.getId()));
     }
 }
