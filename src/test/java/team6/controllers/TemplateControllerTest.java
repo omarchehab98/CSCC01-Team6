@@ -18,6 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import team6.models.NARsTemplate;
 import team6.repositories.ClientProfileTemplateRepository;
 import team6.repositories.CommunityConnectionsTemplateRepository;
+import team6.repositories.EmploymentTemplateRepository;
+import team6.repositories.InformationAndOrientationTemplateRepository;
+import team6.repositories.LTClientEnrolTemplateRepository;
+import team6.repositories.LTClientExitTemplateRepository;
+import team6.repositories.LTCourseSetupTemplateRepository;
 import team6.repositories.NARsTemplateRepository;
 import team6.throwables.IllegalTemplateException;
 
@@ -30,6 +35,16 @@ public class TemplateControllerTest {
     private ClientProfileTemplateRepository clientProfileTemplateRepository;
     @Autowired
     private CommunityConnectionsTemplateRepository communityConnectionsTemplateRepository;
+    @Autowired
+    private EmploymentTemplateRepository employmentTemplateRepository;
+    @Autowired
+    private InformationAndOrientationTemplateRepository informationAndOrientationTemplateRepository;
+    @Autowired
+    private LTClientEnrolTemplateRepository ltClientEnrolTemplateRepository;
+    @Autowired
+    private LTCourseSetupTemplateRepository ltCourseSetupTemplateRepository;
+    @Autowired
+    private LTClientExitTemplateRepository ltClientExitTemplateRepository;
 
     @Autowired
 	private TemplateController templateController;
@@ -95,20 +110,70 @@ public class TemplateControllerTest {
 		assertEquals(expected, response.getBody());
 	}
 
-	/*
 	@Test
-	public void testCreateTemplateByFile() throws Exception {
-		HttpEntity<NARsTemplate> entity = new HttpEntity<NARsTemplate>(narsTemplate, headers);
-		
+	public void testReadAllEmploymentView() {
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/templates"),
-				HttpMethod.POST, entity, String.class);
+				restTemplate.exchange(createURL("/templates/employment"),
+				HttpMethod.GET, entity, String.class);
 
-		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/employment");
 
-		assertTrue(actual.contains("/templates"));
+		assertEquals(expected, response.getBody());
 	}
-	*/
+
+	@Test
+	public void testReadAllInformationAndOrientationView() {
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/templates/informationAndOrientation"),
+				HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/informationAndOrientation");
+
+		assertEquals(expected, response.getBody());
+	}
+
+	@Test
+	public void testReadAllLTClientEnrolView() {
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/templates/ltClientEnrol"),
+				HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/ltClientEnrol");
+
+		assertEquals(expected, response.getBody());
+	}
+
+	@Test
+	public void testReadAllLTCourseSetupView() {
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/templates/ltCourseSetup"),
+				HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/ltCourseSetup");
+
+		assertEquals(expected, response.getBody());
+	}
+
+	@Test
+	public void testReadAllLTClientExitView() {
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange(createURL("/templates/ltClientExit"),
+				HttpMethod.GET, entity, String.class);
+
+		String expected = ViewGenerators.getReadAllTemplateView(port, "/ltClientExit");
+
+		assertEquals(expected, response.getBody());
+	}
 
 	@Test
 	public void testGetRepo() throws IllegalTemplateException {
@@ -118,6 +183,16 @@ public class TemplateControllerTest {
 				templateController.getRepo("clientProfile"));
 		assertEquals(communityConnectionsTemplateRepository, 
 				templateController.getRepo("communityConnections"));
+		assertEquals(employmentTemplateRepository,
+				templateController.getRepo("employment"));
+		assertEquals(informationAndOrientationTemplateRepository, 
+				templateController.getRepo("informationAndOrientation"));
+		assertEquals(ltClientEnrolTemplateRepository, 
+				templateController.getRepo("ltClientEnrol"));
+		assertEquals(ltCourseSetupTemplateRepository,
+				templateController.getRepo("ltCourseSetup"));
+		assertEquals(ltClientExitTemplateRepository, 
+				templateController.getRepo("ltClientExit"));
 	}
 
 	@Test(expected = IllegalTemplateException.class)

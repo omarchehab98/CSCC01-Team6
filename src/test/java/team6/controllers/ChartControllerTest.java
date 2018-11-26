@@ -75,22 +75,6 @@ public class ChartControllerTest {
 		assertEquals(expected, response.getBody());
 	}
 
-	/*
-	@Test
-	public void testCreate() {
-		Chart chart = new Chart();
-		HttpEntity<Chart> entity = new HttpEntity<Chart>(chart, headers);
-
-		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/charts"),
-				HttpMethod.POST, entity, String.class);
-
-		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
-
-		assertTrue(actual.contains("/charts"));
-	}
-	*/
-
 	@Test
 	public void testUpdateView() {
 		Chart chart = new Chart();
@@ -108,27 +92,6 @@ public class ChartControllerTest {
 
 		chartRepository.deleteById(chart.getId());
 	}
-
-
-	/*
-	@Test
-	public void testUpdateById() throws Exception {
-		Chart chart = new Chart();
-		chartRepository.save(chart);
-		String id = String.valueOf(chart.getId());
-		HttpEntity<Chart> entity = new HttpEntity<Chart>(chart, headers);
-
-		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/charts/" + id + "/embed/"),
-				HttpMethod.POST, entity, String.class);
-
-		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
-
-		assertTrue(actual.contains("/charts/" + id + "/embed/"));
-		
-		chartRepository.deleteById(chart.getId());
-	}
-	*/
 
 	private String createURL(String uri) {
 		return "http://localhost:" + port + uri;

@@ -75,7 +75,6 @@ public class QueryControllerTest {
 		queryRepository.deleteById(query.getId());
 	}
 
-	/*
 	@Test
 	public void testCreate() {
 		Query query = new Query();
@@ -89,7 +88,6 @@ public class QueryControllerTest {
 
 		assertTrue(actual.contains("/queries"));
 	}
-	*/
 
 	public void testUpdateByIdView() {
 		Query query = new Query();

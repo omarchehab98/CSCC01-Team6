@@ -326,6 +326,15 @@ public class TemplateController {
         case "InformationAndOrientationTemplate":
         case "informationAndOrientation":
         	return informationAndOrientationTemplateRepository;
+        case "LTClientEnrolTemplate":
+        case "ltClientEnrol":
+        	return ltClientEnrolTemplateRepository;
+        case "LTCourseSetupTemplate":
+        case "ltCourseSetup":
+        	return ltCourseSetupTemplateRepository;
+        case "LTClientExitTemplate":
+        case "ltClientExit":
+        	return ltClientExitTemplateRepository;
         }
         throw new IllegalTemplateException(String.format("invalid template: %s", templateType));
     }
