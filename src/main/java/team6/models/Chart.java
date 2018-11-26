@@ -26,7 +26,9 @@ public class Chart {
 		this.id = id;
 	}
 	public String getName() {
-		return name;
+		return this.name != null && this.name.length() > 0
+			? this.name
+			: "Untitled chart";
 	}
 	public void setName(String name) {
 		this.name = name;
