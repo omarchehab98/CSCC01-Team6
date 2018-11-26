@@ -100,4 +100,11 @@ public class ViewGenerators {
 		return res;
 	}
 
+	public static String getReadListViewReports() {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:8080/reports", 
+						String.class);
+		String res = response.getBody();
+		return res;
+	}
 }
