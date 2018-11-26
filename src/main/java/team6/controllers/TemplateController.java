@@ -92,7 +92,7 @@ public class TemplateController {
         SheetAdapterWrapper saw = new SheetAdapterWrapper();
 
         // get HashMap representation from the wrapper
-        List<HashMap<String, String>> dataMap = saw.parse(file.getContentType(), fileRead, 1, 3);
+        List<HashMap<String, String>> dataMap = saw.parse(".csv", fileRead, 1, 3);
 
         TemplateFactoryWrapper templateFactoryWrapper = new TemplateFactoryWrapper();
 
