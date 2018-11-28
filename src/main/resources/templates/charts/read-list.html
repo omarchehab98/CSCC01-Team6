@@ -76,8 +76,11 @@
               </a>
             </td>
             <td class="charts--item-actions">
-              <a class="charts--item-execute btn btn-secondary btn-sm" th:href="@{'/charts/' + ${chart.id} + '/embed/'}"
-                target="_blank">
+              <a
+                class="charts--item-execute btn btn-secondary btn-sm"
+                th:href="@{'/charts/' + ${chart.id} + '/embed'}"
+                onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, width=640px, height=430px'); return false;"
+              >
                 Preview
               </a>
             </td>

@@ -72,7 +72,10 @@
             </td>
             
             <td class="reports--item-actions">
-              <a class="reports--item-execute btn btn-secondary btn-sm" th:href="@{'/reports/' + ${report.id} + '/embed'}">
+              <a
+                class="reports--item-execute btn btn-secondary btn-sm"
+                th:href="@{'/reports/' + ${report.id} + '/embed'}"
+                onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, width=700px, height=990px'); return false;">
                 Preview
               </a>
             </td>
