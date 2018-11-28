@@ -52,10 +52,10 @@ public class ReportControllerTest {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
 		ResponseEntity<String> response = 
-				restTemplate.exchange(createURL("/reports/" + id),
+				restTemplate.exchange(createURL("/reports/" + id + "/embed"),
 				HttpMethod.GET, entity, String.class);
 
-		String expected = ViewGenerators.getReadSingleView(port, "/reports/", id);
+		String expected = ViewGenerators.getReadSingleViewReports(port, id);
 
 		assertEquals(expected, response.getBody());
 
@@ -119,7 +119,7 @@ public class ReportControllerTest {
 
 		String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
 
-		assertTrue(actual.contains("/reports/" + id));
+		assertTrue(actual.contains("/reports"));
 		
 		reportRepository.deleteById(report.getId());
 	}

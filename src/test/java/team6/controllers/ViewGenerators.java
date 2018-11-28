@@ -68,6 +68,14 @@ public class ViewGenerators {
 		return res;
 	}
 
+	public static String getReadSingleViewReports(int port, String id) {
+		ResponseEntity<String> response = 
+				restTemplate.getForEntity("http://localhost:" + port + "/reports/" 
+						+ id + "/embed", String.class);
+		String res = response.getBody();
+		return res;
+	}
+
 	public static String getUpdateViewCharts(int port, String id) {
 		ResponseEntity<String> response = 
 				restTemplate.getForEntity("http://localhost:" + port + "/charts/" 
