@@ -12,10 +12,14 @@ public class TemplateFactoryWrapper {
 
 	public TemplateFactoryWrapper() {
 		this.templateFactories = new HashMap<>();
-		templateFactories.put("NARsTemplate", NARsTemplateFactory::build);
 		templateFactories.put("ClientProfileTemplate", ClientProfileTemplateFactory::build);
+		templateFactories.put("NARsTemplate", NARsTemplateFactory::build);
+		templateFactories.put("CommunityConnectionsTemplate", CommunityConnectionsTemplateFactory::build);
 		templateFactories.put("EmploymentTemplate", EmploymentTemplateFactory::build);
 		templateFactories.put("InformationAndOrientationTemplate", InformationAndOrientationTemplateFactory::build);
+		templateFactories.put("LTClientEnrolTemplate", LTClientEnrolTemplateFactory::build);
+		templateFactories.put("LTCourseSetupTemplate", LTCourseSetupTemplateFactory::build);
+		templateFactories.put("LTClientExitTemplate", LTClientExitTemplateFactory::build);
 	}
 
 	public Template build(String template, HashMap<String, String> row, Organization organization) throws IllegalTemplateException {

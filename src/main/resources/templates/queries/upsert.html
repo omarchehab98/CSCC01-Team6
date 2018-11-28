@@ -101,6 +101,12 @@
                         <option></option>
                         <option value="NARsTemplate">NARs</option>
                         <option value="ClientProfileTemplate">Client Profiles</option>
+                        <option value="CommunityConnectionsTemplate">Community Connections</option>
+                        <option value="EmploymentTemplate">Employment</option>
+                        <option value="InformationAndOrientationTemplate">Information And Orientation</option>
+                        <option value="LTClientEnrolTemplate">LT Client Enrol</option>
+                        <option value="LTCourseSetupTemplate">LT Course Setup</option>
+                        <option value="LTClientExitTemplate">LT Client Exit</option>
                     </select>
                 </label>
             </div>
@@ -260,12 +266,6 @@
         type="application/json">
     </script>
 
-    <script
-        th:data-key="templateNames"
-        th:utext="${templateNamesJSON}"
-        type="application/json">
-    </script>
-    
     <script
         th:data-key="templateNames"
         th:utext="${templateNamesJSON}"

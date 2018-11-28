@@ -91,8 +91,14 @@ public class QueryController {
 
     private void populateUpsertViewAttributes(Model model, Query query) {
         String[] templates = new String[]{
+            "ClientProfileTemplate",
             "NARsTemplate",
-            "ClientProfileTemplate"
+            "CommunityConnectionsTemplate",
+            "EmploymentTemplate",
+            "InformationAndOrientationTemplate",
+            "LTClientEnrolTemplate",
+            "LTCourseSetupTemplate",
+            "LTClientExitTemplate"
         };
         model.addAttribute("query", query);
         model.addAttribute("queryStringJSON", new JSONStringHelper(query.getQueryString()).toString());
