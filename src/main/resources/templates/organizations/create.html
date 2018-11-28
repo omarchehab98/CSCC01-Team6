@@ -1,69 +1,74 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Create • Organization</title>
     <th:block th:replace="../fragments/head.html"></th:block>
 </head>
-<body>
-    <th:block th:replace="../fragments/partnerStyles.html"></th:block>
 
+<body>
     <th:block th:replace="../fragments/navigation.html"></th:block>
 
-<div class="breadcrumbs">
-    &nbsp;
-</div>
+    <div class="breadcrumbs">
+        &nbsp;
+    </div>
 
     <div class="container">
-    <a href="/organizations">Back</a>
-    <form action="#" th:action="@{/organizations}" th:object="${organization}" method="post">
-        <h1>Create Organization</h1>
-    	<label>
-            Organization Name*
+        <span>
+            <a class="fal fa-chevron-left" href="/organizations"></a>
+    
+            <a href="/organizations">Partners</a>    
+        </span>
+        
+        <form action="#" th:action="@{/organizations}" th:object="${organization}" method="post">
+            <h1>Add Partner</h1>
+            <label>
+                Organization Name*
+                <br />
+                <input type="text" th:field="*{name}" required />
+            </label>
             <br />
-            <input type="text" th:field="*{name}" required />
-        </label>
-        <br />
-        <label>
-            Country*
+            <label>
+                Country*
+                <br />
+                <input type="text" th:field="*{country}" required />
+            </label>
             <br />
-            <input type="text" th:field="*{country}" required />
-        </label>
-        <br />
-        <label>
-            Province
+            <label>
+                Province
+                <br />
+                <input type="text" th:field="*{administrativeArea}" />
+            </label>
             <br />
-            <input type="text" th:field="*{administrativeArea}" />
-        </label>
-        <br />
-        <label>
-            City
+            <label>
+                City
+                <br />
+                <input type="text" th:field="*{locality}" />
+            </label>
             <br />
-            <input type="text" th:field="*{locality}" />
-        </label>
-        <br />
-        <label>
-            Postal Code
+            <label>
+                Postal Code
+                <br />
+                <input type="text" th:field="*{postalCode}" />
+            </label>
             <br />
-            <input type="text" th:field="*{postalCode}" />
-        </label>
-        <br />
-        <label>
-            Street Address
+            <label>
+                Street Address
+                <br />
+                <input type="text" th:field="*{thoroughfare}" />
+            </label>
             <br />
-            <input type="text" th:field="*{thoroughfare}" />
-        </label>
-        <br />
-        <label>
-            Apartment
+            <label>
+                Apartment
+                <br />
+                <input type="text" th:field="*{premise}" />
+            </label>
             <br />
-            <input type="text" th:field="*{premise}" />
-        </label>
-        <br />
-        <input class="formBtn" type="submit" value="Submit" />
-        <input class="formBtn" type="reset" value="Reset" />
-    </form>
-</div>
-<div class="spaced"></div>
+            <input class="btn btn-primary" type="submit" value="Save" />
+        </form>
+    </div>
+    <div class="m-top-3"></div>
 
 </body>
+
 </html>

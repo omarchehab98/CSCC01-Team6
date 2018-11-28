@@ -1,80 +1,78 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Update Chart</title>
     <th:block th:replace="../fragments/head.html"></th:block>
 </head>
+
 <body>
-        <th:block th:replace="../fragments/navigation.html"></th:block>
-        <th:block th:replace="../fragments/partnerStyles.html"></th:block>
-    
+    <th:block th:replace="../fragments/navigation.html"></th:block>
+
     <style>
-    label{
+        label{
         width:100%;
     }
     </style>
 
     <div class="breadcrumbs">
-        &nbsp;
+        <a class="fal fa-chevron-left" href="/charts"></a>
+
+        <a href="/charts">Charts</a>
     </div>
 
-    <div class="container">
-    <form action="#" th:action="@{'/charts/' + ${chart.id} + '/embed/'}" th:object="${chart}" method="post">
-        <h1>Update Chart</h1>
-    	<label>
-            Chart Name*
+    <main class="container">
+        <form action="#" th:action="@{'/charts/' + ${chart.id} + '/embed/'}" th:object="${chart}" method="post">
+            <h1 th:text="${chart.name}"></h1>
+            <label>
+                Chart Name*
+                <br />
+                <input type="text" th:field="*{name}" required />
+            </label>
+
             <br />
-            <input type="text" th:field="*{name}" required />
-        </label>
 
-	<br/>
+            <label>
+                Chart Type*
+                <br />
+                <select name="list" id="typelist" th:field="*{type}">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                </select>
+            </label>
+            <div class="m-top-3"></div>
 
-	<label>
-            Chart Type*
-            <br />
-	    <select name="list" id="typelist" th:field="*{type}">
-      	        <option value="bar">Bar</option>
-      	        <option value="pie">Pie</option>
-                <option value="line">Line</option>
-	    </select>
-        </label>
-        <div class="spaced"></div>
-
-        <div id="chartQueries">
-            <chart-queries
-                v-bind="{
+            <div id="chartQueries">
+                <chart-queries v-bind="{
                     values: selectedQueries,
                     push: pushQuery,
                     pop: popQuery,
                     getQueryCount,
                     getQueryId,
                     getQueryName,
-                }"
-            >
-            </chart-queries>
-        </div>
+                }">
+                </chart-queries>
+            </div>
 
-        <div class="spaced"></div>
-        <input type="hidden" name="chartQueries" th:value="${queries}" />
-	<input class="btn" type="submit" value="Submit" />
-        <input class="btn" type="reset" value="Reset" />
-    </form>
+            <div class="m-top-3"></div>
+            
+            <input type="hidden" name="chartQueries" th:value="${queries}" />
 
-    <script
-        th:data-key="queries"
-        th:utext="${queriesJSON}"
-        type="application/json">
+            <input class="btn btn-primary" type="submit" value="Save" />
+            <input class="btn btn-secondary" type="button" value="Delete" th:onclick="@{'deleteChart(' + ${chart.id} + ')'}" />
+        </form>
+    </main>
+
+    <script th:data-key="queries" th:utext="${queriesJSON}" type="application/json">
     </script>
 
-    <script
-        th:data-key="chartQueries"
-        th:utext="${chartQueriesJSON}"
-        type="application/json">
+    <script th:data-key="chartQueries" th:utext="${chartQueriesJSON}" type="application/json">
     </script>
 
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    
+
     <!-- production version, optimized for size and speed -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
@@ -115,7 +113,7 @@
 
         const app = new Vue({
             el: '#chartQueries',
-            
+
             data: {
                 ...data,
                 selectedQueries: data.chartQueries.map(x => ({ value: x.id })),
@@ -123,13 +121,13 @@
 
             methods: {
                 pushQuery() {
-                    this.selectedQueries.push({value: this.getQueryId(0)});
+                    this.selectedQueries.push({ value: this.getQueryId(0) });
                 },
 
                 popQuery() {
                     this.selectedQueries.pop();
                 },
-                
+
                 getQueryCount() {
                     return this.queries.length;
                 },
@@ -144,9 +142,22 @@
             },
         });
     </script>
-    
-    <div class="spaced"></div>
-    
+
+    <div class="m-top-3"></div>
+
     </div>
+
+    <script type="text/javascript">
+        async function deleteChart(id) {
+            const yes = confirm("Are you sure you want to delete the chart? You cannot undo this action.");
+            if (yes) {
+                // Delete the query
+                await fetch(`/charts/${id}`, { method: "DELETE" });
+                // Navigate the user to /charts
+                window.location = '/charts';
+            }
+        }
+    </script>
 </body>
+
 </html>

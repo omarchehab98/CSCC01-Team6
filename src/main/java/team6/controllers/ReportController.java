@@ -39,7 +39,7 @@ public class ReportController{
     	reportRepository.save(report);
     	model.addAttribute("report", report);
 
-        return "redirect:/reports/{id}";
+        return "redirect:/reports";
     }
     
     @GetMapping("/reports")
@@ -49,13 +49,13 @@ public class ReportController{
 		return "reports/read-list";
     }
     
-    @GetMapping("/reports/{id}")
-    public String readSingleReport(Model model, @PathVariable String id) {
+    @GetMapping("/reports/{id}/embed")
+    public String readSingleReportEmbed(Model model, @PathVariable String id) {
     	try {
     		Long repId = Long.parseLong(id);
     		Optional<Report> rep = reportRepository.findById(repId);
     		model.addAttribute("report", rep.get());
-    		return "reports/read-single";
+    		return "reports/embed";
     	} catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ReportNotFoundException();
         }

@@ -16,167 +16,128 @@
     select:required:invalid {
       color: gray;
     }
-    option[value=""][disabled] 
-
-{
-
+    option[value=""][disabled] {
       display: none;
     }
 
-    .spaced{
-      padding-top:3%;
-    }
-
     .template-btn-list{
-      display:inline-flex;
+      display: inline-flex;
+      flex-wrap: wrap;
     }
     .template-btn-list a{
       margin:2px;
     }
-    .template-btn{
-      color:dodgerblue;
-      background-color: #ffffff;
-      transition-duration: 0.2s;
-      text-align:center;
-    }
-    .template-btn:hover{
-      color:#ffffff;
-      background-color: dodgerblue;
-    }
-    .upload-btn{
-      margin-top:1%;
-      background-color:#222f3e;
-      color:white;
-    }
   </style>
 
   <th:block th:replace="../fragments/navigation.html"></th:block>
+
   <div class="breadcrumbs">
-      &nbsp;
+    &nbsp;
   </div>
 
   <main class="container">
-      <header class="partner--header">
-          <h1 th:text="${organization.name}"></h1>
-      
-          <div style="flex-grow: 1;"></div>
-      
-          <a 
-            th:href="@{'/organizations/' + ${organization.id} + '/update'}"
-            class="btn btn-primary">
-            Edit
-          </a>
+    <span>
+      <a class="fal fa-chevron-left" href="/organizations"></a>
 
-        </header>
-  
+      <a href="/organizations">Partners</a>
+    </span>
+    
+    <header class="partner--header">
+      <h1 th:text="${organization.name}"></h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Country</th>
-        <th>Province</th>
-        <th>City</th>
-        <th>Postal Code</th>
-        <th>Street Address</th>
-        <th>Apartment</th>
-      </tr>
-    </thead>
+      <div style="flex-grow: 1;"></div>
 
-    <tbody>
-      <tr>
-        <td th:text="${organization.id}"></td>
-        <td th:text="${organization.name}"></td>
-        <td th:text="${organization.country}"></td>
-        <td th:text="${organization.administrativeArea}"></td>
-        <td th:text="${organization.locality}"></td>
-        <td th:text="${organization.postalCode}"></td>
-        <td th:text="${organization.thoroughfare}"></td>
-        <td th:text="${organization.premise}"></td>
-      </tr>
-    </tbody>
-  </table>
+      <a th:href="@{'/organizations/' + ${organization.id} + '/update'}" class="btn btn-primary">
+        Edit
+      </a>
 
-  <div style="flex-grow: 1;"> <br/> </div>
+    </header>
 
-  <h3>
-    <span th:text="${organization.name}"></span>'s Templates:
-  </h3>
 
-  <div class="template-btn-list">
-      <a 
-      th:href="@{'/templates/NARsTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >NARs Templates</a>
-      <a 
-      th:href="@{'/templates/ClientProfileTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >Client Profile Templates</a>
-      <a 
-      th:href="@{'/templates/CommunityConnectionsTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >Community Connections Templates</a>
-      <a 
-      th:href="@{'/templates/EmploymentTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >Employment Templates</a>
-  </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Province</th>
+          <th>City</th>
+          <th>Postal Code</th>
+          <th>Street Address</th>
+          <th>Apartment</th>
+        </tr>
+      </thead>
 
-  <div class="template-btn-list">
-      <a 
-      th:href="@{'/templates/InformationAndOrientationTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >Information And Orientation</a>
-      <a 
-      th:href="@{'/templates/LTClientEnrolTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >LT Client Enrol</a>
-      <a 
-      th:href="@{'/templates/LTCourseSetupTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >LT Course Setup</a>
-      <a 
-      th:href="@{'/templates/LTClientExitTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
-      class="btn template-btn"
-      >LT Client Exit</a>
+      <tbody>
+        <tr>
+          <td th:text="${organization.name}"></td>
+          <td th:text="${organization.country}"></td>
+          <td th:text="${organization.administrativeArea}"></td>
+          <td th:text="${organization.locality}"></td>
+          <td th:text="${organization.postalCode}"></td>
+          <td th:text="${organization.thoroughfare}"></td>
+          <td th:text="${organization.premise}"></td>
+        </tr>
+      </tbody>
+    </table>
 
-  </div>
-  
-  <div>
-    <form method="post" enctype="multipart/form-data" action = "#" th:action="@{/templates}">
+    <div style="flex-grow: 1;"> <br /> </div>
+
+    <h2>Data</h2>
+
+    <div class="template-btn-list">
+      <a th:href="@{'/templates/ClientProfileTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">Client Profile</a>
+      <a th:href="@{'/templates/NARsTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">NARs</a>
+      <a th:href="@{'/templates/CommunityConnectionsTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">Community Connections</a>
+      <a th:href="@{'/templates/EmploymentTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">Employment</a>
+      <a th:href="@{'/templates/InformationAndOrientationTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">Information And Orientation</a>
+      <a th:href="@{'/templates/LTClientEnrolTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">LT Client Enrol</a>
+      <a th:href="@{'/templates/LTCourseSetupTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">LT Course Setup</a>
+      <a th:href="@{'/templates/LTClientExitTemplate?where=%7B%22%24eq%22%3A%20%5B%22%24organization.id%24%22%2C%20' + ${organization.id} + '%5D%7D'}"
+        class="btn btn-glass">LT Client Exit</a>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" action="#" th:action="@{/templates}">
+      <h2>Upload</h2>
+
       <input type="hidden" name="organizationId" th:value="${organization.id}" />
-			
-        <div class="spaced"></div>
-          
-        <div class="spaced">  
-          <p>Upload a new Template:</p>
-          <input type="file" name="file"/>
 
-        
-        <div> Select Template Type:
-          <select required name="templateType">
+      <div class="m-top-6">
+        <label>
+          Upload iCare Sheet (csv)
+          <input type="file" name="file" />
+        </label>
+      </div>
+
+      <div class="m-top-6">
+        <label> Select Template Type:
+          <select required name="templateType" style="max-width: 220px;">
             <option value="" disabled selected>Select the template type</option>
             <option value="NARsTemplate" selected>NARs</option>
             <option value="ClientProfileTemplate">Client Profile</option>
             <option value="EmploymentTemplate">Employment</option>
             <option value="LTClientEnrolTemplate">LT Client Enrol</option>
-	          <option value="LTCourseSetupTemplate">LT Course Setup</option>
+            <option value="LTCourseSetupTemplate">LT Course Setup</option>
             <option value="LTClientExitTemplate">LT Client Exit</option>
             <option value="CommunityConnectionsTemplate">Community Connections</option>
             <option value="InformationAndOrientationTemplate">Information and Orientation</option>
           </select>
+        </label>
+
+        <div class="m-top-3">
+          <input class="btn btn-primary" type="submit" value="Upload" />
         </div>
 
-        <div>
-          <input class = "btn upload-btn"type="submit" value="Upload" />
-        </div>
-            
-        </form>
-  </div>
-  
-  <div class="spaced"></div>
-</main>
+    </form>
+
+    <div class="m-top-3"></div>
+  </main>
 </body>
 
 </html>

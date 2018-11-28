@@ -9,53 +9,45 @@
 
 <body>
   <style>
-    .templates-header{
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #c8d6e5;
+    .templates--header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c8d6e5;
     }
-    .template-btn{
-      color:dodgerblue;
-      background-color: #ffffff;
-      transition-duration: 0.2s;
-      text-align: center;
-      margin-right: 1%;
-    }
-    .template-btn:hover{
-      color:#ffffff;
-      background-color: dodgerblue;
-    }
-    .btn-list{
-      padding-top: 3%;
+
+    .templates--list {
+      display: flex;
+      flex-direction: column;
+      max-width: 320px;
     }
   </style>
 
   <th:block th:replace="../fragments/navigation.html"></th:block>
   <div class="breadcrumbs">
-      &nbsp;
+    &nbsp;
   </div>
 
   <div class="container">
-  <header class="templates-header">
-    <h1>Templates</h1>
-  </header>
+    <header class="templates--header">
+      <h1>Data</h1>
+    </header>
 
-  <div class="btn-list">
-    <a class="btn template-btn" href="/templates/NARsTemplate">NARs</a>
-    <a class="btn template-btn" href="/templates/ClientProfileTemplate">Client Profiles</a>
-    <a class="btn template-btn" href="/templates/CommunityConnectionsTemplate">Community Connections</a>
-  </div>
-  <div class="btn-list">
-      <a class="btn template-btn" href="/templates/EmploymentTemplate">Employment</a>
-      <a class="btn template-btn" href="/templates/InformationAndOrientationTemplate">Information and Orientation</a>
-      <a class="btn template-btn" href="/templates/languageTraining">Language Training</a>
-  </div>
+    <div class="templates--list m-top-6">
+      <a class="btn btn-glass m-top-3" href="/templates/ClientProfileTemplate">Client Profiles</a>
+      <a class="btn btn-glass m-top-3" href="/templates/NARsTemplate">NARs</a>
+      <a class="btn btn-glass m-top-3" href="/templates/CommunityConnectionsTemplate">Community Connections</a>
+      <a class="btn btn-glass m-top-3" href="/templates/EmploymentTemplate">Employment</a>
+      <a class="btn btn-glass m-top-3" href="/templates/InformationAndOrientationTemplate">Information And Orientation</a>
+      <a class="btn btn-glass m-top-3" href="/templates/LTClientEnrolTemplate">LT Client Enrol</a>
+      <a class="btn btn-glass m-top-3" href="/templates/LTCourseSetupTemplate">LT Course Setup</a>
+      <a class="btn btn-glass m-top-3" href="/templates/LTClientExitTemplate">LT Client Exit</a>
+    </div>
 
-  <div>
-    <p data-th-utext="${#strings.replace(#strings.escapeXml(file),'&#10;','&lt;br&gt;')}"></p>
-  </div>
+    <div>
+      <p data-th-utext="${#strings.replace(#strings.escapeXml(file),'&#10;','&lt;br&gt;')}"></p>
+    </div>
 
-</div>
+  </div>
 </body>
 
 </html>

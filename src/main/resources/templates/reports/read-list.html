@@ -8,20 +8,41 @@
 </head>
 
 <body>
-    <th:block th:replace="../fragments/tableStyle.html"></th:block>
   <style>
     .reports--header {
       display: flex;
       align-items: center;
       border-bottom: 1px solid #c8d6e5;
-  }
-  .reports--table{
-    visibility: initial;
-  }
+    }
+
+    .reports--table {
+      visibility: initial;
+    }
+
+    .reports--item-name {
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .reports--item-name:hover {
+      text-decoration: underline;
+    }
+
+    .reports--item-actions {
+      text-align: right;
+    }
+
+    .reports--item-execute {
+      visibility: hidden;
+    }
+
+    .reports--table tbody tr:hover .reports--item-execute {
+      visibility: initial;
+    }
   </style>
 
   <th:block th:replace="../fragments/navigation.html"></th:block>
-  
+
   <div class="breadcrumbs">
     &nbsp;
   </div>
@@ -29,27 +50,30 @@
   <main class="container">
     <header class="reports--header">
       <h1>Reports</h1>
+      
       <div style="flex-grow: 1;"></div>
-      <a class="btn btn-primary createLinkAnchor" href="/reports/create">Create</a>
+
+      <a class="btn btn-primary" href="/reports/create">Add Report</a>
     </header>
 
-    <div class="table-container wholeTable">
+    <div class="table-container">
       <table class="reports--table">
-        <thead id="tableHead">
+        <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-
-          <tr class="-Row reportRow" th:each="report : ${reports}">
-            <td th:text="${report.id}"></td>
-            <td th:text="${report.name}"></td>
+          <tr th:each="report : ${reports}">
             <td>
-              <a th:href="@{'/reports/' + ${report.id}}">
-                View
+                <a class="reports--item-name" th:href="@{'/reports/' + ${report.id} + '/update'}" th:text="${report.name}">
+                </a>
+            </td>
+            
+            <td class="reports--item-actions">
+              <a class="reports--item-execute btn btn-secondary btn-sm" th:href="@{'/reports/' + ${report.id} + '/embed'}">
+                Preview
               </a>
             </td>
           </tr>

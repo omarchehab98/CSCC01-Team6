@@ -5,11 +5,12 @@
     <th:block th:replace="../fragments/head.html"></th:block>
     <title>TEQ LIP</title>
 </head>
+
 <body style="background: #ebf0f5;">
     <th:block th:replace="../fragments/navigation.html"></th:block>
 
     <style>
-    /* Home */
+        /* Home */
     
     .home {
         width: 100%;
@@ -234,7 +235,7 @@
                         <h3 class="home--links-item-heading">
                             Queries
                         </h3>
-                        
+
                         <i class="fal fa-bolt"></i>
                     </a>
                 </div>
@@ -244,7 +245,7 @@
                         <h3 class="home--links-item-heading">
                             Charts
                         </h3>
-                        
+
                         <i class="fal fa-chart-bar"></i>
                     </a>
                 </div>
@@ -254,16 +255,13 @@
                         <h3 class="home--links-item-heading">
                             Reports
                         </h3>
-                        
+
                         <i class="fal fa-file-chart-pie"></i>
                     </a>
                 </div>
             </section>
 
-            <section
-                class="home--card home--task container"
-                th:attr="data-iscomplete=${organizations.size() > 0 ? 'true' : null}"
-            >
+            <section class="home--card home--task container" th:attr="data-iscomplete=${organizations.size() > 0 ? 'true' : null}">
                 <div class="home--task-check">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -273,10 +271,7 @@
                         Add a Partner Organization
                     </h3>
 
-                    <blockquote
-                        cite="https://scarboroughlip.com/home"
-                        style="margin: 0;"
-                    >
+                    <blockquote cite="https://scarboroughlip.com/home" style="margin: 0;">
                         <p>
                             TEQ LIP is a community-based partnership project that
                             involves diverse service providers, stakeholders and
@@ -287,11 +282,8 @@
                         </p>
                     </blockquote>
 
-                    <input
-                        id="home--task-body-toggleactionvisibility-0"
-                        class="home--task-body-toggleactionvisibility"
-                        type="checkbox"
-                    >
+                    <input id="home--task-body-toggleactionvisibility-0" class="home--task-body-toggleactionvisibility"
+                        type="checkbox">
 
                     <div class="home--task-action">
                         <div class="home--task-action-description">
@@ -305,35 +297,23 @@
                         </div>
 
                         <div class="home--task-action-button">
-                            <a
-                                class="btn btn-sm btn-secondary"
-                                href="/organizations/create"
-                            >
+                            <a class="btn btn-sm btn-secondary" href="/organizations/create">
                                 Add Partner
                             </a>
                         </div>
                     </div>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-0"
-                        class="home--task-body-showactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-0" class="home--task-body-showactionvisibility">
                         Show completed tasks
                     </label>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-0"
-                        class="home--task-body-hideactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-0" class="home--task-body-hideactionvisibility">
                         Hide completed tasks
                     </label>
                 </div>
             </section>
 
-            <section
-                class="home--card home--task container"
-                th:attr="data-iscomplete=${clientProfiles.size() > 0 && nars.size() > 0 ? 'true' : null}"
-            >
+            <section class="home--card home--task container" th:attr="data-iscomplete=${clientProfiles.size() > 0 && nars.size() > 0 ? 'true' : null}">
                 <div class="home--task-check">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -352,16 +332,10 @@
                         funding.
                     </p>
 
-                    <input
-                        id="home--task-body-toggleactionvisibility-1"
-                        class="home--task-body-toggleactionvisibility"
-                        type="checkbox"
-                    >
+                    <input id="home--task-body-toggleactionvisibility-1" class="home--task-body-toggleactionvisibility"
+                        type="checkbox">
 
-                    <div
-                        class="home--task-action"
-                        th:attr="data-iscomplete=${clientProfiles.size() > 0 ? 'true' : null}"
-                    >
+                    <div class="home--task-action" th:attr="data-iscomplete=${clientProfiles.size() > 0 ? 'true' : null}">
                         <div class="home--task-action-description">
                             <h4 class="home--task-action-description-heading">
                                 Upload your first Client Profile sheet
@@ -374,20 +348,14 @@
                         </div>
 
                         <div class="home--task-action-button">
-                            <a
-                                class="btn btn-sm btn-secondary"
-                                th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
-                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}"
-                            >
+                            <a class="btn btn-sm btn-secondary" th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
+                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}">
                                 Upload Sheet
                             </a>
                         </div>
                     </div>
 
-                    <div
-                        class="home--task-action"
-                        th:attr="data-iscomplete=${nars.size() > 0 ? 'true' : null}"
-                    >
+                    <div class="home--task-action" th:attr="data-iscomplete=${nars.size() > 0 ? 'true' : null}">
                         <div class="home--task-action-description">
                             <h4 class="home--task-action-description-heading">
                                 Upload your first Needs Assesment &amp; Referral Service sheet
@@ -400,36 +368,24 @@
                         </div>
 
                         <div class="home--task-action-button">
-                            <a
-                                class="btn btn-sm btn-secondary"
-                                th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
-                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}"
-                            >
+                            <a class="btn btn-sm btn-secondary" th:classappend="${organizations.size() > 0 ? '' : 'btn-disabled'}"
+                                th:href="${organizations.size() > 0 ? '/organizations/' + organizations.get(0).id : '#'}">
                                 Upload Sheet
                             </a>
                         </div>
                     </div>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-1"
-                        class="home--task-body-showactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-1" class="home--task-body-showactionvisibility">
                         Show completed tasks
                     </label>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-1"
-                        class="home--task-body-hideactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-1" class="home--task-body-hideactionvisibility">
                         Hide completed tasks
                     </label>
                 </div>
             </section>
 
-            <section
-                class="home--card home--task container"
-                th:attr="data-iscomplete=${queries.size() > 0 ? 'true' : null}"
-            >
+            <section class="home--card home--task container" th:attr="data-iscomplete=${queries.size() > 0 ? 'true' : null}">
                 <div class="home--task-check">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -446,11 +402,8 @@
                         that match a condition.
                     </p>
 
-                    <input
-                        id="home--task-body-toggleactionvisibility-2"
-                        class="home--task-body-toggleactionvisibility"
-                        type="checkbox"
-                    >
+                    <input id="home--task-body-toggleactionvisibility-2" class="home--task-body-toggleactionvisibility"
+                        type="checkbox">
 
                     <div class="home--task-action">
                         <div class="home--task-action-description">
@@ -464,35 +417,23 @@
                         </div>
 
                         <div class="home--task-action-button">
-                            <a
-                                class="btn btn-sm btn-secondary"
-                                href="/queries/create"
-                            >
+                            <a class="btn btn-sm btn-secondary" href="/queries/create">
                                 Add Query
                             </a>
                         </div>
                     </div>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-2"
-                        class="home--task-body-showactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-2" class="home--task-body-showactionvisibility">
                         Show completed tasks
                     </label>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-2"
-                        class="home--task-body-hideactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-2" class="home--task-body-hideactionvisibility">
                         Hide completed tasks
                     </label>
                 </div>
             </section>
 
-            <section
-                class="home--card home--task container"
-                th:attr="data-iscomplete=${charts.size() > 0 ? 'true' : null}"
-            >
+            <section class="home--card home--task container" th:attr="data-iscomplete=${charts.size() > 0 ? 'true' : null}">
                 <div class="home--task-check">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -508,11 +449,8 @@
                         analyze trends and anomalies.
                     </p>
 
-                    <input
-                        id="home--task-body-toggleactionvisibility-3"
-                        class="home--task-body-toggleactionvisibility"
-                        type="checkbox"
-                    >
+                    <input id="home--task-body-toggleactionvisibility-3" class="home--task-body-toggleactionvisibility"
+                        type="checkbox">
 
                     <div class="home--task-action">
                         <div class="home--task-action-description">
@@ -526,35 +464,23 @@
                         </div>
 
                         <div class="home--task-action-button">
-                            <a
-                                class="btn btn-sm btn-secondary"
-                                href="/charts/create"
-                            >
+                            <a class="btn btn-sm btn-secondary" href="/charts/create">
                                 Add Chart
                             </a>
                         </div>
                     </div>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-3"
-                        class="home--task-body-showactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-3" class="home--task-body-showactionvisibility">
                         Show completed tasks
                     </label>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-3"
-                        class="home--task-body-hideactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-3" class="home--task-body-hideactionvisibility">
                         Hide completed tasks
                     </label>
                 </div>
             </section>
 
-            <section
-                class="home--card home--task container"
-                th:attr="data-iscomplete=${reports.size() > 0 ? 'true' : null}"
-            >
+            <section class="home--card home--task container" th:attr="data-iscomplete=${reports.size() > 0 ? 'true' : null}">
                 <div class="home--task-check">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -569,11 +495,8 @@
                         the document, and comment about the findings.
                     </p>
 
-                    <input
-                        id="home--task-body-toggleactionvisibility-4"
-                        class="home--task-body-toggleactionvisibility"
-                        type="checkbox"
-                    >
+                    <input id="home--task-body-toggleactionvisibility-4" class="home--task-body-toggleactionvisibility"
+                        type="checkbox">
 
                     <div class="home--task-action">
                         <div class="home--task-action-description">
@@ -587,26 +510,17 @@
                         </div>
 
                         <div class="home--task-action-button">
-                            <a
-                                class="btn btn-sm btn-secondary"
-                                href="/reports/create"
-                            >
+                            <a class="btn btn-sm btn-secondary" href="/reports/create">
                                 Add Report
                             </a>
                         </div>
                     </div>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-4"
-                        class="home--task-body-showactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-4" class="home--task-body-showactionvisibility">
                         Show completed tasks
                     </label>
 
-                    <label
-                        for="home--task-body-toggleactionvisibility-4"
-                        class="home--task-body-hideactionvisibility"
-                    >
+                    <label for="home--task-body-toggleactionvisibility-4" class="home--task-body-hideactionvisibility">
                         Hide completed tasks
                     </label>
                 </div>

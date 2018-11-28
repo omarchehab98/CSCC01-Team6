@@ -1,91 +1,93 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title th:text="@{'Update • ' + ${organization.name} + ' • Organization'}"></title>
     <th:block th:replace="../fragments/head.html"></th:block>
 </head>
+
 <body>
 
-<th:block th:replace="../fragments/partnerStyles.html"></th:block>
+    <th:block th:replace="../fragments/navigation.html"></th:block>
 
-<th:block th:replace="../fragments/navigation.html"></th:block>
-
-<div class="breadcrumbs">
+    <div class="breadcrumbs">
         &nbsp;
     </div>
 
     <div class="container">
-        <a
-            th:href="@{'/organizations/' + ${organization.id}}"
-            
-        >Back</a>
-    </div>
+        <span>
+            <a class="fal fa-chevron-left" href="/organizations"></a>
     
-    <div class="container">
-    <form action="#" th:action="@{'/organizations/' + ${organization.id}}" th:object="${organization}" method="post">
-        <h1 th:text="${organization.name}"></h1>
-    	<label>
-            Organization Name*
-            <br />
-            <input type="text" th:field="*{name}" required />
-        </label>
-        <br />
-        <label>
-            Country*
-            <br />
-            <input type="text" th:field="*{country}" required />
-        </label>
-        <br />
-        <label>
-            Province
-            <br />
-            <input type="text" th:field="*{administrativeArea}" />
-        </label>
-        <br />
-        <label>
-            City
-            <br />
-            <input type="text" th:field="*{locality}" />
-        </label>
-        <br />
-        <label>
-            Postal Code
-            <br />
-            <input type="text" th:field="*{postalCode}" />
-        </label>
-        <br />
-        <label>
-            Street Address
-            <br />
-            <input type="text" th:field="*{thoroughfare}" />
-        </label>
-        <br />
-        <label>
-            Apartment
-            <br />
-            <input type="text" th:field="*{premise}" />
-        </label>
-        <br />
-        <input class = "formBtn" type="submit" value="Submit" />
-        
-        <input class = "formBtn" type="reset" value="Reset" />
+            <a href="/organizations">Partners</a>
 
-        <button class = "formBtn delBtn" type="button" th:onclick="@{'deleteOrganization(' + ${organization.id} + ')'}">
-          Delete
-        </button>
-        <script type="text/javascript">
-          async function deleteOrganization(id) {
-            const yes = confirm("Are you sure you want to delete the organization? You cannot undo this action.");
-            if (yes) {
-              // Delete the organization
-              await fetch(`/organizations/${id}`, { method: "DELETE" });
-              // Navigate the user to /organizations
-              window.location = '/organizations';
-            }
-          }
-        </script>
-    </form>
+            <span>•</span>
+    
+            <a th:href="@{'/organizations/' + ${organization.id}}" th:text="${organization.name}"></a>
+        </span>
+        
+        <form action="#" th:action="@{'/organizations/' + ${organization.id}}" th:object="${organization}" method="post">
+            <h1 th:text="${organization.name}"></h1>
+            <label>
+                Organization Name*
+                <br />
+                <input type="text" th:field="*{name}" required />
+            </label>
+            <br />
+            <label>
+                Country*
+                <br />
+                <input type="text" th:field="*{country}" required />
+            </label>
+            <br />
+            <label>
+                Province
+                <br />
+                <input type="text" th:field="*{administrativeArea}" />
+            </label>
+            <br />
+            <label>
+                City
+                <br />
+                <input type="text" th:field="*{locality}" />
+            </label>
+            <br />
+            <label>
+                Postal Code
+                <br />
+                <input type="text" th:field="*{postalCode}" />
+            </label>
+            <br />
+            <label>
+                Street Address
+                <br />
+                <input type="text" th:field="*{thoroughfare}" />
+            </label>
+            <br />
+            <label>
+                Apartment
+                <br />
+                <input type="text" th:field="*{premise}" />
+            </label>
+            <br />
+            <input class="btn btn-primary" type="submit" value="Save" />
+            <button class="btn btn-secondary" type="button" th:onclick="@{'deleteOrganization(' + ${organization.id} + ')'}">
+                Delete
+            </button>
+
+            <script type="text/javascript">
+                async function deleteOrganization(id) {
+                    const yes = confirm("Are you sure you want to delete the organization? You cannot undo this action.");
+                    if (yes) {
+                        // Delete the organization
+                        await fetch(`/organizations/${id}`, { method: "DELETE" });
+                        // Navigate the user to /organizations
+                        window.location = '/organizations';
+                    }
+                }
+            </script>
+        </form>
     </div>
-    <div class="spaced"></div>
+    <div class="m-top-3"></div>
 </body>
+
 </html>

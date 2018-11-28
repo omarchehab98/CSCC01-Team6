@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <title th:text="${report.name}"></title>
+</head>
+
+<body th:utext="${report.body}">
+</body>
+
+</html>

@@ -90,7 +90,7 @@ public class ChartController {
             Long chartId = Long.parseLong(id);
             Optional<Chart> chart = chartRepository.findById(chartId);
             addChartAttributes(model, chart.get());
-            return "charts/chart";
+            return "charts/embed";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();
         }
@@ -267,7 +267,7 @@ public class ChartController {
     	chart.setChartQueries(chartQueries);
     	*/
     	
-    	deleteChartQueriesForChart(model, chart);
+    	deleteChartQueriesForChart(chart.getId());
     	
 	    for (String id : queries.split(",")) {
 	    	ChartQuery chartQuery = new ChartQuery();
@@ -317,14 +317,13 @@ public class ChartController {
     	chart.setChartQueries(chartQueriesChart);
     }
 
-    private void deleteChartQueriesForChart(Model model, Chart chart) {
+    private void deleteChartQueriesForChart(Long chartId) {
     	List<ChartQuery> chartQueries = chartQueryRepository.findAll();
     	for (ChartQuery chartQuery : chartQueries) {
-    		if (chartQuery.getChart().getId() == chart.getId()) {
+    		if (chartQuery.getChart().getId() == chartId) {
     			chartQuery.getChart().getChartQueries().remove(chartQuery);
     			chartQuery.getQuery().getChartQueries().remove(chartQuery);
     			chartQueryRepository.deleteById(chartQuery.getId());
-    			System.out.println("Yep");
     		}
     	}
     }
@@ -332,10 +331,12 @@ public class ChartController {
     /*
      * To manage test populations.
      */
-    @DeleteMapping("/charts/{id}/")
+    @DeleteMapping("/charts/{id}")
     public String deleteById(@PathVariable String id) {
         try {
-            chartRepository.deleteById(Long.parseLong(id));
+			Long chartId = Long.parseLong(id);
+			deleteChartQueriesForChart(chartId);
+            chartRepository.deleteById(chartId);
             return "redirect:/charts";
         } catch (IllegalArgumentException | EmptyResultDataAccessException err) {
             throw new ChartNotFoundException();

@@ -2,14 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <th:block th:replace="../fragments/head.html"></th:block>
-  <title><th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP</title>
+    <th:block th:replace="../fragments/head.html"></th:block>
+    <title>
+        <th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP
+    </title>
 </head>
-<body class="body-color">
-  <th:block th:replace="../fragments/navigation.html"></th:block>
 
-  <style>
-    .query--header {
+<body class="body-color">
+    <th:block th:replace="../fragments/navigation.html"></th:block>
+
+    <style>
+        .query--header {
       display: flex;
       align-items: center;
       background: #ffffff;
@@ -49,246 +52,199 @@
     }
   </style>
 
-  <div class="breadcrumbs">
-    <a
-      class="fal fa-chevron-left"
-      href="/queries"
-    ></a>
+    <div class="breadcrumbs">
+        <a class="fal fa-chevron-left" href="/queries"></a>
 
-    <a href="/queries">Queries</a>
+        <a href="/queries">Queries</a>
 
-    <span th:if="${!isCreate}">•</span>
+        <span th:if="${!isCreate}">•</span>
 
-    <a
-        th:if="${!isCreate}"
-        th:href="@{'/queries/' + ${query.id}}"
-        th:text="${query.name}"
-    ></a>
-  </div>
+        <a th:if="${!isCreate}" th:href="@{'/queries/' + ${query.id}}" th:text="${query.name}"></a>
+    </div>
 
-  <main>
-    <header class="query--header">
-        <div class="container">
-            <h1 th:if="${isCreate}">Create Query</h1>
-            <h1 th:if="${!isCreate}" th:text="${query.name}"></h1>
-        </div>
-    </header>
-
-    <form
-        class="container"
-        th:action="${isCreate} ? @{/queries} : @{'/queries/' + ${query.id}}"
-        th:object="${query}"
-        method="post"
-    >
-        <!-- Vue.js is initialized here -->
-        <div id="queryForm">
-            <div class="card query--meta">
-                <label class="query--meta-column m-left-0">
-                    Query Name*
-                    <br />
-                    <input type="text" th:field="*{name}" required />
-                </label>
-
-                <label class="query--meta-column m-right-0">
-                    Template*
-                    <br />
-                    <select 
-                        id="template"
-                        name="template"
-                        v-model="template"
-                        required
-                    >
-                        <option></option>
-                        <option value="NARsTemplate">NARs</option>
-                        <option value="ClientProfileTemplate">Client Profiles</option>
-                        <option value="CommunityConnectionsTemplate">Community Connections</option>
-                        <option value="EmploymentTemplate">Employment</option>
-                        <option value="InformationAndOrientationTemplate">Information And Orientation</option>
-                        <option value="LTClientEnrolTemplate">LT Client Enrol</option>
-                        <option value="LTCourseSetupTemplate">LT Course Setup</option>
-                        <option value="LTClientExitTemplate">LT Client Exit</option>
-                    </select>
-                </label>
+    <main>
+        <header class="query--header">
+            <div class="container">
+                <h1 th:if="${isCreate}">Create Query</h1>
+                <h1 th:if="${!isCreate}" th:text="${query.name}"></h1>
             </div>
-        
-            <!-- Query Editor -->
-            <div v-if="template">
-                <div class="query--builder-tabs">
-                    <button
-                        v-bind:class="{
+        </header>
+
+        <form class="container" th:action="${isCreate} ? @{/queries} : @{'/queries/' + ${query.id}}" th:object="${query}"
+            method="post">
+            <!-- Vue.js is initialized here -->
+            <div id="queryForm">
+                <div class="card query--meta">
+                    <label class="query--meta-column m-left-0">
+                        Query Name*
+                        <br />
+                        <input type="text" th:field="*{name}" required />
+                    </label>
+
+                    <label class="query--meta-column m-right-0">
+                        Template*
+                        <br />
+                        <select id="template" name="template" v-model="template" required>
+                            <option disabled></option>
+                            <option value="ClientProfileTemplate">Client Profiles</option>
+                            <option value="NARsTemplate">NARs</option>
+                            <option value="CommunityConnectionsTemplate">Community Connections</option>
+                            <option value="EmploymentTemplate">Employment</option>
+                            <option value="InformationAndOrientationTemplate">Information And Orientation</option>
+                            <option value="LTClientEnrolTemplate">LT Client Enrol</option>
+                            <option value="LTCourseSetupTemplate">LT Course Setup</option>
+                            <option value="LTClientExitTemplate">LT Client Exit</option>
+                        </select>
+                    </label>
+                </div>
+
+                <!-- Query Editor -->
+                <div v-if="template">
+                    <div class="query--builder-tabs">
+                        <button v-bind:class="{
                             btn: true,
                             'btn-primary': !isEditingQueryString,
                             'btn-secondary': isEditingQueryString,
                             'btn-sm': true,
                             'm-left-3': true,
                         }"
-                        v-on:click="setIsEditingQueryString(false)"
-                        type="button"
-                    >
-                        Visual
-                    </button>
+                            v-on:click="setIsEditingQueryString(false)" type="button">
+                            Visual
+                        </button>
 
-                    <button
-                        v-bind:class="{
+                        <button v-bind:class="{
                             btn: true,
                             'btn-primary': isEditingQueryString,
                             'btn-secondary': !isEditingQueryString,
                             'btn-sm': true,
                             'm-left-3': true,
                         }"
-                        v-on:click="setIsEditingQueryString(true)"
-                        type="button"
-                    >
-                        Code
-                    </button>
-                </div>
+                            v-on:click="setIsEditingQueryString(true)" type="button">
+                            Code
+                        </button>
+                    </div>
 
-                <!-- Visual Tab -->
-                <div v-bind:style="{ display: (!isEditingQueryString ? 'block' : 'none') }">
-                    <query-select-parameter
-                        v-bind="{
+                    <!-- Visual Tab -->
+                    <div v-bind:style="{ display: (!isEditingQueryString ? 'block' : 'none') }">
+                        <query-select-parameter v-bind="{
                             values: parameterSelect,
                             push: pushParameterSelect,
                             pop: popParameterSelect,
                             getAttributeCount,
                             getAttributeName,
                             getAttributeFriendlyName,
-                        }"
-                    >
-                    </query-select-parameter>
-                    
-                    <query-sort-parameter
-                        v-bind="{
+                        }">
+                        </query-select-parameter>
+
+                        <query-sort-parameter v-bind="{
                             values: parameterSort,
                             push: pushParameterSort,
                             pop: popParameterSort,
                             getAttributeCount,
                             getAttributeName,
                             getAttributeFriendlyName,
-                        }"
-                    >
-                    </query-sort-parameter>
+                        }">
+                        </query-sort-parameter>
 
-                    <query-sort-direction-parameter
-                        v-bind="{
+                        <query-sort-direction-parameter v-bind="{
                             value: parameterSortDirection,
                         }"
-                        v-if="parameterSort.length > 0"
-                    >
-                    </query-sort-direction-parameter>
+                            v-if="parameterSort.length > 0">
+                        </query-sort-direction-parameter>
 
-                    <query-where-parameter
-                        v-bind="{
+                        <query-where-parameter v-bind="{
                             value: parameterWhere,
-                        }"
-                    >
-                    </query-where-parameter>
+                        }">
+                        </query-where-parameter>
 
-                    <query-group-parameter
-                        v-bind="{
+                        <query-group-parameter v-bind="{
                             value: parameterGroup,
                             getAttributeCount,
                             getAttributeName,
                             getAttributeFriendlyName,
-                        }"
-                    >
-                    </query-group-parameter>
+                        }">
+                        </query-group-parameter>
 
-                    <query-join-parameter
-                        v-bind="{
+                        <query-join-parameter v-bind="{
                             values: parameterJoin,
                             push: pushParameterJoin,
                             pop: popParameterJoin,
                             getTemplateCount,
                             getTemplateName,
                             getTemplateFriendlyName,
-                        }"
-                    >
-                    </query-join-parameter>
-                </div>
+                        }">
+                        </query-join-parameter>
+                    </div>
 
-                <!-- Code Tab -->
-                <div
-                    class="card"
-                    v-bind:style="{ display: (isEditingQueryString ? 'block' : 'none') }"
-                >
-                    <label>
-                        Query String
-                        
-                        <br />
+                    <!-- Code Tab -->
+                    <div class="card" v-bind:style="{ display: (isEditingQueryString ? 'block' : 'none') }">
+                        <label>
+                            Query String
 
-                        <textarea
-                            id="queryString"
-                            name="queryString"
-                            v-model="queryStringComputed"
-                            style="
+                            <br />
+
+                            <textarea id="queryString" name="queryString" v-model="queryStringComputed" style="
                                 resize: vertical;
                                 min-height: 80px;
                                 height: 120px;
-                            "
-                        >
+                            ">
                         </textarea>
-                    </label>
+                        </label>
+                    </div>
                 </div>
-            </div>
 
-            <input-datalist
-                v-bind="{
+                <input-datalist v-bind="{
                     id: 'autocomplete-columns',
                     getCount: getAttributeCount,
                     getName: (index) => '$' + getAttributeName(index) + '$',
                     getValue: getAttributeFriendlyName,
-                }"
-            >
-            </input-datalist>
-        </div>
+                }">
+                </input-datalist>
+            </div>
 
-        <div>
-            <input
-                class="btn btn-primary m-bottom-6"
-                type="submit"
-                value="Submit"
-            />
-        </div>
-    </form>
+            <div class="m-bottom-6">
+                <input class="btn btn-primary" type="submit" value="Save" />
+
+                <input th:if="${!isCreate}" class="btn btn-secondary m-left-3" type="button" th:onclick="@{'deleteQuery(' + ${query.id} + ')'}"
+                    value="Delete" />
+            </div>
+        </form>
+    </main>
+
+    <script type="text/javascript">
+        async function deleteQuery(id) {
+            const yes = confirm("Are you sure you want to delete the query? You cannot undo this action.");
+            if (yes) {
+                // Delete the query
+                await fetch(`/queries/${id}`, { method: "DELETE" });
+                // Navigate the user to /queries
+                window.location = '/queries';
+            }
+        }
+    </script>
 
     <!-- Data given to JavaScript by Spring -->
 
-    <script
-        th:data-key="template"
-        th:utext="${templateJSON}"
+    <script th:data-key="template" th:utext="${templateJSON}" type="application/json">
+    </script>
+
+    <script th:data-key="queryString" th:utext="${queryStringJSON}" type="application/json">
+    </script>
+
+    <script th:data-key="templateNames" th:utext="${templateNamesJSON}" type="application/json">
+    </script>
+
+    <script th:each="template : ${templateNames}" th:data-key="@{${template} + 'AttributeNames'}" th:utext="${__@{${template} + 'AttributeNamesJSON'}__}"
         type="application/json">
     </script>
 
-    <script
-        th:data-key="queryString"
-        th:utext="${queryStringJSON}"
-        type="application/json">
-    </script>
-
-    <script
-        th:data-key="templateNames"
-        th:utext="${templateNamesJSON}"
-        type="application/json">
-    </script>
-    
-    <script
-        th:each="template : ${templateNames}"
-        th:data-key="@{${template} + 'AttributeNames'}"
-        th:utext="${__@{${template} + 'AttributeNamesJSON'}__}"
-        type="application/json">
-    </script>
-
-    <script
-        th:each="template : ${templateNames}"
-        th:data-key="@{${template} + 'FriendlyNames'}"
-        th:utext="${__@{${template} + 'FriendlyNamesJSON'}__}"
+    <script th:each="template : ${templateNames}" th:data-key="@{${template} + 'FriendlyNames'}" th:utext="${__@{${template} + 'FriendlyNamesJSON'}__}"
         type="application/json">
     </script>
 
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    
+
     <!-- production version, optimized for size and speed -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
@@ -383,7 +339,7 @@
                 </div>
             `,
         });
-        
+
         Vue.component('query-where-parameter', {
             props: {
                 value: Object,
@@ -565,7 +521,7 @@
                         });
                 },
             },
-            
+
             template: `
                 <div v-bind:style="{ 'margin-left': (depth * 30) + 'px' }">
                     <input
@@ -707,7 +663,7 @@
             } = (queryString || '')
                 .split('&')
                 .map((param) => param.split('=').map(decodeURIComponent))
-                .reduce((result, [ key, value ]) => ({
+                .reduce((result, [key, value]) => ({
                     ...result,
                     [key]: value,
                 }), {});
@@ -716,7 +672,7 @@
                 parameterSort: (sort || '').split(',').map(value => ({ value })),
                 parameterSortDirection: { value: sortDirection || '' },
                 parameterWhere: JSON.parse(where || '{}'),
-                parameterGroup: { value: group || ''},
+                parameterGroup: { value: group || '' },
                 parameterJoin: (join || '').split(',').map(value => ({ value })),
             };
             if (result.parameterSelect[0].value === '') {
@@ -733,7 +689,7 @@
 
         const app = new Vue({
             el: '#queryForm',
-            
+
             data: {
                 ...data,
                 ...computeParametersFromQueryString(data.queryString),
@@ -779,29 +735,29 @@
                 },
 
                 pushParameterSelect() {
-                    this.parameterSelect.push({value: this.getAttributeName(0)});
+                    this.parameterSelect.push({ value: this.getAttributeName(0) });
                 },
 
                 popParameterSelect() {
                     this.parameterSelect.pop();
                 },
-                
+
                 pushParameterSort() {
-                    this.parameterSort.push({value: this.getAttributeName(0)});
+                    this.parameterSort.push({ value: this.getAttributeName(0) });
                 },
 
                 popParameterSort() {
                     this.parameterSort.pop();
                 },
-                
+
                 pushParameterJoin() {
-                    this.parameterJoin.push({value: this.getTemplateName(0)});
+                    this.parameterJoin.push({ value: this.getTemplateName(0) });
                 },
 
                 popParameterJoin() {
                     this.parameterJoin.pop();
                 },
-                
+
                 getAttributeCount() {
                     return this[this.template + 'AttributeNames'].length;
                 },
@@ -813,7 +769,7 @@
                 getAttributeFriendlyName(index) {
                     return this[this.template + 'FriendlyNames'][index];
                 },
-                
+
                 getTemplateCount() {
                     return this.templateNames.length;
                 },
@@ -829,4 +785,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -34,7 +34,7 @@ function registerEmbedChartPlugin(charts) {
                             display: block;
                             margin: auto;
                             width: 640px;
-                            height: 401px;
+                            height: 410px;
                         "
                     >`);
                 }

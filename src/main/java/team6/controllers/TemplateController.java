@@ -108,6 +108,7 @@ public class TemplateController {
                 Template template = templateFactoryWrapper.build(templateType, item, organization);
                 templateList.add(template);
             }catch(IllegalTemplateException | IllegalArgumentException e){
+                e.printStackTrace();
                 model.addAttribute("templateType" ,templateType.toString());
                 model.addAttribute("fileName" ,fileName.toString());
                 return "error-template-upload-fail";

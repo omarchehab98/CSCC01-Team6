@@ -3,8 +3,11 @@
 
 <head>
   <th:block th:replace="../fragments/head.html"></th:block>
-  <title><th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP</title>
+  <title>
+    <th:block th:text="${query.name}"></th:block> • Queries • TEQ LIP
+  </title>
 </head>
+
 <body>
   <th:block th:replace="../fragments/navigation.html"></th:block>
 
@@ -17,10 +20,7 @@
   </style>
 
   <div class="breadcrumbs">
-    <a
-      class="fal fa-chevron-left"
-      href="/queries"
-    ></a>
+    <a class="fal fa-chevron-left" href="/queries"></a>
 
     <a href="/queries">Queries</a>
   </div>
@@ -28,27 +28,10 @@
   <main class="container">
     <header class="query--header">
       <h1 th:text="${query.name}"></h1>
-  
+
       <div style="flex-grow: 1;"></div>
 
-      <button
-        class="btn btn-secondary m-left-3"
-        type="button"
-        th:onclick="@{'deleteQuery(' + ${query.id} + ')'}"
-      >
-          Delete
-      </button>
-      
-      <a
-        class="btn btn-primary m-left-3"
-        th:href="${query.getRoute()}"
-      >
-        Execute
-      </a>
-      <a
-        class="btn btn-primary m-left-3"
-        th:href="@{'/queries/' + ${query.id} + '/update'}"
-      >
+      <a class="btn btn-primary m-left-3" th:href="@{'/queries/' + ${query.id} + '/update'}">
         Edit
       </a>
     </header>
@@ -59,29 +42,23 @@
           <tr>
             <th>Name</th>
             <th>iCare Template</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td th:text="${query.name}"></td>
             <td th:text="${query.template}"></td>
+            <td style="text-align: right;">
+              <a class="btn btn-secondary btn-sm m-left-3" th:href="${query.getRoute()}">
+                Execute
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </main>
-
-  <script type="text/javascript">
-      async function deleteQuery(id) {
-          const yes = confirm("Are you sure you want to delete the query? You cannot undo this action.");
-          if (yes) {
-              // Delete the query
-              await fetch(`/queries/${id}`, { method: "DELETE" });
-              // Navigate the user to /queries
-              window.location = '/queries';
-          }
-      }
-  </script>
 </body>
 
 </html>

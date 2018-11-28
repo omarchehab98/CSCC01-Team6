@@ -3,84 +3,84 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:replace="../fragments/head.html"></th:block>
-    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet"> 
-    <title>Organizations</title>
+  <th:block th:replace="../fragments/head.html"></th:block>
+  <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+  <title>Organizations</title>
 </head>
 
 <body>
 
   <style>
-  body{
-    padding:0;
-    margin:0;
-    background-color: #ffffff;
-  }
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #ffffff;
+    }
 
-  .partners--header {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #c8d6e5;
-  }
+    .partners--header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c8d6e5;
+    }
+
+    .partners--item-name {
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .partners--item-name:hover {
+      text-decoration: underline;
+    }
   </style>
 
-<th:block th:replace="../fragments/tableStyle.html"></th:block>
-<th:block th:replace="../fragments/navigation.html"></th:block>
+  <th:block th:replace="../fragments/navigation.html"></th:block>
 
-<div class="breadcrumbs">
+  <div class="breadcrumbs">
     &nbsp;
-</div>
+  </div>
 
-<main class="container">
-  <header class="partners--header">
-    <h1>Partners</h1>
+  <main class="container">
+    <header class="partners--header">
+      <h1>Partners</h1>
 
-    <div style="flex-grow: 1;"></div>
+      <div style="flex-grow: 1;"></div>
 
-    <a
-      class="btn btn-primary"
-      href="/organizations/create"
-    >
-      Add Partner
-    </a>
-  </header>
+      <a class="btn btn-primary" href="/organizations/create">
+        Add Partner
+      </a>
+    </header>
 
-<div class = "wholeTable table-container">
-  <table>
-    <thead id="tableHead">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Country</th>
-        <th>Province</th>
-        <th>City</th>
-        <th>Postal Code</th>
-        <th>Street Address</th>
-        <th>Apartment</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Province</th>
+            <th>City</th>
+            <th>Postal Code</th>
+            <th>Street Address</th>
+            <th>Apartment</th>
+          </tr>
+        </thead>
+        <tbody>
 
-      <tr class="-Row" th:each="organization : ${organizations}">
-        <td th:text="${organization.id}"></td>
-        <td th:text="${organization.name}"></td>
-        <td th:text="${organization.country}"></td>
-        <td th:text="${organization.administrativeArea}"></td>
-        <td th:text="${organization.locality}"></td>
-        <td th:text="${organization.postalCode}"></td>
-        <td th:text="${organization.thoroughfare}"></td>
-        <td th:text="${organization.premise}"></td>
-        <td>
-          <a th:href="@{'/organizations/' + ${organization.id}}">
-            View
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</main>
+          <tr th:each="organization : ${organizations}">
+            <td>
+              <a class="partners--item-name" th:href="@{'/organizations/' + ${organization.id}}" th:text="${organization.name}">
+              </a>
+            </td>
+            <td th:text="${organization.country}"></td>
+            <td th:text="${organization.administrativeArea}"></td>
+            <td th:text="${organization.locality}"></td>
+            <td th:text="${organization.postalCode}"></td>
+            <td th:text="${organization.thoroughfare}"></td>
+            <td th:text="${organization.premise}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </body>
 
 </html>

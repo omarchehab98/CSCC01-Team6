@@ -5,36 +5,37 @@
   <th:block th:replace="../fragments/head.html"></th:block>
   <title>Queries • TEQ LIP</title>
 </head>
+
 <body>
   <th:block th:replace="../fragments/navigation.html"></th:block>
 
   <style>
-  .queries--header {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #c8d6e5;
-  }
+    .queries--header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c8d6e5;
+    }
 
-  .queries--item-name {
-    font-weight: bold;
-    text-decoration: none;
-  }
+    .queries--item-name {
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-  .queries--item-name:hover {
-    text-decoration: underline;
-  }
+    .queries--item-name:hover {
+      text-decoration: underline;
+    }
 
-  .queries--item-actions {
-    text-align: right;
-  }
+    .queries--item-actions {
+      text-align: right;
+    }
 
-  .queries--item-execute {
-    visibility: hidden;
-  }
+    .queries--item-execute {
+      visibility: hidden;
+    }
 
-  .queries--table tbody tr:hover .queries--item-execute {
-    visibility: initial;
-  }
+    .queries--table tbody tr:hover .queries--item-execute {
+      visibility: initial;
+    }
   </style>
 
   <div class="breadcrumbs">
@@ -47,11 +48,8 @@
 
       <div style="flex-grow: 1;"></div>
 
-      <a
-        class="btn btn-primary"
-        href="/queries/create"
-      >
-        Create Query
+      <a class="btn btn-primary" href="/queries/create">
+        Add Query
       </a>
     </header>
 
@@ -68,19 +66,12 @@
 
           <tr th:each="query : ${queries}">
             <td>
-              <a
-                class="queries--item-name"
-                th:href="@{'/queries/' + ${query.id}}"
-                th:text="${query.name}"
-              >
+              <a class="queries--item-name" th:href="@{'/queries/' + ${query.id}}" th:text="${query.name}">
               </a>
             </td>
             <td th:text="${query.template}"></td>
             <td class="queries--item-actions">
-              <a
-                class="queries--item-execute btn btn-secondary btn-sm"
-                th:href="${query.getRoute()}"
-              >
+              <a class="queries--item-execute btn btn-secondary btn-sm" th:href="${query.getRoute()}">
                 Execute
               </a>
             </td>
