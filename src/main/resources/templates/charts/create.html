@@ -15,7 +15,7 @@
         <a href="/charts">Charts</a>
     </div>
     
-    <div class="container">
+    <main class="container">
         <form action="#" th:action="@{/charts}" th:object="${chart}" method="post">
             <div class="breadcrumbs">
                 &nbsp;
@@ -57,83 +57,83 @@
             <input type="hidden" name="chartQueries" th:value="${queries}" />
             <input class="btn btn-primary" type="submit" value="Save" />
         </form>
+    </main>
 
-        <script th:data-key="queries" th:utext="${queriesJSON}" type="application/json">
+    <script th:data-key="queries" th:utext="${queriesJSON}" type="application/json">
     </script>
 
-        <!-- development version, includes helpful console warnings -->
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-        <!-- production version, optimized for size and speed -->
-        <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <!-- production version, optimized for size and speed -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
-        <script type="text/javascript" src="/js/json-loader.js"></script>
-        <script type="text/javascript" src="/js/components/input-select.js"></script>
-        <script type="text/javascript" src="/js/components/input-ordered-select.js"></script>
+    <script type="text/javascript" src="/js/json-loader.js"></script>
+    <script type="text/javascript" src="/js/components/input-select.js"></script>
+    <script type="text/javascript" src="/js/components/input-ordered-select.js"></script>
 
-        <script>
-            Vue.component('chart-queries', {
-                props: {
-                    values: Array,
-                    push: Function,
-                    pop: Function,
-                    getQueryCount: Function,
-                    getQueryId: Function,
-                    getQueryName: Function,
+    <script>
+        Vue.component('chart-queries', {
+            props: {
+                values: Array,
+                push: Function,
+                pop: Function,
+                getQueryCount: Function,
+                getQueryId: Function,
+                getQueryName: Function,
+            },
+
+            template: `
+            <div>
+                <label>
+                    Queries
+                </label>
+
+                <input-ordered-select v-bind="{
+                    name: 'queries',
+                    values,
+                    push,
+                    pop,
+                    getCount: getQueryCount,
+                    getName: getQueryId,
+                    getValue: getQueryName,
+                }">
+                </input-ordered-select>
+            </div>
+        `,
+        });
+
+        const app = new Vue({
+            el: '#chartQueries',
+
+            data: {
+                ...data,
+                selectedQueries: [],
+            },
+
+            methods: {
+                pushQuery() {
+                    this.selectedQueries.push({ value: this.getQueryId(0) });
                 },
 
-                template: `
-                <div>
-                    <label>
-                        Queries
-                    </label>
-
-                    <input-ordered-select v-bind="{
-                        name: 'queries',
-                        values,
-                        push,
-                        pop,
-                        getCount: getQueryCount,
-                        getName: getQueryId,
-                        getValue: getQueryName,
-                    }">
-                    </input-ordered-select>
-                </div>
-            `,
-            });
-
-            const app = new Vue({
-                el: '#chartQueries',
-
-                data: {
-                    ...data,
-                    selectedQueries: [],
+                popQuery() {
+                    this.selectedQueries.pop();
                 },
 
-                methods: {
-                    pushQuery() {
-                        this.selectedQueries.push({ value: this.getQueryId(0) });
-                    },
-
-                    popQuery() {
-                        this.selectedQueries.pop();
-                    },
-
-                    getQueryCount() {
-                        return this.queries.length;
-                    },
-
-                    getQueryId(index) {
-                        return this.queries[index].id;
-                    },
-
-                    getQueryName(index) {
-                        return this.queries[index].name;
-                    },
+                getQueryCount() {
+                    return this.queries.length;
                 },
-            });
-        </script>
-    </div><!-- end container div-->
+
+                getQueryId(index) {
+                    return this.queries[index].id;
+                },
+
+                getQueryName(index) {
+                    return this.queries[index].name;
+                },
+            },
+        });
+    </script>
 </body>
 
 </html>

@@ -1,15 +1,15 @@
 package team6.controllers;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -97,97 +97,120 @@ public class ChartController {
     }
 
 	private void addChartAttributes(Model model, Chart chart) {
-		List<String> sourceLabels = new ArrayList<>();
-		List<TemplateQuery.Table> tables = new ArrayList<>();
-		List<Integer[]> data = new ArrayList<>();
-		List<String> labels = new ArrayList<>();
+		try {
+			List<String> sourceLabels = new ArrayList<>();
+			List<TemplateQuery.Table> tables = new ArrayList<>();
+			List<Integer[]> data = new ArrayList<>();
+			List<String> labels = new ArrayList<>();
 
-		for (ChartQuery chartQuery : chart.getChartQueries()) {
-			Query query = chartQuery.getQuery();
-			Optional<String> sort = Optional.empty();
-			Optional<String> sortDirection = Optional.empty();
-			Optional<String> join = Optional.empty();
-			Optional<String> select = Optional.empty();
-			Optional<String> where = Optional.empty();
-			Optional<String> group = Optional.empty();
-			String[] keyValuePairs = query.getQueryString().split("&");
-			for (String keyValuePairStr : keyValuePairs) {
-				String[] keyValuePair = keyValuePairStr.split("=");
-				String key = keyValuePair[0];
-				String value = keyValuePair[1];
-				switch (key) {
-					case "sort":
-						sort = Optional.of(value);
-						break;
-					case "sortDirection":
-						sortDirection = Optional.of(value);
-						break;
-					case "join":
-						join = Optional.of(value);
-						break;
-					case "select":
-						select = Optional.of(value);
-						break;
-					case "where":
-						where = Optional.of(value);
-						break;
-					case "group":
-						group = Optional.of(value);
-						break;
+			List<ChartQuery> chartQueries = chart.getChartQueries().stream()
+				.sorted((c1, c2) -> {
+					String c1Name = c1.getQuery().getName();
+					String c2Name = c2.getQuery().getName();
+					return c1Name.compareTo(c2Name);
+				})
+				.collect(Collectors.toList());
+
+			for (ChartQuery chartQuery : chartQueries) {
+				Query query = chartQuery.getQuery();
+				Optional<String> sort = Optional.empty();
+				Optional<String> sortDirection = Optional.empty();
+				Optional<String> join = Optional.empty();
+				Optional<String> select = Optional.empty();
+				Optional<String> where = Optional.empty();
+				Optional<String> group = Optional.empty();
+				String[] keyValuePairs = query.getQueryString().split("&");
+				for (String keyValuePairStr : keyValuePairs) {
+					String[] keyValuePair = keyValuePairStr.split("=");
+					String key = keyValuePair[0];
+					String value = keyValuePair[1];
+					switch (key) {
+						case "sort":
+							sort = Optional.of(value);
+							break;
+						case "sortDirection":
+							sortDirection = Optional.of(value);
+							break;
+						case "join":
+							join = Optional.of(value);
+							break;
+						case "select":
+							select = Optional.of(value);
+							break;
+						case "where":
+							where = Optional.of(URLDecoder.decode(value, "UTF-8"));
+							break;
+						case "group":
+							group = Optional.of(value);
+							break;
+					}
+				}
+
+				String groupBy = GroupParameter.parse(group.orElse(null));
+
+				Template template = new TemplateFactoryWrapper()
+					.build(query.getTemplate(), new HashMap<>(), null);
+				List<String> attributeNames = template.getAttributeNames();
+				List<String> friendlyNames = template.getFriendlyNames();
+				TemplateQuery.Table table = new TemplateQuery(
+					template.getClass().getSimpleName(),
+					template.getAttributeToFriendlyNameMap(),
+					attributeNames,
+					friendlyNames,
+					getEntityNameToRepositoryMap()
+				)
+					.execute(
+						SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc")),
+						JoinParameter.parse(join.orElse(null)),
+						SelectParameter.parse(select.orElse(null)),
+						WhereParameter.parse(where.orElse(null)),
+						groupBy
+					);
+
+				tables.add(table);
+				List<Integer> rowData = new ArrayList<>();
+				if (groupBy != null) {
+					sourceLabels.add(query.getName());
+					for (List<List<Object>> row : table.data) {
+						rowData.add(row.size());
+						labels.add((String) AttributeResolver.get(groupBy, row.get(0).get(0)));
+					}
+					data.add(rowData.toArray(new Integer[rowData.size()]));
+				} else {
+					labels.add(query.getName());
+					if (data.size() == 0) {
+						data.add(new Integer[]{});
+					}
+					Integer[] sdata = data.get(0);
+					data.set(0, concat(sdata, new Integer[]{table.data.get(0).size()}));
 				}
 			}
-
-			String groupBy = GroupParameter.parse(group.orElse(null));
-
-			Template template = new TemplateFactoryWrapper()
-				.build(query.getTemplate(), new HashMap<>(), null);
-			List<String> attributeNames = template.getAttributeNames();
-			List<String> friendlyNames = template.getFriendlyNames();
-			TemplateQuery.Table table = new TemplateQuery(
-				template.getClass().getSimpleName(),
-				template.getAttributeToFriendlyNameMap(),
-				attributeNames,
-				friendlyNames,
-				getEntityNameToRepositoryMap()
-			)
-				.execute(
-					SortParameter.parse(sort.orElse("id"), sortDirection.orElse("asc")),
-					JoinParameter.parse(join.orElse(null)),
-					SelectParameter.parse(select.orElse(null)),
-					WhereParameter.parse(where.orElse(null)),
-					groupBy
-				);
-
-			sourceLabels.add(query.getName());
-			tables.add(table);
-			List<Integer> rowData = new ArrayList<>();
-			for (List<List<Object>> row : table.data) {
-				rowData.add(row.size());
-				labels.add((String) AttributeResolver.get(groupBy, row.get(0).get(0)));
+			
+			if (sourceLabels.size() == 0) {
+				sourceLabels.add(chart.getName());
 			}
-			data.add(rowData.toArray(new Integer[rowData.size()]));
+
+			model.addAttribute("name", chart.getName());
+			model.addAttribute("type", chart.getType());
+			model.addAttribute("labels", labels.toArray());
+			model.addAttribute("data", data.toArray());
+			model.addAttribute("sourceLabels", sourceLabels.toArray());
+		} catch (UnsupportedEncodingException err) {
+			throw new RuntimeException(err);
 		}
-		
-		model.addAttribute("name", chart.getName());
-		model.addAttribute("type", chart.getType());
-		model.addAttribute("labels", labels.toArray());
-		model.addAttribute("data", data.toArray());
-		model.addAttribute("sourceLabels", sourceLabels.toArray());
 	} 
 
     @GetMapping("/charts/create")
     public String createView(Model model) {
 
 		// Convert queries to JSON
-    	Iterable<Query> queries = queryRepository.findAll();
+		Iterable<Query> queries = queryRepository.findAll();
     	JSONArray queriesJSON = new JSONArray();
     	for (Query query : queries) {
-    		if (containsGroupByParameter(query)) {
-				JSONObject queryJSON = new JSONObject();
-				queryJSON.put("id", query.getId());
-				queryJSON.put("name", query.getName());
-				queriesJSON.put(queryJSON);
-    		}
+			JSONObject queryJSON = new JSONObject();
+			queryJSON.put("id", query.getId());
+			queryJSON.put("name", query.getName());
+			queriesJSON.put(queryJSON);
     	}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 
@@ -210,29 +233,34 @@ public class ChartController {
     	Iterable<Query> queries = queryRepository.findAll();
     	JSONArray queriesJSON = new JSONArray();
     	for (Query query : queries) {
-    		if (containsGroupByParameter(query)) {
-				JSONObject queryJSON = new JSONObject();
-				queryJSON.put("id", query.getId());
-				queryJSON.put("name", query.getName());
-				queriesJSON.put(queryJSON);
-    		}
+			JSONObject queryJSON = new JSONObject();
+			queryJSON.put("id", query.getId());
+			queryJSON.put("name", query.getName());
+			queriesJSON.put(queryJSON);
     	}
 		model.addAttribute("queriesJSON", queriesJSON.toString());
 		
 		try {
             Long chartId = Long.parseLong(id);
             Chart chart = chartRepository.findById(chartId).get();
-            model.addAttribute("chart", chart);
+			model.addAttribute("chart", chart);
+			
+			List<ChartQuery> chartQueries = chart.getChartQueries().stream()
+				.sorted((c1, c2) -> {
+					String c1Name = c1.getQuery().getName();
+					String c2Name = c2.getQuery().getName();
+					return c1Name.compareTo(c2Name);
+				})
+				.collect(Collectors.toList());
 
 			JSONArray chartQueriesJSON = new JSONArray();
-			for (ChartQuery chartQuery : chart.getChartQueries()) {
+			for (ChartQuery chartQuery : chartQueries) {
 				Query query = chartQuery.getQuery();
-				if (containsGroupByParameter(query)) {
-					JSONObject queryJSON = new JSONObject();
-					queryJSON.put("id", query.getId());
-					queryJSON.put("name", query.getName());
-					chartQueriesJSON.put(queryJSON);
-				}
+				JSONObject queryJSON = new JSONObject();
+				queryJSON.put("id", query.getId());
+				queryJSON.put("name", query.getName());
+				System.out.println(query.getName());
+				chartQueriesJSON.put(queryJSON);
 			}
 			
 			model.addAttribute("chartQueriesJSON", chartQueriesJSON.toString());
@@ -242,21 +270,12 @@ public class ChartController {
         }
     }
 
-    private boolean containsGroupByParameter(Query query) {
-    	if (query.getQueryString() == null) {
-    		return false;
-    	}
-    	Pattern pattern = Pattern.compile("group=(\\w*)");
-    	Matcher matcher = pattern.matcher(query.getQueryString());
-    	return matcher.find();
-    }
-
     @PostMapping("/charts/{id}/embed")
     public String updateById(Model model, @ModelAttribute Chart chart, @PathVariable String id, @RequestParam String queries) {
         chartRepository.save(chart);
         model.addAttribute("chart", chart);
         updateChartQueries(model, chart, queries);
-        return "redirect:/charts/{id}/embed";
+        return "redirect:/charts";
     }
 
     private void updateChartQueries(Model model, Chart chart, String queries) {
@@ -355,4 +374,10 @@ public class ChartController {
 		map.put("LTClientExitTemplate", ltClientExitTemplateRepository);
 		return map;
 	}
+
+	public static <T> T[] concat(T[] first, T[] second) {
+		T[] result = Arrays.copyOf(first, first.length + second.length);
+		System.arraycopy(second, 0, result, first.length, second.length);
+		return result;
+	  }
 }
