@@ -46,6 +46,8 @@
     tinymce.init({
       selector: '#mytextarea',
       plugins: 'embed-chart',
+      relative_urls: false,
+      document_base_url : window.origin + "/",
     });
   </script>
 </body>
