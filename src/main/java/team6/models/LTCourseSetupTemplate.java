@@ -249,7 +249,8 @@ public class LTCourseSetupTemplate extends Template {
 	@FriendlyName("Writing Skill Level 17")
 	private String languageCLBSkillWriting17;
 	@ManyToOne
-    @JoinColumn(name = "organizationId")
+	@JoinColumn(name = "organizationId")
+	@FriendlyName("Organization")
     private Organization organization;
 
 	public LTCourseSetupTemplate() {}

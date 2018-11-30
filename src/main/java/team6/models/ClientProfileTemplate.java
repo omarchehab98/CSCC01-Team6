@@ -47,7 +47,8 @@ public class ClientProfileTemplate extends Template {
 	@FriendlyName("Consent for Future Research/Consultation")
 	private String consentInd;
 	@ManyToOne
-    @JoinColumn(name = "organizationId")
+	@JoinColumn(name = "organizationId")
+	@FriendlyName("Organization")
     private Organization organization;
 
 	public ClientProfileTemplate() {}

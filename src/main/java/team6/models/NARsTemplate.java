@@ -198,6 +198,7 @@ public class NARsTemplate extends Template {
     private String assessmentUpdateReasonId;
     @ManyToOne
     @JoinColumn(name = "organizationId")
+    @FriendlyName("Organization")
     private Organization organization;
 
     public NARsTemplate() {

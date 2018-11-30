@@ -89,7 +89,8 @@ public class LTClientExitTemplate extends Template {
 	@FriendlyName("Reason for update")
 	private String assessmentUpdateReasonId;
 	@ManyToOne
-    @JoinColumn(name = "organizationId")
+	@JoinColumn(name = "organizationId")
+	@FriendlyName("Organization")
     private Organization organization;
 
 	public LTClientExitTemplate() {}
