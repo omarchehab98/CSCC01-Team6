@@ -1,0 +1,17 @@
+<script th:data-key="charts" th:utext="${chartsJSON}" type="application/json">
+</script>
+
+<script type="text/javascript" src="/js/json-loader.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/tinymce@4.9.0/tinymce.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@4.9.0/plugins/autoresize/plugin.min.js"></script>
+<script src="/js/tinymce/embed-chart-plugin.js"></script>
+<script>
+registerEmbedChartPlugin(data.charts);
+tinymce.init({
+    selector: '#report-body',
+    plugins: 'autoresize embed-chart',
+    relative_urls: false,
+    document_base_url : window.origin + "/",
+});
+</script>

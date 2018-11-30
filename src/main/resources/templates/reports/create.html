@@ -14,7 +14,7 @@
       <a href="/reports">Reports</a>
   </div>
 
-  <main class="container">
+  <main class="container m-bottom-6">
     <h1>Add Report</h1>
 
     <form action="#" th:action="@{/reports}" th:object="${report}" method="post">
@@ -26,7 +26,7 @@
 
       <div class="m-top-3"></div>
 
-      <textarea id="mytextarea" th:field="*{body}"></textarea>
+      <textarea id="report-body" th:field="*{body}"></textarea>
 
       <div class="m-top-3"></div>
 
@@ -34,22 +34,7 @@
     </form>
   </main>
 
-  <script th:data-key="charts" th:utext="${chartsJSON}" type="application/json">
-  </script>
-
-  <script type="text/javascript" src="/js/json-loader.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/tinymce@4.9.0/tinymce.min.js"></script>
-  <script src="/js/tinymce/embed-chart-plugin.js"></script>
-  <script>
-    registerEmbedChartPlugin(data.charts);
-    tinymce.init({
-      selector: '#mytextarea',
-      plugins: 'embed-chart',
-      relative_urls: false,
-      document_base_url : window.origin + "/",
-    });
-  </script>
+  <th:block th:replace="./reports/fragments/script-tinymce.html"></th:block>
 </body>
 
 </html>
