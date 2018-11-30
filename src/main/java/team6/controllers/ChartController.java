@@ -173,7 +173,7 @@ public class ChartController {
 					sourceLabels.add(query.getName());
 					for (List<List<Object>> row : table.data) {
 						rowData.add(row.size());
-						labels.add((String) AttributeResolver.get(groupBy, row.get(0).get(0)));
+						labels.add(AttributeResolver.get(groupBy, row.get(0).get(0)).toString());
 					}
 					data.add(rowData.toArray(new Integer[rowData.size()]));
 				} else {
