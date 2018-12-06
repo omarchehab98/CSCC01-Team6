@@ -1,5 +1,5 @@
-# Team "Ok Hand"
-![Team 06](https://github.com/CSCC01/Team6/blob/master/Documents/TeamLogo.png "Team 06")
+# Team 6
+
 ## Table of Contents
 
 ### Documents
